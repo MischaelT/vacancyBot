@@ -2,13 +2,14 @@ from abc import ABC, abstractmethod
 
 
 class storage_Manager(ABC):
-    def __validate(self):
-        pass
-    
+    def _validate(self, data):
+        for value in data.values():
+            value = " ".join(value.split())
+
     @abstractmethod
-    def __write(self):
+    def _write(self):
         pass
 
     @abstractmethod
-    def __read(self):
+    def _read(self):
         pass

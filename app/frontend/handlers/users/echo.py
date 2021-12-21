@@ -1,7 +1,9 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
-from loader import dp
+from app.main import bot
+
+dp = bot.dp
 
 
 # Эхо хендлер, куда летят текстовые сообщения без указанного состояния

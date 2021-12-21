@@ -1,10 +1,10 @@
-import asyncio
+import asyncio  # noqa
 
-from aiogram import types, Dispatcher
-from aiogram.dispatcher import DEFAULT_RATE_LIMIT
-from aiogram.dispatcher.handler import CancelHandler, current_handler
-from aiogram.dispatcher.middlewares import BaseMiddleware
-from aiogram.utils.exceptions import Throttled
+from aiogram import types, Dispatcher  # noqa
+from aiogram.dispatcher import DEFAULT_RATE_LIMIT  # noqa
+from aiogram.dispatcher.handler import CancelHandler, current_handler  # noqa
+from aiogram.dispatcher.middlewares import BaseMiddleware  # noqa
+from aiogram.utils.exceptions import Throttled  # noqa
 
 
 class ThrottlingMiddleware(BaseMiddleware):

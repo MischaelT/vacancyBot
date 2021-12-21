@@ -1,7 +1,9 @@
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandStart
 
-from loader import dp
+from app.main import bot
+
+dp = bot.dp
 
 
 @dp.message_handler(CommandStart())
