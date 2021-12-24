@@ -6,12 +6,6 @@ from aiogram.utils.exceptions import (CantParseEntities,
                                       )
 
 
-from app.main import bot
-
-dp = bot.dp
-
-
-@dp.errors_handler()
 async def errors_handler(update, exception):
     """
     Exceptions handler. Catches all exceptions within task factory tasks.
