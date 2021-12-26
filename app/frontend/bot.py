@@ -12,11 +12,13 @@ from aiogram import executor
 
 
 class VacancyBot:
-    def __init__(self) -> None:
 
+    def __init__(self) -> None:
         self.bot = Bot(token=config.BOT_TOKEN, parse_mode=types.ParseMode.HTML)
         storage = MemoryStorage()
         self.dp = Dispatcher(self.bot, storage=storage)
+        # self.request = []
+        # self.reply = []
 
 
     async def on_startup(self, dispatcher):
@@ -27,6 +29,7 @@ class VacancyBot:
         filters.setup(self.dp)
         handlers.errors.setup(self.dp)
         handlers.users.setup(self.dp)
+        self.dp.register_message_handler(self.user_want_vacancy, commands= ['vacancy'])
 
         # Устанавливаем дефолтные команды
         await set_default_commands(dispatcher)
@@ -35,3 +38,9 @@ class VacancyBot:
 
     def start(self):
         executor.start_polling(self.dp, on_startup=self.on_startup)
+
+    # async def user_want_vacancy(self, args):
+    #     self.request.append('get_vacancy')
+
+    # async def send_message(self, text):
+    #     await self.bot.send_message(285065400, self.reply)

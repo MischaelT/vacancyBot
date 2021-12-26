@@ -11,8 +11,19 @@ class AppFlow_manager():
         self.user_data_manager = User_data_manager()
         self.vacancy_filter = Vacancy_filter()
         self.parse_manager = ParseManager()
+        self.is_active = True
 
 
-    def start(self):
+    async def run(self):
 
-        self.bot.start()
+        while self.is_active:
+     
+            try:
+                current_request = self.bot.request[0]
+            except IndexError:
+                continue
+
+            if current_request == 'get_vacancy':
+                response_data = self.vacancy_filter.get_data_by_filter()
+                await self.bot.send_message(response_data)
+

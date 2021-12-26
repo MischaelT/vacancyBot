@@ -7,5 +7,5 @@ flow_manager = AppFlow_manager(bot)
 
 
 if __name__ == '__main__':
-
-    flow_manager.start()
+    bot.start()  
+    flow_manager.run()

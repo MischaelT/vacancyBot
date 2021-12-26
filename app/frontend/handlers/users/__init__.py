@@ -15,4 +15,4 @@ from aiogram.dispatcher.filters import CommandStart, CommandHelp
 def setup(dp: Dispatcher):
     dp.register_message_handler(bot_start, CommandStart())
     dp.register_message_handler(bot_help, CommandHelp())
-    dp.register_message_handler(bot_echo)
+    dp.register_message_handler(sr)

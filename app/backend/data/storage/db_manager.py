@@ -1,4 +1,5 @@
 import sqlite3
+from sqlite3.dbapi2 import Error
 
 from backend.data.storage.storage_manager import storage_Manager
 
@@ -6,14 +7,19 @@ from backend.data.storage.storage_manager import storage_Manager
 class Db_manager(storage_Manager):
 
     def get_data(self) -> list:
-        pass
+        return self._read()
 
     def push_data(self, data):
         self._validate(data)
         self._write(data)
 
     def _write(self, data):
-        con = sqlite3.connect('vacancies.db')
+
+        try:
+            con = sqlite3.connect('vacancies.db')
+        except Error as e:
+            pass
+
         cur = con.cursor()
 
         data_to_db = []
@@ -27,5 +33,20 @@ class Db_manager(storage_Manager):
 
         con.close()
 
-    def _read(self, data):
-        pass
+    def _read(self):
+
+        try:
+            con = sqlite3.connect('vacancies.db')
+        except Error as e:
+            pass
+
+        cur = con.cursor()
+
+        cur.execute("SELECT * FROM Vacancies")
+
+        data = cur.fetchall()
+
+        return data
+
+
+  
