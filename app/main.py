@@ -1,11 +1,11 @@
-from backend.app_flow_manager import AppFlow_manager
+from backend.backend_manager import Backend_manager
 from frontend.bot import VacancyBot
 
-bot = VacancyBot()
 
-flow_manager = AppFlow_manager(bot)
 
+backend_manager = Backend_manager()
+bot = VacancyBot(backend_manager)
 
 if __name__ == '__main__':
     bot.start()  
-    flow_manager.run()
+    
