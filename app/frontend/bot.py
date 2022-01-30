@@ -36,9 +36,11 @@ class VacancyBot:
         await set_default_commands(dispatcher)
         # Уведомляет про запуск
         await on_startup_notify(dispatcher)
-        start_time = time.time()
+
         await self.backend_manager.run()
-        print(time.time - start_time)
+
+        # self.dp.register_message_handler
+
 
     def start(self):
         executor.start_polling(self.dp, on_startup=self.on_startup)

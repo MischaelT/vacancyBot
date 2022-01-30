@@ -1,109 +1,117 @@
-# from backend.data.storage.json_manager import Json_manager as manager
-# from backend.data.storage.csv_manager import Csv_manager as manager
 from asyncio.events import new_event_loop, set_event_loop
-import typing
+import os
 from backend.data.storage.db_manager import Db_manager as manager
 
 import asyncio
+import random
+
+from time import sleep
 
 from bs4 import BeautifulSoup
 
 import requests
 
+DATA = {
+    'dou': {
+            'basepoint':'http://jobs.dou.ua', 
+            'endpoint':'/vacancies/',
+            'params':{
+                        'category': 'Python',
+                        'exp': '0-1',
+                    },
+    },
+    'djinni': {
+        'basepoint': 'https://djinni.co',
+        'endpoint': '/jobs/keyword-python/remote/',
+        'params': {
+                    'exp_level': 'no_exp',
+                    'remote_type': 'full_remote',
+                    'keywords': 'Python junior',
+                }
+    },
+    'work': {
+        'basepoint': 'https://www.work.ua',
+        'endpoint': '/jobs-python/',
+        'params': {},
+    }
+}
 
 class ParseManager:
 
     def __init__(self) -> None:
 
         self.db = manager()
-        self.headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5)\
-                        AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
+        self.headers =  {'User-Agent': ''}
+        self.proxy = ''
 
     async def run_general_parsing(self) -> None:
 
         loop = new_event_loop()
-
         set_event_loop(loop)
 
         page = 0
+        user_agents = []
 
+        with open('user-agents.txt', 'r') as f:
+            user_agents = f.read().split('\n')
+
+        with open('proxies.txt', 'r') as f:
+            proxies = f.read().split('\n')
+        
         while True:
+        
+            self.headers['User-Agent'] = random.choice(user_agents)
+            self.proxy = 'http://'+random.choice(proxies)
 
             page += 1
 
             # TODO Implement exception handling
             
-
             result = await asyncio.gather(
-                                self.__get_dou_content(page),
-                                self.__get_djinni_content(page),
-                                self.__get_workUa_content(page),
+                                self.__get_content(page, site_name='dou'),
+                                # self.__get_content(page, site_name='djinni'),
+                                # self.__get_content(page, site_name='work'),
                                 return_exceptions=True
                                 )
-            for website in result:
-                print(type(website))
-
-            
             print(result)
+            # if page == 1:
+            #     break
 
-    async def __get_dou_content(self, page) -> None:
+    async def __get_content(self, page:int, site_name:str) -> None:
+  
+        settings = DATA.get(site_name)
 
-        basepoint = 'http://jobs.dou.ua'
-        endpoint = '/vacancies/'
+        basepoint = settings.get('basepoint')
+        endpoint = settings.get('endpoint')
+        params = settings.get('params')
+        params['page'] = page
 
-        params = {
-            'category': 'Python',
-            'exp': '0-1',
-            'page': page,
-        }
+        proxy = {'http': self.proxy}
 
-        response = requests.get(basepoint+endpoint, headers=self.headers, params=params)
-
+        response = requests.get(basepoint+endpoint, headers=self.headers, params=params, proxies = proxy)
         response.raise_for_status()
 
-        soup = BeautifulSoup(response.text, 'html.parser')
+        if site_name == 'dou':
 
-        await self.__parse_dou_data(soup)
+            await asyncio.sleep(random.uniform(2,6))
+            print('dou', page)
+            await self.__parse_dou_data(response.text)
+            
+        if site_name == 'djinni':
 
-    async def __get_djinni_content(self, page) -> None:
+            await asyncio.sleep(random.uniform(2,6))            
+            print('djinni', page)
+            await self.__parse_djinni_data(response.text, basepoint=basepoint)
+            
+        if site_name == 'work':
+            
+            await asyncio.sleep(random.uniform(2,6))
+            print('work', page)           
+            await self.__parse_workUa_data(response.text, basepoint=basepoint)
+            
+    async def __parse_dou_data(self, content) -> None:
 
-        basepoint = 'https://djinni.co'
-        endpoint = '/jobs/keyword-python/remote/'
-
-        params = {
-            'page': page,
-            'exp_level': 'no_exp',
-            'remote_type': 'full_remote',
-            'keywords': 'Python junior'
-        }
-
-        response = requests.get(basepoint+endpoint, headers=self.headers, params=params)
-
-        response.raise_for_status()
-
-        soup = BeautifulSoup(response.text, 'html.parser')
-
-        await self.__parse_djinni_data(soup, basepoint)
-
-    async def __get_workUa_content(self, page) -> None:
-
-        basepoint = 'https://www.work.ua'
-        endpoint = '/jobs-python/'
-
-        params = {
-            'page': page
-        }
-
-        response = requests.get(basepoint+endpoint, params=params, headers=self.headers)
-
-        response.raise_for_status()
-
-        soup = BeautifulSoup(response.text, 'html.parser')
-
-        await self.__parse_workUa_data(soup, basepoint)
-
-    async def __parse_dou_data(self, soup) -> None:
-
+        soup = BeautifulSoup(content, 'html.parser')
         vacancies = soup.find_all('li', class_='l-vacancy')
 
         remote = 'remote'
@@ -119,8 +127,9 @@ class ParseManager:
 
             self.db.push_data(data)
 
-    async def __parse_djinni_data(self, soup, basepoint) -> None:
+    async def __parse_djinni_data(self, content, basepoint) -> None:
 
+        soup = BeautifulSoup(content, 'html.parser')
         vacancies = soup.find_all('li', class_='list-jobs__item')
 
         for vacancy in vacancies:
@@ -139,8 +148,9 @@ class ParseManager:
 
             self.db.push_data(data)
 
-    async def __parse_workUa_data(self, soup, basepoint) -> None:
+    async def __parse_workUa_data(self, content, basepoint) -> None:
 
+        soup = BeautifulSoup(content, 'html.parser')
         vacancies = soup.find_all('div', class_='card card-hover card-visited wordwrap job-link')
 
         for vacancy in vacancies:

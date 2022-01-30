@@ -1,8 +1,6 @@
 from backend.backend_manager import Backend_manager
 from frontend.bot import VacancyBot
 
-
-
 backend_manager = Backend_manager()
 bot = VacancyBot(backend_manager)
 
