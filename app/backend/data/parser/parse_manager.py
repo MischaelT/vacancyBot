@@ -1,11 +1,9 @@
-from asyncio.events import new_event_loop, set_event_loop
-import os
-from backend.data.storage.db_manager import Db_manager as manager
-
 import asyncio
 import random
+from asyncio.events import new_event_loop, set_event_loop
 
-from time import sleep
+from backend.data.storage.db_manager import Db_manager as manager
+
 
 from bs4 import BeautifulSoup
 
@@ -13,9 +11,9 @@ import requests
 
 DATA = {
     'dou': {
-            'basepoint':'http://jobs.dou.ua', 
-            'endpoint':'/vacancies/',
-            'params':{
+            'basepoint': 'http://jobs.dou.ua',
+            'endpoint': '/vacancies/',
+            'params': {
                         'category': 'Python',
                         'exp': '0-1',
                     },
@@ -36,12 +34,13 @@ DATA = {
     }
 }
 
+
 class ParseManager:
 
     def __init__(self) -> None:
 
         self.db = manager()
-        self.headers =  {'User-Agent': ''}
+        self.headers = {'User-Agent': ''}
         self.proxy = ''
 
     async def run_general_parsing(self) -> None:
@@ -57,28 +56,27 @@ class ParseManager:
 
         with open('proxies.txt', 'r') as f:
             proxies = f.read().split('\n')
-        
+
         while True:
-        
+
             self.headers['User-Agent'] = random.choice(user_agents)
             self.proxy = 'http://'+random.choice(proxies)
 
             page += 1
 
             # TODO Implement exception handling
-            
-            result = await asyncio.gather(
+
+            result = await asyncio.gather(  # noqa
                                 self.__get_content(page, site_name='dou'),
-                                # self.__get_content(page, site_name='djinni'),
-                                # self.__get_content(page, site_name='work'),
+                                self.__get_content(page, site_name='djinni'),
+                                self.__get_content(page, site_name='work'),
                                 return_exceptions=True
                                 )
-            print(result)
             # if page == 1:
             #     break
 
-    async def __get_content(self, page:int, site_name:str) -> None:
-  
+    async def __get_content(self, page: int, site_name: str) -> None:
+
         settings = DATA.get(site_name)
 
         basepoint = settings.get('basepoint')
@@ -88,27 +86,24 @@ class ParseManager:
 
         proxy = {'http': self.proxy}
 
-        response = requests.get(basepoint+endpoint, headers=self.headers, params=params, proxies = proxy)
+        response = requests.get(basepoint+endpoint, headers=self.headers, params=params, proxies=proxy)
         response.raise_for_status()
 
         if site_name == 'dou':
 
-            await asyncio.sleep(random.uniform(2,6))
-            print('dou', page)
+            await asyncio.sleep(random.uniform(2, 6))
             await self.__parse_dou_data(response.text)
-            
+
         if site_name == 'djinni':
 
-            await asyncio.sleep(random.uniform(2,6))            
-            print('djinni', page)
+            await asyncio.sleep(random.uniform(2, 6))
             await self.__parse_djinni_data(response.text, basepoint=basepoint)
-            
+
         if site_name == 'work':
-            
-            await asyncio.sleep(random.uniform(2,6))
-            print('work', page)           
+
+            await asyncio.sleep(random.uniform(2, 6))
             await self.__parse_workUa_data(response.text, basepoint=basepoint)
-            
+
     async def __parse_dou_data(self, content) -> None:
 
         soup = BeautifulSoup(content, 'html.parser')

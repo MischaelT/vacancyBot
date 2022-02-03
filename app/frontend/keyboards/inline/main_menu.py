@@ -1,18 +1,18 @@
-from logging import makeLogRecord
-from aiogram.types.inline_keyboard import InlineKeyboardButton
-from aiogram.utils.callback_data import CallbackData
 from aiogram.types import InlineKeyboardMarkup
+from aiogram.utils.callback_data import CallbackData
 
 menu_cd = CallbackData("show_menu", "level")
 
+
 def make_callback_data(level):
-    
+
     return menu_cd.new(level=level)
-    
+
+
 async def menu_keyboard():
 
     CURRENT_LEVEL = 0
-    markup = InlineKeyboardMarkup() 
+    markup = InlineKeyboardMarkup()
     buttons = ['get vacancies', 'settings']
 
     for button in buttons:

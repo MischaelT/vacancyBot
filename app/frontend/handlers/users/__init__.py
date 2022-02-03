@@ -1,19 +1,13 @@
-from aiogram.types.callback_query import CallbackQuery
+from aiogram import Dispatcher
+from aiogram.dispatcher.filters import CommandHelp, CommandStart
 
 from frontend.handlers.users.main_menu_handler import show_main_menu
-from . import help  # noqa
-from . import start  # noqa
-from . import echo  # noqa
-
-from .help import bot_help
-from .start import bot_start
-from .echo import bot_echo
-from .settings_handler import ask_for_settings, navigate
 from frontend.keyboards.inline.settings_keyboards import menu_cd
 
-from aiogram import Dispatcher
+from .help import bot_help
+from .settings_handler import ask_for_settings, navigate
+from .start import bot_start
 
-from aiogram.dispatcher.filters import CommandStart, CommandHelp
 
 def setup(dp: Dispatcher):
 

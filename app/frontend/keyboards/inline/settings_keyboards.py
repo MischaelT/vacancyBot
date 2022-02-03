@@ -1,18 +1,20 @@
-from logging import makeLogRecord
+from aiogram.types import InlineKeyboardMarkup
 from aiogram.types.inline_keyboard import InlineKeyboardButton
 from aiogram.utils.callback_data import CallbackData
-from aiogram.types import InlineKeyboardMarkup
+
 # , 'get my settings'
 
 menu_cd = CallbackData("show_menu", "level", "category")
 
-def make_callback_data(level, category = '0'):
-    
+
+def make_callback_data(level, category='0'):
+
     return menu_cd.new(level=level, category=category)
+
 
 async def settings_keyboard():
     CURRENT_LEVEL = 1
-    markup = InlineKeyboardMarkup() 
+    markup = InlineKeyboardMarkup()
 
     categories = ['my_settings', 'change_settings']
 
@@ -36,7 +38,7 @@ async def settings_keyboard():
 
 async def change_my_settings_keyboard():
     CURRENT_LEVEL = 2
-    markup = InlineKeyboardMarkup() 
+    markup = InlineKeyboardMarkup()
     categories = ['experience']
 
     for category in categories:
@@ -60,7 +62,7 @@ async def experience_keyboard():
 
     CURRENT_LEVEL = 3
     markup = InlineKeyboardMarkup()
-    sub_categories = ['Trainee','Junior','Middle','Senior', 'Architect']
+    sub_categories = ['Trainee', 'Junior', 'Middle', 'Senior', 'Architect']
 
     for category in sub_categories:
 
@@ -77,7 +79,7 @@ async def language_keyboard():
 
     CURRENT_LEVEL = 4
     markup = InlineKeyboardMarkup()
-    sub_categories = ['Python','Java','C++','Scala']
+    sub_categories = ['Python', 'Java', 'C++', 'Scala']
 
     for category in sub_categories:
 

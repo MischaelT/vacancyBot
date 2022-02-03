@@ -1,16 +1,11 @@
-from aiogram import Bot, Dispatcher, types
+from aiogram import Bot, Dispatcher, executor, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
+
 from backend.data.storage.db_manager import Db_manager
-from frontend.handlers.users import start
-import time
 
 from frontend.data import config
-
-from frontend import middlewares, filters, handlers
 from frontend.utils.notify_admins import on_startup_notify
 from frontend.utils.set_bot_commands import set_default_commands
-
-from aiogram import executor
 
 
 class VacancyBot:
@@ -23,9 +18,7 @@ class VacancyBot:
 
     async def on_startup(self, dispatcher):
 
-        from frontend import middlewares
-        from frontend import filters
-        from frontend import handlers
+        from frontend import filters, handlers, middlewares
 
         middlewares.setup(self.dp)
         filters.setup(self.dp)
@@ -40,7 +33,6 @@ class VacancyBot:
         await self.backend_manager.run()
 
         # self.dp.register_message_handler
-
 
     def start(self):
         executor.start_polling(self.dp, on_startup=self.on_startup)

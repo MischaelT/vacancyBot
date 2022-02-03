@@ -1,15 +1,12 @@
-from contextlib import suppress
 from typing import Union
+
 from aiogram import types
-from aiogram.dispatcher.filters.builtin import CommandStart
 
 from frontend.keyboards.inline.main_menu import menu_keyboard
-from aiogram.utils.exceptions import MessageNotModified
 
 
 async def show_main_menu(message: types.Message):
     await main_menu(message=message)
-
 
 
 async def main_menu(message: Union[types.Message, types.CallbackQuery], **kwargs):
