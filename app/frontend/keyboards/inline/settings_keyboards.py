@@ -1,8 +1,5 @@
 from aiogram.types import InlineKeyboardMarkup
-from aiogram.types.inline_keyboard import InlineKeyboardButton
 from aiogram.utils.callback_data import CallbackData
-
-# , 'get my settings'
 
 menu_cd = CallbackData("show_menu", "level", "category")
 
@@ -26,41 +23,12 @@ async def settings_keyboard():
             InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
         )
 
-    markup.row(
-        InlineKeyboardButton(
-            text='Back',
-            callback_data=make_callback_data(CURRENT_LEVEL-1),
-        )
-    )
-
-    return markup
-
-
-async def change_my_settings_keyboard():
-    CURRENT_LEVEL = 2
-    markup = InlineKeyboardMarkup()
-    categories = ['experience']
-
-    for category in categories:
-        button_text = f'{category}'
-        callback_data = make_callback_data(level=CURRENT_LEVEL+1, category=category)
-
-        markup.insert(
-            InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
-        )
-
-    markup.row(
-        InlineKeyboardButton(
-            text='Back',
-            callback_data=make_callback_data(CURRENT_LEVEL-1),
-        )
-    )
     return markup
 
 
 async def experience_keyboard():
 
-    CURRENT_LEVEL = 3
+    CURRENT_LEVEL = 2
     markup = InlineKeyboardMarkup()
     sub_categories = ['Trainee', 'Junior', 'Middle', 'Senior', 'Architect']
 
@@ -77,7 +45,7 @@ async def experience_keyboard():
 
 async def language_keyboard():
 
-    CURRENT_LEVEL = 4
+    CURRENT_LEVEL = 3
     markup = InlineKeyboardMarkup()
     sub_categories = ['Python', 'Java', 'C++', 'Scala']
 
@@ -94,14 +62,14 @@ async def language_keyboard():
 
 
 async def save_keyboard():
-    CURRENT_LEVEL = 5
+    CURRENT_LEVEL = 4
     markup = InlineKeyboardMarkup()
     sub_categories = ['Save']
 
     for category in sub_categories:
 
         button_text = f'{category}'
-        callback_data = make_callback_data(level=CURRENT_LEVEL-4, category=category)
+        callback_data = make_callback_data(level=CURRENT_LEVEL-3, category=category)
 
         markup.insert(
             InlineKeyboardMarkup(text=button_text, callback_data=callback_data)

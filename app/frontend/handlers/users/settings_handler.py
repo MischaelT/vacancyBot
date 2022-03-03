@@ -2,9 +2,7 @@ from typing import Union
 
 from aiogram import types
 
-from frontend.handlers.users.main_menu_handler import show_main_menu
-from frontend.keyboards.inline.settings_keyboards import change_my_settings_keyboard,\
-                                                         experience_keyboard, language_keyboard,\
+from frontend.keyboards.inline.settings_keyboards import experience_keyboard, language_keyboard,\
                                                          save_keyboard, settings_keyboard
 
 
@@ -22,14 +20,6 @@ async def settings_menu(message: Union[types.Message, types.CallbackQuery], **kw
     elif isinstance(message, types.CallbackQuery):
         call = message
         await call.message.edit_reply_markup(markup)
-
-
-async def change_my_settings_menu(message: types.CallbackQuery, **kwargs):
-
-    markup = await change_my_settings_keyboard()
-
-    call = message
-    await call.message.edit_reply_markup(markup)
 
 
 async def experience_menu(message: types.CallbackQuery, **kwargs):
@@ -61,12 +51,10 @@ async def navigate(call: types.CallbackQuery, callback_data: dict):
     current_level = callback_data.get('level')
 
     levels = {
-        '0': show_main_menu,
         '1': ask_for_settings,
-        '2': change_my_settings_menu,
-        '3': experience_menu,
-        '4': language_menu,
-        '5': save_menu,
+        '2': experience_menu,
+        '3': language_menu,
+        '4': save_menu,
     }
     current_level_func = levels[current_level]
 

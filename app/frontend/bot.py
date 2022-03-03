@@ -32,7 +32,7 @@ class VacancyBot:
 
         await self.backend_manager.run()
 
-        # self.dp.register_message_handler
+        self.dp.register_message_handler
 
     def start(self):
         executor.start_polling(self.dp, on_startup=self.on_startup)
