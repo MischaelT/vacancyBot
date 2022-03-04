@@ -6,8 +6,11 @@ from backend.data.storage.storage_manager import storage_Manager
 
 class Db_manager(storage_Manager):
 
-    def get_data(self) -> list:
-        return self._read()
+    def __init__(self) -> None:
+        super().__init__()
+
+    def get_data(self, id) -> list:
+        return self._read(id)
 
     def push_data(self, data):
         self._validate(data)
@@ -20,7 +23,7 @@ class Db_manager(storage_Manager):
         except Error:
             pass
 
-        cur = con.cursor()
+        cur = con.cursor()  
 
         data_to_db = []
 
@@ -33,7 +36,7 @@ class Db_manager(storage_Manager):
 
         con.close()
 
-    def _read(self):
+    def _read(self, id):
 
         try:
             con = sqlite3.connect('vacancies.db')
@@ -42,8 +45,11 @@ class Db_manager(storage_Manager):
 
         cur = con.cursor()
 
-        cur.execute("SELECT * FROM Vacancies")
+        cur.execute("SELECT * FROM Vacancies WHERE id=?", (id+3650,))
 
         data = cur.fetchall()
 
         return data
+
+    def validate_to_read(self,data):
+        pass

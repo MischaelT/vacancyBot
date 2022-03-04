@@ -11,13 +11,24 @@ class Vacancy_filter():
 
     def get_data_by_filter(self, filter_) -> list:
 
-        vacancies_data = manager.get_data()
         vacancies = []
 
-        for _ in vacancies:
-            vacancies.append(self.__create_vacancies(vacancies_data, filter_))
+        for i in range(10):
+            pure_vacancy = self.db.get_data(id = i)
+            vacancy = self.__create_vacancy(pure_vacancy[0])
+            vacancies.append(vacancy)
 
         return vacancies
 
-    def __create_vacancies(self, filter_) -> Vacancy:
-        pass
+    def __create_vacancy(self, data) -> Vacancy:
+
+        data = list(data)
+
+        vacancy = Vacancy(
+            data='',
+            title= data[1],
+            city='',
+            info=data[3],
+            link=data[4],
+        )
+        return vacancy

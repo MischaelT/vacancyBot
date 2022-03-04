@@ -6,3 +6,6 @@ class Vacancy:
         self.city = city
         self.info = info
         self.link = link
+
+    def to_print(self):
+        return  self.title+'\n'+self.info+'\n'+self.link

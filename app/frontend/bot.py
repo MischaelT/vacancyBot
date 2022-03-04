@@ -10,8 +10,8 @@ from frontend.utils.set_bot_commands import set_default_commands
 
 class VacancyBot:
 
-    def __init__(self, backend_manager: Db_manager) -> None:
-        self.backend_manager = backend_manager
+    def __init__(self) -> None:
+        # self.backend_manager = backend_manager
         self.bot = Bot(token=config.BOT_TOKEN, parse_mode=types.ParseMode.HTML)
         storage = MemoryStorage()
         self.dp = Dispatcher(self.bot, storage=storage)
@@ -29,8 +29,6 @@ class VacancyBot:
         await set_default_commands(dispatcher)
         # Уведомляет про запуск
         await on_startup_notify(dispatcher)
-
-        await self.backend_manager.run()
 
         self.dp.register_message_handler
 
