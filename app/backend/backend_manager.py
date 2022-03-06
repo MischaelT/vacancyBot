@@ -3,7 +3,6 @@ from backend.data.vacancy_filter import Vacancy_filter  # noqa
 from backend.data.parser.parse_manager import ParseManager  # noqa
 
 
-
 class Backend_manager():
 
     def __init__(self) -> None:
@@ -18,5 +17,3 @@ class Backend_manager():
 
     async def get_latest_vacanvies(self):
         return self.vacancy_filter.get_data_by_filter('')
-
-    

@@ -1,6 +1,7 @@
-from environs import Env
-
+# import random
 from backend.backend_manager import Backend_manager
+
+from environs import Env
 
 env = Env()
 env.read_env()
@@ -11,3 +12,7 @@ IP = env.str("ip")
 
 
 backend_manager = Backend_manager()
+
+# is_registered = bool(random.getrandbits(1))
+
+is_registered = False

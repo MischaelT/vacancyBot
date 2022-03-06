@@ -9,8 +9,8 @@ class Db_manager(storage_Manager):
     def __init__(self) -> None:
         super().__init__()
 
-    def get_data(self, id) -> list:
-        return self._read(id)
+    def get_data(self, id_) -> list:
+        return self._read(id_)
 
     def push_data(self, data):
         self._validate(data)
@@ -23,7 +23,7 @@ class Db_manager(storage_Manager):
         except Error:
             pass
 
-        cur = con.cursor()  
+        cur = con.cursor()
 
         data_to_db = []
 
@@ -36,7 +36,7 @@ class Db_manager(storage_Manager):
 
         con.close()
 
-    def _read(self, id):
+    def _read(self, id_):
 
         try:
             con = sqlite3.connect('vacancies.db')
@@ -51,5 +51,5 @@ class Db_manager(storage_Manager):
 
         return data
 
-    def validate_to_read(self,data):
-        pass
+    # def validate_to_read(self, data):
+    #     pass

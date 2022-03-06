@@ -1,17 +1,26 @@
+from typing import Union
+
 from aiogram import types
 
-from backend.backend_manager import Backend_manager
-from backend.user import User
+from frontend.data.config import backend_manager
+from frontend.keyboards.inline.settings_keyboards import back_keyboard
+# from backend.user import User
 
 
-async def get_vacancies(message: types.Message):
+async def get_vacancies(message: Union[types.Message, types.CallbackQuery]):
 
-    user  = User('','','','')
+    # user = User('', '', '', '')
 
-    backend = Backend_manager(user)
+    vacancies = await backend_manager.get_latest_vacanvies()
+    markup = await back_keyboard(level=3)
 
-    vacancies = await backend.get_latest_vacanvies()
+    if isinstance(message, types.Message):
+        for vacancy in vacancies:
+            await message.answer(vacancy.to_print(), reply_markup=markup)
 
-    for vacancy in vacancies:
-        await message.answer(vacancy.to_print())
-    user  = User('','','','')
+    elif isinstance(message, types.CallbackQuery):
+        call = message
+        result = ''
+        for vacancy in vacancies:
+            result += '\n' + f'{vacancy.to_print()}' + '\n'
+        await call.message.edit_text(result, reply_markup=markup)

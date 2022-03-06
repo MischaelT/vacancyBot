@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.callback_data import CallbackData
 
 menu_cd = CallbackData("show_menu", "level", "category")
- 
+
 
 def make_callback_data(level=0, category='0'):
 
@@ -24,7 +24,14 @@ async def settings_keyboard():
     )
 
     button_text = f'{categories[1]}'
-    callback_data = make_callback_data(level=CURRENT_LEVEL+1, category=categories[1])    
+    callback_data = make_callback_data(level=CURRENT_LEVEL+1, category=categories[1])
+
+    markup.insert(
+        InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
+    )
+
+    button_text = 'Back'
+    callback_data = make_callback_data(level=3, category=categories[1])
 
     markup.insert(
         InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
@@ -35,31 +42,30 @@ async def settings_keyboard():
 
 async def experience_keyboard():
 
-    CURRENT_LEVEL = 2
     markup = InlineKeyboardMarkup()
     sub_categories = ['Trainee', 'Junior', 'Middle', 'Senior', 'Architect']
 
     for category in sub_categories:
 
         button_text = f'{category}'
-        callback_data = make_callback_data(level=CURRENT_LEVEL+1, category=category)
+        callback_data = make_callback_data(category=category)
 
         markup.insert(
             InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
         )
+
     return markup
 
 
 async def language_keyboard():
 
-    CURRENT_LEVEL = 3
     markup = InlineKeyboardMarkup()
     sub_categories = ['Python', 'Java', 'C++', 'Scala']
 
     for category in sub_categories:
 
         button_text = f'{category}'
-        callback_data = make_callback_data(level=CURRENT_LEVEL+1, category=category)
+        callback_data = make_callback_data(category=category)
 
         markup.insert(
             InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
@@ -69,14 +75,14 @@ async def language_keyboard():
 
 
 async def save_keyboard():
-    CURRENT_LEVEL = 4
+
     markup = InlineKeyboardMarkup()
     sub_categories = ['Save']
 
     for category in sub_categories:
 
         button_text = f'{category}'
-        callback_data = make_callback_data(level=CURRENT_LEVEL-3, category=category)
+        callback_data = make_callback_data(level=3, category=category)
 
         markup.insert(
             InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
@@ -86,7 +92,7 @@ async def save_keyboard():
 
 
 async def back_keyboard(level):
-    
+
     markup = InlineKeyboardMarkup()
     sub_categories = ['Back']
 
