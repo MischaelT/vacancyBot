@@ -1,8 +1,6 @@
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
-from backend.data.storage.db_manager import Db_manager
-
 from frontend.data import config
 from frontend.utils.notify_admins import on_startup_notify
 from frontend.utils.set_bot_commands import set_default_commands
@@ -11,7 +9,7 @@ from frontend.utils.set_bot_commands import set_default_commands
 class VacancyBot:
 
     def __init__(self) -> None:
-        # self.backend_manager = backend_manager
+        self.backend_manager = config.backend_manager
         self.bot = Bot(token=config.BOT_TOKEN, parse_mode=types.ParseMode.HTML)
         storage = MemoryStorage()
         self.dp = Dispatcher(self.bot, storage=storage)
