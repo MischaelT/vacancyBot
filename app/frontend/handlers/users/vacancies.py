@@ -2,8 +2,10 @@ from typing import Union
 
 from aiogram import types
 
-from frontend.data.config import backend_manager
 from frontend.keyboards.inline.settings_keyboards import back_keyboard
+
+from settings.config import backend_manager
+
 # from backend.user import User
 
 

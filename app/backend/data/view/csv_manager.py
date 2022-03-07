@@ -1,6 +1,6 @@
 import csv
 
-from backend.data.storage.storage_manager import storage_Manager
+from backend.data.view.view_manager import storage_Manager
 
 
 class Csv_manager(storage_Manager):

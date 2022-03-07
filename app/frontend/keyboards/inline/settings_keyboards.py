@@ -12,7 +12,7 @@ def make_callback_data(level=0, category='0'):
 async def settings_keyboard():
 
     CURRENT_LEVEL = 1
-    markup = InlineKeyboardMarkup()
+    markup = InlineKeyboardMarkup(row_width=2)
 
     categories = ['My settings', 'Change settings']
 

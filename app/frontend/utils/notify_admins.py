@@ -2,7 +2,7 @@ import logging
 
 from aiogram import Dispatcher
 
-from frontend.data.config import ADMINS
+from settings.config import ADMINS
 
 
 async def on_startup_notify(dp: Dispatcher):

@@ -1,6 +1,6 @@
 import json
 
-from backend.data.storage.storage_manager import storage_Manager
+from backend.data.view.view_manager import storage_Manager
 
 
 class Json_manager(storage_Manager):

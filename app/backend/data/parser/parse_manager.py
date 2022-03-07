@@ -2,9 +2,6 @@ import asyncio
 import random
 from asyncio.events import new_event_loop, set_event_loop
 
-from backend.data.storage.db_manager import Db_manager as manager
-
-
 from bs4 import BeautifulSoup
 
 import requests
@@ -37,9 +34,9 @@ DATA = {
 
 class ParseManager:
 
-    def __init__(self) -> None:
+    def __init__(self, manager) -> None:
 
-        self.db = manager()
+        self.db = manager
         self.headers = {'User-Agent': ''}
         self.proxy = ''
 
