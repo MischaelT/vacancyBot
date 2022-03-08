@@ -2,7 +2,7 @@ from typing import Union
 
 from aiogram import types
 
-from frontend.keyboards.inline.settings_keyboards import back_keyboard
+from frontend.keyboards.inline.back_keyboard import back_keyboard
 
 from settings.config import backend_manager
 

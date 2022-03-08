@@ -1,6 +1,8 @@
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.callback_data import CallbackData
 
+from frontend.data.consts import GET_VACANCIES_MENU, SETTINGS_MENU
+
 menu_cd = CallbackData("show_menu", "level", "category")
 
 
@@ -16,14 +18,14 @@ async def main_keyboard():
     categories = ['Get vacancies', 'Settings']
 
     button_text = f'{categories[0]}'
-    callback_data = make_callback_data(level=4, category=categories[0])
+    callback_data = make_callback_data(level=GET_VACANCIES_MENU, category=categories[0])
 
     markup.insert(
         InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
     )
 
     button_text = f'{categories[1]}'
-    callback_data = make_callback_data(level=1, category=categories[1])
+    callback_data = make_callback_data(level=SETTINGS_MENU, category=categories[1])
 
     markup.insert(
         InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
