@@ -14,9 +14,16 @@ class User_data_manager():
         return self.__set_user(user=user)
 
     def __set_user(self, user: User) -> None:
-        query = f'''INSERT INTO users (id, is_registered, exp, lang, city, salary)
-                    VALUES ('{user.user_id}', '{user.is_registered}', '{user.experience}', '{user.language}', '{user.city}', '{user.salary}')
+
+        if user.is_registered:
+            query = f'''UPDATE users 
+                        SET exp ='{user.experience}',lang='{user.language}', city='{user.city}', salary='{user.salary}'
+                        WHERE id={user.user_id}
                  '''
+        else:
+            query = f'''INSERT INTO users (id, is_registered, exp, lang, city, salary)
+                        VALUES ('{user.user_id}', '{user.is_registered}', '{user.experience}', '{user.language}', '{user.city}', '{user.salary}')
+                    '''
         self.db.push_data(query)
 
     def __get_user_by_id(self, user_id: int) -> User:

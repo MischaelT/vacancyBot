@@ -154,11 +154,12 @@ async def save_process(message: types.CallbackQuery, state: FSMContext, **kwargs
 
 async def show_my_settings(message: types.CallbackQuery, **kwargs):
 
-    message.data
+    user_id = message.from_user.id
+    user = backend_manager.user_data_manager.get_user(user_id=user_id)
     markup = await back_keyboard(level=SETTINGS_MENU)
 
     call = message
-    await call.message.edit_text(text='your settings', reply_markup=markup)
+    await call.message.edit_text(text=f'{user.to_print()}', reply_markup=markup)
 
 
 async def navigate(call: types.CallbackQuery, callback_data: dict):
@@ -171,7 +172,6 @@ async def navigate(call: types.CallbackQuery, callback_data: dict):
         '3': settings_menu,
         '4': show_my_settings,
         '5': experience_menu,
-
 
     }
 

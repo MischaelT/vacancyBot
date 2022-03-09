@@ -9,4 +9,4 @@ class User():
         self.salary = salary
 
     def to_print(self):
-        return 'Experience: '+self.experience+'\n'+'Language: '+self.language+'\n'+'Desired salary: '+self.salary
+        return 'Experience: '+self.experience+'\n'+'Language: '+self.language+'\n'+'Desired salary: '+self.salary+'\n'+'Desired city: '+self.city

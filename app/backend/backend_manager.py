@@ -1,8 +1,11 @@
+from celery import Celery
+
 from backend.data.db.postgres import Db_manager
 from backend.data.parser.parse_manager import ParseManager  # noqa
 from backend.data.user_data_manager import User_data_manager  # noqa
-from backend.data.vacancy_data_manager import Vacancy_filter  # noqa
+from backend.data.vacancy_data_manager import Vacancies_manager  # noqa
 
+# app = Celery('hello', broker='amqp://guest@localhost//')
 
 class Backend_manager():
 
@@ -10,12 +13,12 @@ class Backend_manager():
 
         manager = Db_manager()
         self.user_data_manager = User_data_manager(manager)
-        self.vacancy_filter = Vacancy_filter(manager)
-        self.parse_manager = ParseManager(manager)
+        self.vacancies_manager = Vacancies_manager(manager)
+        
 
-    async def run(self):
-        pass
-        # await self.parse_manager.run_general_parsing()
+    async def run_general_parsing(self):
+        parse_manager = ParseManager(self.vacancies_manager)
+        await parse_manager.run_general_parsing()
 
     async def get_latest_vacanvies(self):
-        return self.vacancy_filter.get_data_by_filter('')
+        return self.vacancies_manager.get_data_by_filter('')

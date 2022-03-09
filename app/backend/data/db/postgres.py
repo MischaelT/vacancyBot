@@ -41,7 +41,7 @@ class Db_manager(Base_db):
 
             create_vacancies_query = '''CREATE TABLE vacancies
                                 (
-                                ID             INT          PRIMARY KEY     NOT NULL,
+                                ID             SMALLSERIAL                  NOT NULL,
                                 DATE           DATE                         NOT NULL,
                                 EXP            TEXT                         NOT NULL,
                                 LANG           TEXT                         NOT NULL,

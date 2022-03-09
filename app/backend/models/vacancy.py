@@ -1,7 +1,7 @@
 class Vacancy:
 
-    def __init__(self, data, title, city, info, link) -> None:
-        self.data = data
+    def __init__(self, date, title, city, info, link) -> None:
+        self.date = date
         self.title = title
         self.city = city
         self.info = info

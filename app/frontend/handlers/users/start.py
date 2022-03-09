@@ -9,8 +9,6 @@ async def bot_start(message: types.Message):
 
     user_id = message.from_user.id
     user = backend_manager.user_data_manager.get_user(user_id)
-    print(user.is_registered)
-
 
     if user.is_registered:
         await main_menu(message=message)

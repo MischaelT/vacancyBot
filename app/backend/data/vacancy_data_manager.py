@@ -1,29 +1,19 @@
-
 from backend.models.vacancy import Vacancy
 
 
-class Vacancy_filter():
+class Vacancies_manager():
 
     def __init__(self, manager) -> None:
         self.db = manager
 
     def get_data_by_filter(self, user) -> list:
+        pass
 
-        vacancies = self.__get_data(user)
-
-        for i in range(10):
-            pure_vacancy = self.db.get_data(id_=i)
-            vacancy = self.__create_vacancy(pure_vacancy[0])
-            vacancies.append(vacancy)
-
-        return vacancies
+    def make_vacancy(self, data):
+        self.__create_vacancy(data)
 
     def __get_data(self, user):
-
-        # TODO Implement creating query from user data
-
-        query = ''
-        return self.manager.get_data(query)
+        pass
 
     def __create_vacancy(self, data) -> Vacancy:
 
@@ -38,3 +28,11 @@ class Vacancy_filter():
         )
 
         return vacancy
+
+
+    def push_pure_data(self, vacancies_data: list):
+        for vacancy in vacancies_data:
+            query = f'''INSERT INTO vacancy (id, is_registered, exp, lang, city, salary)
+                VALUES ('{vacancy['']}', '{user.is_registered}', '{user.experience}', '{user.language}', '{user.city}', '{user.salary}')
+            '''
+        self.db.push_data(query)
