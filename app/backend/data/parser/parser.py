@@ -1,8 +1,15 @@
-from datetime import datetime
 from bs4 import BeautifulSoup
 
+from backend.data.vacancy_data_manager import Vacancies_manager
 
-async def parse_djinni_data(content, basepoint) -> list:
+import re
+
+def delete_spaces(text):
+    return re.sub(" +", " ", text)
+
+
+
+async def parse_djinni_data(vacancy_manager: Vacancies_manager, content, basepoint, language, experience) -> list:
 
     soup = BeautifulSoup(content, 'html.parser')
     vacancies = soup.find_all('li', class_='list-jobs__item')
@@ -11,23 +18,26 @@ async def parse_djinni_data(content, basepoint) -> list:
 
     for vacancy in vacancies:
 
-        title = vacancy.find('div', class_="list-jobs__title").text.strip()
-        info = vacancy.find('div', class_='list-jobs__description').text.strip()
+        title = delete_spaces(vacancy.find('div', class_="list-jobs__title").text.strip())
+        info = delete_spaces(vacancy.find('div', class_='list-jobs__description').text.strip())
         link = basepoint + vacancy.find('a', class_="profile")['href']
-        remote = vacancy.find('span', class_="icon icon-home_work").next_sibling.text.strip()
+
+        try:
+            remote = vacancy.find('span', class_="icon icon-home_work").next_sibling.text.strip()
+        except Exception as ex: 
+            remote = ''
 
         try:
             cities = vacancy.find('nobr', class_="location-text").text.strip()
         except AttributeError:
             cities = remote
-        
-        date = datetime.date
 
-        data = {'title': title, 'city': cities, 'info': info, 'link': link, 'date':date}
+        data = {'title': title, 'city': cities, 'info': info, 'link': link, 'language': language, 'experience': experience, 'salary': ''}
 
         vacancies_list.append(data)
 
-    return data
+    await vacancy_manager.push_pure_data(vacancies_data=vacancies_list)
+
 
 
 async def parse_dou_data(content) -> list:
@@ -44,13 +54,12 @@ async def parse_dou_data(content) -> list:
         city = vacancy.find('span', class_='cities').text.strip()
         link = vacancy.find('a', class_='vt')['href']
 
-        date = datetime.date
-
-        data = {'title': title, 'city': city, 'info': info, 'link': link, 'date': date}
+        data = {'title': title, 'city': city, 'info': info, 'link': link}
 
         vacancies_list.append(data)
 
-    return data
+
+    return vacancies_list
 
 
 # async def parse_workUa_data(content, basepoint) -> None:

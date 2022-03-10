@@ -18,12 +18,14 @@ class Db_manager(Base_db):
         self.port = '5432'
         self.db = 'db'
 
-        self.create_table()
+        self.create_table_users()
+        self.create_table_vacancies()
 
-    def create_table(self):
+    def create_table_users(self):
+
+        connection = self._make_connection()
 
         try:
-            connection = self._make_connection()
 
             cursor = connection.cursor()
 
@@ -38,6 +40,24 @@ class Db_manager(Base_db):
                                 ); '''
 
             cursor.execute(create_users_query)
+
+            connection.commit()
+            print('успешно')
+
+        except (Exception) as exception:
+            print('не успешно', exception)
+            
+        finally:
+            if connection:
+                cursor.close()
+                connection.close()
+
+    def create_table_vacancies(self):
+        connection = self._make_connection()
+
+        try:
+
+            cursor = connection.cursor()
 
             create_vacancies_query = '''CREATE TABLE vacancies
                                 (
@@ -55,22 +75,25 @@ class Db_manager(Base_db):
             cursor.execute(create_vacancies_query)
 
             connection.commit()
+
             print('успешно')
 
         except (Exception) as exception:
             print('не успешно', exception)
             
-        # finally:
-        #     if connection:
-        #         cursor.close()
-        #         connection.close()
+        finally:
+            if connection:
+                cursor.close()
+                connection.close()     
+
 
     def get_data(self, request_text) -> list:
         return self._read(request_text)
 
-    def push_data(self, data):
-        self._validate(data)
-        self._write(data)
+    def push_data(self, query):
+        
+        self._validate(query)
+        self._write(query)
 
     def _make_connection(self):
         try:
@@ -82,8 +105,8 @@ class Db_manager(Base_db):
                                         database=self.db
                                         )
 
-        except (Exception):
-            pass
+        except (Exception) as ex:
+            print(ex)
 
         return connection
 
@@ -106,15 +129,15 @@ class Db_manager(Base_db):
                 connection.close()
 
     def _read(self, query):
+        connection = self._make_connection()
 
         try:
-            connection = self._make_connection()
             cursor = connection.cursor()
             cursor.execute(query)
             record = cursor.fetchall()
 
-        except Exception:
-            pass
+        except Exception as ex:
+            print(ex)
 
         finally:
             if connection:

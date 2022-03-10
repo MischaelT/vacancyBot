@@ -7,14 +7,14 @@ from backend.data.vacancy_data_manager import Vacancies_manager
 from backend.data.parser.consts import (DATA, djinni_exp_levels,
                                         djinni_languages, dou_exp_levels,
                                         dou_languages)
-from backend.data.parser.parsers import parse_djinni_data, parse_dou_data
+from backend.data.parser.parser import parse_djinni_data, parse_dou_data
 
 
 class ParseManager:
 
-    def __init__(self, vacancy_manager: Vacancies_manager) -> None:
+    def __init__(self, vacancy_manager) -> None:
 
-        self.manager = vacancy_manager
+        self.vacancy_manager = vacancy_manager
         self.headers = {'User-Agent': ''}
         self.proxy = {'http': 'http//:'}
 
@@ -29,6 +29,7 @@ class ParseManager:
 
         loop = new_event_loop()
         set_event_loop(loop)
+        print(asyncio.get_running_loop())
 
         page = 0
 
@@ -40,28 +41,36 @@ class ParseManager:
 
             await asyncio.gather(*tasks, return_exceptions=True)
 
-            if page == 3:
+            if page == 1:
                 break
 
+        print('end_parsing')
 
-    async def __add_tasks(self, page: int) -> list:
+
+    def __add_tasks(self, page: int) -> list:
 
         tasks = []
 
-        for language, exp in zip(djinni_languages, djinni_exp_levels):
+        for language in djinni_languages:
+            for exp in djinni_exp_levels:
 
-            task = asyncio.ensure_future(self.__get_djinni_content(page, language, exp))
-            tasks.append(task)
+                task = asyncio.ensure_future(self.__get_djinni_content(page, language, exp))
+                tasks.append(task)
         
-        for language, exp in zip(dou_languages, dou_exp_levels):
+        # for language in dou_languages:
+        #     for exp in dou_exp_levels:
 
-            task = asyncio.ensure_future(self.__get_dou_content(page, language, exp))
-            tasks.append(task)
+        #         task = asyncio.ensure_future(self.__get_dou_content(page, language, exp))
+        #         tasks.append(task)
+
+        # print(tasks)
 
         return tasks
 
 
     async def __get_djinni_content(self, page: int, language: str, experience: str):
+
+        print('parse djinni', language, experience)
 
         self.headers['User-Agent'] = random.choice(self.user_agents_list)
         self.proxy['http'] += random.choice(self.proxies_list)
@@ -72,24 +81,22 @@ class ParseManager:
         endpoint = settings.get('endpoint')
         params = settings.get('params')
 
-        params['page'] = page
+        # params['page'] = page
 
         params['exp_level'] = experience
         params['keywords'] = language
 
+        await asyncio.sleep(random.uniform(5, 10))
+
         response = requests.get(basepoint+endpoint, headers=self.headers, params=params, proxies=self.proxy)
         response.raise_for_status()
 
-        vacancies_data = await parse_djinni_data(response.text, basepoint=basepoint)
-        details = {'language': language, 'experience': experience}
-        vacancies_data.append(details)
+        await parse_djinni_data(self.vacancy_manager ,response.text, basepoint=basepoint, language=language, experience=experience)
 
-        await asyncio.sleep(random.uniform(2, 6))
-
-        self.manager.push_pure_data(vacancies_data)
-              
 
     async def __get_dou_content(self, page: int, language: str, experience: str):
+
+        print('parse dou', language, experience)
 
         self.headers['User-Agent'] = random.choice(self.user_agents_list)
         self.proxy['http'] += random.choice(self.proxies_list)
@@ -112,6 +119,4 @@ class ParseManager:
         details = {'language': language, 'experience': experience}
         vacancies_data.append(details)
 
-        await asyncio.sleep(random.uniform(2, 6))
-
-        self.manager.push_pure_data(vacancies_data)
+        await asyncio.sleep(random.uniform(10, 20))
