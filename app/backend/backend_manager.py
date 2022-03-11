@@ -1,4 +1,5 @@
 from celery import Celery
+from backend.models.user import User
 
 from backend.data.db.postgres import Db_manager
 from backend.data.parser.parse_manager import ParseManager  # noqa
@@ -20,5 +21,5 @@ class Backend_manager():
         parse_manager = ParseManager(self.vacancies_manager)
         await parse_manager.run_general_parsing()
 
-    async def get_latest_vacanvies(self):
-        return self.vacancies_manager.get_data_by_filter('')
+    async def get_vacancies(self, user: User):
+        return self.vacancies_manager.get_data_by_filter(user)

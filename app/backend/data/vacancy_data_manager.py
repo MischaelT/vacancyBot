@@ -36,32 +36,30 @@ class Vacancies_manager():
 
         vacancies = []
 
-        if user.is_registered:
+        query = f'''SELECT date,title,city,info,link FROM vacancies
+                    WHERE exp='{user.experience}' AND lang='{user.language}';
+                    '''
 
-            query = f'''SELECT (date,title,city,info,link) FROM users 
-                        WHERE (exp='{user.experience}', lang='{user.language}')'''
-# city='{user.city}', salary='{user.salary}
-            responce = self.db.get_data(query)
 
-            for element in responce:
-                vacancy = self.__create_vacancy(element)
-                vacancies.append(vacancy)
+        responce = self.db.get_data(query)
 
-        else:
-            pass
+        for element in responce:
+
+            vacancy = self.__create_vacancy(element)
+            vacancies.append(vacancy)
 
         return vacancies
 
     def __create_vacancy(self, data) -> Vacancy:
 
-        data = list(data)
-
         vacancy = Vacancy(
-            date='',
+            date=data[0],
             title=data[1],
-            city='',
+            city=data[2],
             info=data[3],
             link=data[4],
         )
+
+        print(vacancy.to_print()) 
 
         return vacancy

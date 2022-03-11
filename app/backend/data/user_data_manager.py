@@ -30,10 +30,7 @@ class User_data_manager():
 
         query = f'''SELECT * FROM users WHERE ID = {user_id}'''
 
-        try:
-            user_data = self.db.get_data(query)
-        except (Exception) as exception:
-            print('НЕт юзера', exception)
+        user_data = self.db.get_data(query)
 
         if len(user_data) == 0:
 
@@ -47,6 +44,7 @@ class User_data_manager():
                         )
         else:
             user_data=user_data[0]
+
             user = User(
                         user_id=user_id,
                         is_registered=True,
@@ -55,6 +53,5 @@ class User_data_manager():
                         city=user_data[4],
                         salary=user_data[5]
                         )
-
 
         return user

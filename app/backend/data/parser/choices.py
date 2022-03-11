@@ -1,6 +1,10 @@
-JUNIOR = '0-1'
-MIDLLE = '1-3'
-SENIOR = '3-5'
-ARCHITECT = '5+'
+INTERN = '0-1'
+JUNIOR = '1-2'
+MIDLLE = '2-4'
+SENIOR = '4-6'
+ARCHITECT = '6+'
 
-
+PYTHON = 'python'
+SCALA = 'scala'
+CPLUSPLUS = 'c++'
+JAVA = 'java'

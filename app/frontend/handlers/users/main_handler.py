@@ -2,7 +2,7 @@ from typing import Union
 
 from aiogram import types
 from aiogram.dispatcher import FSMContext
-from frontend.data.consts import SETTINGS_MENU
+from frontend.data.consts import EXPERIENCES_LIST, LANGUAGE_LIST, SETTINGS_MENU
 from backend.models.user import User
 
 from settings.config import backend_manager
@@ -22,8 +22,6 @@ from frontend.utils.states.settings_states import User_settings
 async def main_menu(message: Union[types.Message, types.CallbackQuery], **kwargs):
 
     markup = await main_keyboard()
-
-    print(type(message))
 
     if isinstance(message, types.Message):
         await message.answer('Welcome, ' +message.from_user.full_name+ '\n' + "Let's find a job for you", reply_markup=markup)
@@ -138,14 +136,12 @@ async def save_process(message: types.CallbackQuery, state: FSMContext, **kwargs
         experience = data['experience']
         salary = data['salary']
 
-    user = User(
-                user_id = message.from_user.id,
-                is_registered=True,
-                experience=experience,
-                city = city,
-                language=language,
-                salary=salary
-    )
+    user = backend_manager.user_data_manager.get_user(message.from_user.id)
+
+    user.city = city
+    user.experience = EXPERIENCES_LIST[experience]
+    user.language = LANGUAGE_LIST[language]
+    user.salary = salary
 
     backend_manager.user_data_manager.set_user(user)
 

@@ -29,7 +29,6 @@ class ParseManager:
 
         loop = new_event_loop()
         set_event_loop(loop)
-        print(asyncio.get_running_loop())
 
         page = 0
 
@@ -68,7 +67,7 @@ class ParseManager:
         return tasks
 
 
-    async def __get_djinni_content(self, page: int, language: str, experience: str):
+    async def __get_djinni_content(self, page: int, language: dict, experience: dict):
 
         print('parse djinni', language, experience)
 
@@ -82,16 +81,17 @@ class ParseManager:
         params = settings.get('params')
 
         # params['page'] = page
+        print(experience.keys())
 
-        params['exp_level'] = experience
-        params['keywords'] = language
+        params['exp_level'] = list(experience.keys())[0]
+        params['keywords'] = list(language.keys())[0]
 
         await asyncio.sleep(random.uniform(5, 10))
 
         response = requests.get(basepoint+endpoint, headers=self.headers, params=params, proxies=self.proxy)
         response.raise_for_status()
 
-        await parse_djinni_data(self.vacancy_manager ,response.text, basepoint=basepoint, language=language, experience=experience)
+        await parse_djinni_data(self.vacancy_manager ,response.text, basepoint=basepoint, language=list(language.values())[0], experience=list(experience.values())[0])
 
 
     async def __get_dou_content(self, page: int, language: str, experience: str):

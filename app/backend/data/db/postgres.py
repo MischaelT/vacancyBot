@@ -86,7 +86,6 @@ class Db_manager(Base_db):
                 cursor.close()
                 connection.close()     
 
-
     def get_data(self, request_text) -> list:
         return self._read(request_text)
 
@@ -129,7 +128,10 @@ class Db_manager(Base_db):
                 connection.close()
 
     def _read(self, query):
+
         connection = self._make_connection()
+
+        record =[]
 
         try:
             cursor = connection.cursor()

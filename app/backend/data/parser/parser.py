@@ -8,8 +8,9 @@ def delete_spaces(text):
     return re.sub(" +", " ", text)
 
 
-
 async def parse_djinni_data(vacancy_manager: Vacancies_manager, content, basepoint, language, experience) -> list:
+
+    print('here')
 
     soup = BeautifulSoup(content, 'html.parser')
     vacancies = soup.find_all('li', class_='list-jobs__item')

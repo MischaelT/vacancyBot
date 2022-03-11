@@ -1,8 +1,11 @@
-djinni_exp_levels = ['no_exp', '1y', '2y', '3y', '5y']
-djinni_languages = ['python', 'java','scala', 'cplusplus']
+from backend.data.parser.choices import ARCHITECT, CPLUSPLUS, JAVA, JUNIOR, MIDLLE, PYTHON, SCALA, SENIOR
 
-dou_exp_levels = ['0-1', '1-3', '3-5', '5plus']
-dou_languages = ['Python', 'Scala', 'Java']  # 'C%2B%2B'
+
+djinni_exp_levels = [{'no_exp': JUNIOR}, {'1y': JUNIOR}, {'2y': MIDLLE}, {'3y': SENIOR}, {'5y':ARCHITECT}]
+djinni_languages = [{'python': PYTHON}, {'java': JAVA}, {'scala': SCALA}, {'cplusplus': CPLUSPLUS}]
+
+dou_exp_levels = [{'0-1': JUNIOR}, {'1-3': MIDLLE}, {'3-5': SENIOR}, {'5plus': ARCHITECT}]
+dou_languages = [{'Python': PYTHON}, {'Scala': SCALA}, {'Java': JAVA}]  # 'C%2B%2B'
 
 workUa_languages = ['python', 'java', 'scala', 'c%2B%2B']
 

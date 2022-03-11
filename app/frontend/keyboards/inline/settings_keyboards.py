@@ -44,7 +44,7 @@ async def settings_keyboard():
 async def experience_keyboard():
 
     markup = InlineKeyboardMarkup()
-    sub_categories = EXPERIENCES_LIST
+    sub_categories = EXPERIENCES_LIST.keys()
 
     for category in sub_categories:
 
@@ -61,7 +61,7 @@ async def experience_keyboard():
 async def language_keyboard():
 
     markup = InlineKeyboardMarkup()
-    sub_categories = LANGUAGE_LIST
+    sub_categories = LANGUAGE_LIST.keys()
 
     for category in sub_categories:
 
