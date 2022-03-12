@@ -1,14 +1,12 @@
-from backend.data.parser.choices import ARCHITECT, CPLUSPLUS, JAVA, JUNIOR, MIDLLE, PYTHON, SCALA, SENIOR
+from backend.data.db.choices import ARCHITECT, CPLUSPLUS, INTERN, JAVA, JUNIOR, MIDDLE, PYTHON, SCALA, SENIOR
 
-
-djinni_exp_levels = [{'no_exp': JUNIOR}, {'1y': JUNIOR}, {'2y': MIDLLE}, {'3y': SENIOR}, {'5y':ARCHITECT}]
+djinni_exp_levels = [{'no_exp': INTERN}, {'1y': JUNIOR}, {'2y': MIDDLE}, {'3y': MIDDLE}, {'5y':ARCHITECT}]
 djinni_languages = [{'python': PYTHON}, {'java': JAVA}, {'scala': SCALA}, {'cplusplus': CPLUSPLUS}]
 
-dou_exp_levels = [{'0-1': JUNIOR}, {'1-3': MIDLLE}, {'3-5': SENIOR}, {'5plus': ARCHITECT}]
+dou_exp_levels = [{'0-1': JUNIOR}, {'1-3': MIDDLE}, {'3-5': SENIOR}, {'5plus': ARCHITECT}]
 dou_languages = [{'Python': PYTHON}, {'Scala': SCALA}, {'Java': JAVA}]  # 'C%2B%2B'
 
 workUa_languages = ['python', 'java', 'scala', 'c%2B%2B']
-
 
 DATA = {
     'dou': {

@@ -1,9 +1,9 @@
 import json
 
-from backend.data.view.view_manager import storage_Manager
+from backend.data.view.view_manager import view_Manager
 
 
-class Json_manager(storage_Manager):
+class Json_manager(view_Manager):
 
     def __init__(self) -> None:
         super().__init__()

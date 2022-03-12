@@ -6,7 +6,7 @@ from frontend.keyboards.inline.settings_keyboards import menu_cd
 from frontend.utils.states.settings_states import User_settings
 
 from .help import bot_help
-from .main_handler import city_menu, language_menu, navigate, salary_menu, save_menu, save_process, settings_menu
+from .main_handler import city_menu, language_menu, structure, salary_menu, save_menu, save_process, settings_menu
 from .start import bot_start
 
 
@@ -24,4 +24,4 @@ def setup(dp: Dispatcher):
     dp.register_callback_query_handler(save_menu, state=User_settings.salary)    
     dp.register_callback_query_handler(save_process, state=User_settings.save)
 
-    dp.register_callback_query_handler(navigate, menu_cd.filter())
+    dp.register_callback_query_handler(structure, menu_cd.filter())

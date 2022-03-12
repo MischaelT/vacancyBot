@@ -1,6 +1,6 @@
 from aiogram import Dispatcher
 
-from .error_handler import errors_handler # noqa
+from .error_handler import errors_handler 
 
 
 def setup(dp: Dispatcher):

@@ -13,6 +13,14 @@ def make_callback_data(level=0, category='0'):
 
 async def main_keyboard():
 
+    """
+    Function for generating main menu keyoard
+
+    Returns:
+    markup(keyboard): main keyboard
+
+    """
+
     markup = InlineKeyboardMarkup()
 
     categories = ['Get vacancies', 'Settings']

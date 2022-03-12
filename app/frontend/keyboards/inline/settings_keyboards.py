@@ -13,6 +13,13 @@ def make_callback_data(level=0, category='0'):
 
 async def settings_keyboard():
 
+    """
+    Function for generating main menu keyoard
+
+    Returns:
+        markup: settings keyboard
+    """
+
     markup = InlineKeyboardMarkup(row_width=2)
 
     categories = SETTINGS_MENU_LIST
@@ -43,6 +50,13 @@ async def settings_keyboard():
 
 async def experience_keyboard():
 
+    """
+    Function for generating experience keyoard
+
+    Returns:
+        markup: keyboard
+    """
+
     markup = InlineKeyboardMarkup()
     sub_categories = EXPERIENCES_LIST.keys()
 
@@ -59,6 +73,13 @@ async def experience_keyboard():
 
 
 async def language_keyboard():
+
+    """
+    Function for generating language keyoard
+
+    Returns:
+        markup: keyboard
+    """
 
     markup = InlineKeyboardMarkup()
     sub_categories = LANGUAGE_LIST.keys()
@@ -77,6 +98,13 @@ async def language_keyboard():
 
 async def city_keyboard():
 
+    """
+    Function for generating city keyoard
+
+    Returns:
+        markup: keyboard
+    """
+
     markup = InlineKeyboardMarkup()
     sub_categories = CITIES_LIST
 
@@ -93,6 +121,13 @@ async def city_keyboard():
 
 
 async def salary_keyboard():
+
+    """
+    Function for generating salary keyoard
+
+    Returns:
+        markup: keyboard
+    """
 
     markup = InlineKeyboardMarkup()
     sub_categories = SALARIES_LIST
@@ -111,6 +146,12 @@ async def salary_keyboard():
 
 async def save_keyboard():
 
+    """
+    Function for generating save keyoard
+
+    Returns:
+        markup: keyboard
+    """
     markup = InlineKeyboardMarkup()
 
     button_text = SAVE_BUTTON

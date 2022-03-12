@@ -1,6 +1,6 @@
-from aiogram import Dispatcher  # noqa
+from aiogram import Dispatcher
 
-from .throttling import ThrottlingMiddleware  # noqa
+from .throttling import ThrottlingMiddleware
 
 
 def setup(dp: Dispatcher):

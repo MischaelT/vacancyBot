@@ -1,9 +1,9 @@
 import csv
 
-from backend.data.view.view_manager import storage_Manager
+from backend.data.view.view_manager import view_Manager
 
 
-class Csv_manager(storage_Manager):
+class Csv_manager(view_Manager):
 
     def push_data(self, data):
         self._validate(data)

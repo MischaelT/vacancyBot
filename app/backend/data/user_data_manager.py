@@ -1,36 +1,87 @@
-from backend.data.db.postgres import Db_manager
+from backend.data.db.postgres import Postgres_db
 from backend.models.user import User
 
 
 class User_data_manager():
 
-    def __init__(self, manager: Db_manager) -> None:
-        self.db = manager
+    """
+        Class provides methods for interactions with user data
+    """    
 
-    def get_user(self, user_id) -> User:
+    def __init__(self, db: Postgres_db) -> None:
+        self.db = db
+
+    def get_user(self, user_id: int) -> User:
+
+        """
+            Method returms user from database
+
+        Args:
+            user_id (int): user telegram id
+
+        Returns:
+            User: user model
+        """
+
         return self.__get_user_by_id(user_id=user_id)
 
     def set_user(self, user: User) -> None:
+
+        """
+        Public method that sets user
+
+        Args:
+            user (User): user model
+        """
+
         return self.__set_user(user=user)
 
     def __set_user(self, user: User) -> None:
 
+        """
+        Private method that pushes user settings to database.
+        Based on that user is registered or not
+
+        Args:
+            user (User): user model
+        """        
+
         if user.is_registered:
-            query = f'''UPDATE users 
-                        SET exp ='{user.experience}',lang='{user.language}', city='{user.city}', salary='{user.salary}'
-                        WHERE id={user.user_id}
+
+            params = (user.experience, user.language, user.city, user.salary, user.user_id)
+
+            query = '''UPDATE users 
+                        SET exp =%s,lang=%s, city=%s, salary=%s
+                        WHERE id='%s'
                  '''
         else:
-            query = f'''INSERT INTO users (id, is_registered, exp, lang, city, salary)
-                        VALUES ('{user.user_id}', '{user.is_registered}', '{user.experience}', '{user.language}', '{user.city}', '{user.salary}')
+
+            params = (user.user_id, user.is_registered, user.experience, user.language, user.city, user.salary)
+
+            query = '''INSERT INTO users (id, is_registered, exp, lang, city, salary)
+                        VALUES (%s, %s, %s, %s, %s, %s)
                     '''
-        self.db.push_data(query)
+
+        self.db.push_data(query, params)
 
     def __get_user_by_id(self, user_id: int) -> User:
 
-        query = f'''SELECT * FROM users WHERE ID = {user_id}'''
+        """
+        Method find user in database by id.
+        If user exists it returns completely filled user model,
+        if not - new user model with is_registered = False
 
-        user_data = self.db.get_data(query)
+        Args:
+            user_id (int): telegram user id
+
+        Returns:
+            User: user model
+        """
+
+        params = (user_id,)
+        query = """SELECT * FROM users WHERE ID='%s' """
+
+        user_data = self.db.get_data(query, params=params)
 
         if len(user_data) == 0:
 

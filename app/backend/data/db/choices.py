@@ -1,6 +1,6 @@
 INTERN = '0-1'
 JUNIOR = '1-2'
-MIDLLE = '2-4'
+MIDDLE = '2-4'
 SENIOR = '4-6'
 ARCHITECT = '6+'
 

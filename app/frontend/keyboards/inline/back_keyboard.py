@@ -10,7 +10,14 @@ def make_callback_data(level=0, category='0'):
 
     return menu_cd.new(level=level, category=category)
 
-async def back_keyboard(level):
+async def back_keyboard(level: int):
+
+    """
+    Keyboard with back button
+
+    Args:
+        level(int): level for going back
+    """    
 
     markup = InlineKeyboardMarkup()
 

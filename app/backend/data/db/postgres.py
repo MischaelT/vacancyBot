@@ -2,26 +2,48 @@ from backend.data.db.base_db import Base_db
 
 import psycopg2
 
-# from settings.config import (POSTGRES_DB, POSTGRES_HOST, POSTGRES_PASSWORD,
-#                              POSTGRES_PORT, POSTGRES_USER)
+from settings.config import (POSTGRES_DB, POSTGRES_HOST, POSTGRES_PASSWORD,
+                             POSTGRES_PORT, POSTGRES_USER)
 
 
-class Db_manager(Base_db):
+class Postgres_db(Base_db):
+
+    """
+        Class provides access to postgres database
+    """    
 
     def __init__(self) -> None:
 
         super().__init__()
 
-        self.user = 'user'
-        self.password = 'password'
-        self.host = 'localhost'
-        self.port = '5432'
-        self.db = 'db'
+        self.__create_table_users()
+        self.__create_table_vacancies()
 
-        self.create_table_users()
-        self.create_table_vacancies()
+    def get_data(self, request_text:str, params:tuple) -> list:
 
-    def create_table_users(self):
+        """
+            Method returns data from database
+
+        Returns:
+            list(tuple): requested data
+        """        
+      
+        return self._read(request_text, params)
+
+    def push_data(self, query:str, params: tuple) -> None:
+
+        """
+            Method pushes data to database
+        """        
+        
+        self._write(query, params)
+
+    def __create_table_users(self) -> None:
+
+        """
+            Method create table users.
+            Raise Exception if table already exists
+        """        
 
         connection = self._make_connection()
 
@@ -52,7 +74,13 @@ class Db_manager(Base_db):
                 cursor.close()
                 connection.close()
 
-    def create_table_vacancies(self):
+    def __create_table_vacancies(self)-> None:
+
+        """
+            Method create table vacancies.
+            Raise Exception if table already exists
+        """       
+
         connection = self._make_connection()
 
         try:
@@ -86,22 +114,22 @@ class Db_manager(Base_db):
                 cursor.close()
                 connection.close()     
 
-    def get_data(self, request_text) -> list:
-        return self._read(request_text)
-
-    def push_data(self, query):
-        
-        self._validate(query)
-        self._write(query)
-
     def _make_connection(self):
+
+        """
+            Method connecting to database using autentication data from config.py
+
+        Returns:
+           connection: Connection object
+        """
+
         try:
             connection = psycopg2.connect(
-                                        user=self.user,
-                                        password=self.password,
-                                        host=self.host,
-                                        port=self.port,
-                                        database=self.db
+                                        user=POSTGRES_USER,
+                                        password=POSTGRES_PASSWORD,
+                                        host=POSTGRES_HOST,
+                                        port=POSTGRES_PORT,
+                                        database=POSTGRES_DB
                                         )
 
         except (Exception) as ex:
@@ -109,14 +137,22 @@ class Db_manager(Base_db):
 
         return connection
 
-    def _write(self, query):
+    def _write(self, query:str, params: tuple) -> None:
+
+        """
+        Method writes data to database.
+
+        Args:
+            query (str): SQL query
+            params (tuple): parameters for inserting to query
+        """  
 
         connection = self._make_connection()
 
         try:
 
             cursor = connection.cursor()
-            cursor.execute(query)
+            cursor.execute(query, params)
             connection.commit()
 
         except Exception as ex:
@@ -127,7 +163,14 @@ class Db_manager(Base_db):
                 cursor.close()
                 connection.close()
 
-    def _read(self, query):
+    def _read(self, query:str, params:tuple) -> list:
+
+        """
+            Method receives data from database 
+
+        Returns:
+            list: requested data
+        """        
 
         connection = self._make_connection()
 
@@ -135,7 +178,7 @@ class Db_manager(Base_db):
 
         try:
             cursor = connection.cursor()
-            cursor.execute(query)
+            cursor.execute(query, params)
             record = cursor.fetchall()
 
         except Exception as ex:

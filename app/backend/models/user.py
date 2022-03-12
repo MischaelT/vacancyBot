@@ -1,6 +1,11 @@
 class User():
 
+    """
+    Class represents user model
+    """    
+
     def __init__(self, user_id, is_registered, experience, city, language, salary) -> None:
+
         self.user_id = user_id
         self.is_registered = is_registered
         self.experience = experience

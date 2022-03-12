@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class storage_Manager(ABC):
+class view_Manager(ABC):
     def _validate(self, data):
         for value in data.values():
             value = " ".join(value.split())

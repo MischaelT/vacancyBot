@@ -2,7 +2,12 @@ from abc import ABC, abstractmethod
 
 
 class Base_db(ABC):
-    def _validate(self, data):
+
+    """
+        Base class for all databases
+    """
+
+    def _validate(self):
         pass
 
     @abstractmethod
