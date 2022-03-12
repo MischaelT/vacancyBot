@@ -2,7 +2,7 @@ class Vacancy:
 
     """
     Class represents vacancy model
-    """   
+    """
 
     def __init__(self, date, title, city, info, link) -> None:
 

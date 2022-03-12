@@ -1,16 +1,13 @@
 import logging
 
-from aiogram.utils.exceptions import (CantParseEntities,
-                                      MessageNotModified,
-                                      TelegramAPIError,
-                                      MessageTextIsEmpty
-                                      )
+from aiogram.utils.exceptions import (CantParseEntities, MessageNotModified,
+                                      MessageTextIsEmpty, TelegramAPIError)
 
 
 async def errors_handler(update, exception):
     """
     Exceptions handler. Catches all exceptions within task factory tasks
-    
+
     :param dispatcher:
     :param update:
     :param exception:
@@ -29,10 +26,9 @@ async def errors_handler(update, exception):
         logging.exception(f'CantParseEntities: {exception} \nUpdate: {update}')
         return True
 
-    #  MUST BE THE  LAST CONDITION 
+    #  MUST BE THE  LAST CONDITION
     if isinstance(exception, TelegramAPIError):
         logging.exception(f'TelegramAPIError: {exception} \nUpdate: {update}')
         return True
-
 
     logging.exception(f'Update: {update} \n{exception}')

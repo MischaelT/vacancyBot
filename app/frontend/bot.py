@@ -5,9 +5,8 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from frontend.utils.notify_admins import on_startup_notify
 from frontend.utils.set_bot_commands import set_default_commands
 
-from settings.backend_setup import backend_manager
 from settings import config
-
+from settings.backend_setup import backend_manager
 # from frontend.data.config import REDIS_HOST, REDIS_PASSWORD, REDIS_PORT
 
 

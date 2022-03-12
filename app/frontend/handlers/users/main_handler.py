@@ -2,21 +2,23 @@ from typing import Union
 
 from aiogram import types
 from aiogram.dispatcher import FSMContext
-from frontend.data.dialogs import CITY_DIALOG, EXPERIENCE_DIALOGS, LANGUAGE_DIALOG, MAIN_MENU_DIALOGS, SALARY_DIALOG, SETTINGS_DIALOGS
+
 from frontend.data.consts import EXPERIENCES_LIST, LANGUAGE_LIST, SETTINGS_MENU
-
-from settings.backend_setup import backend_manager
-
+from frontend.data.dialogs import (CITY_DIALOG, EXPERIENCE_DIALOGS,
+                                   LANGUAGE_DIALOG, MAIN_MENU_DIALOGS,
+                                   SALARY_DIALOG, SETTINGS_DIALOGS)
 from frontend.handlers.users.vacancies import get_vacancies
+from frontend.keyboards.inline.back_keyboard import back_keyboard
 from frontend.keyboards.inline.main_keyboard import main_keyboard
 from frontend.keyboards.inline.settings_keyboards import (city_keyboard,
                                                           experience_keyboard,
-                                                          language_keyboard, salary_keyboard,
+                                                          language_keyboard,
+                                                          salary_keyboard,
                                                           save_keyboard,
                                                           settings_keyboard)
-                                                          
-from frontend.keyboards.inline.back_keyboard import back_keyboard                                         
 from frontend.utils.states.settings_states import User_settings
+
+from settings.backend_setup import backend_manager
 
 
 async def main_menu(message: Union[types.Message, types.CallbackQuery], **kwargs):
@@ -31,7 +33,11 @@ async def main_menu(message: Union[types.Message, types.CallbackQuery], **kwargs
     markup = await main_keyboard()
 
     if isinstance(message, types.Message):
-        await message.answer(MAIN_MENU_DIALOGS[0] + message.from_user.full_name+ '\n' + "Let's find a job for you", reply_markup=markup)
+
+        text = f"{MAIN_MENU_DIALOGS[0]} {message.from_user.full_name}\
+                \nLet's find a job for you"
+
+        await message.answer(text, reply_markup=markup)
 
     elif isinstance(message, types.CallbackQuery):
         call = message
@@ -45,7 +51,7 @@ async def give_vacancies(message: types.Message, **kwargs):
 
     Args:
         message (types.Message): message from user
-    """    
+    """
 
     await get_vacancies(message)
 
@@ -77,7 +83,7 @@ async def experience_menu(message: Union[types.Message, types.CallbackQuery], **
 
     Args:
         message (Union[types.Message, types.CallbackQuery]):  either Message or Callback
-    """  
+    """
 
     markup = await experience_keyboard()
 
@@ -177,7 +183,9 @@ async def save_menu(message: types.CallbackQuery, state: FSMContext, **kwargs):
 
         data["salary"] = salary
 
-    text = f'Your experience: {experience}, your language: {language}'+'\n'+f'your salary: {salary}, '+f'your city: {city}'+'\n'+'Save?'
+    text = f"Your experience: {experience}, language: {language}\
+                \nsalary: {salary}, city: {city}\
+                \nSave?"
 
     markup = await save_keyboard()
 
@@ -185,7 +193,7 @@ async def save_menu(message: types.CallbackQuery, state: FSMContext, **kwargs):
     await call.message.edit_text(text=text, reply_markup=markup)
 
     await User_settings.save.set()
-   
+
 
 async def save_process(message: types.CallbackQuery, state: FSMContext, **kwargs):
 
@@ -236,7 +244,7 @@ async def show_my_settings(message: types.CallbackQuery, **kwargs):
 async def structure(call: types.CallbackQuery, callback_data: dict):
 
     """
-    Callbacs structure 
+    Callbacs structure
 
     Args:
         message (types.Callback):  Callback

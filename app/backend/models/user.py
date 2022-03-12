@@ -2,7 +2,7 @@ class User():
 
     """
     Class represents user model
-    """    
+    """
 
     def __init__(self, user_id, is_registered, experience, city, language, salary) -> None:
 
@@ -14,4 +14,12 @@ class User():
         self.salary = salary
 
     def to_print(self):
-        return 'Experience: '+self.experience+'\n'+'Language: '+self.language+'\n'+'Desired salary: '+self.salary+'\n'+'Desired city: '+self.city
+
+        text = f"""
+                    Experience: {self.experience}\n
+                    Language: {self.language}\n
+                    Desired salary: {self.salary}\n
+                    Desired city: {self.city}
+                """
+
+        return text

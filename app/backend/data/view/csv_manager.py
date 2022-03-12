@@ -1,4 +1,5 @@
 import csv
+import logging
 
 from backend.data.view.view_manager import view_Manager
 
@@ -17,8 +18,8 @@ class Csv_manager(view_Manager):
                 for element in data.values():
                     data_to_csv.append(element)
                 writer.writerow(data_to_csv)
-        except IOError:
-            print("I/O error")  # noqa
+        except IOError as exception:
+            logging.exception(f'There was a problem during writing to csv: {str(exception)}')
 
     def _read(self):
         pass

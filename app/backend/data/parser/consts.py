@@ -1,6 +1,6 @@
 from backend.data.db.choices import ARCHITECT, CPLUSPLUS, INTERN, JAVA, JUNIOR, MIDDLE, PYTHON, SCALA, SENIOR
 
-djinni_exp_levels = [{'no_exp': INTERN}, {'1y': JUNIOR}, {'2y': MIDDLE}, {'3y': MIDDLE}, {'5y':ARCHITECT}]
+djinni_exp_levels = [{'no_exp': INTERN}, {'1y': JUNIOR}, {'2y': MIDDLE}, {'3y': MIDDLE}, {'5y': ARCHITECT}]
 djinni_languages = [{'python': PYTHON}, {'java': JAVA}, {'scala': SCALA}, {'cplusplus': CPLUSPLUS}]
 
 dou_exp_levels = [{'0-1': JUNIOR}, {'1-3': MIDDLE}, {'3-5': SENIOR}, {'5plus': ARCHITECT}]

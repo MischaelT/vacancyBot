@@ -1,12 +1,13 @@
-from backend.models.user import User
 from backend.data.db.postgres import Postgres_db
+from backend.models.user import User
 from backend.models.vacancy import Vacancy
+
 
 class Vacancies_manager():
 
     """
     Class provides methods for interaction with vacancies data
-    """    
+    """
 
     def __init__(self, manager: Postgres_db) -> None:
         self.db = manager
@@ -32,8 +33,7 @@ class Vacancies_manager():
 
         Args:
             vacancies_data (list): list os dicts with vacancy data
-        """        
-
+        """
 
         date = '2022-03-10'
         params = []
@@ -49,7 +49,6 @@ class Vacancies_manager():
                 vacancy['link'],
                 '1000',
             )
-            
 
             query = '''INSERT INTO vacancies (date, exp, lang, city, title, info, link, salary)
                         VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
@@ -84,17 +83,17 @@ class Vacancies_manager():
         i = 0
 
         for element in responce:
-            i+=1
+            i += 1
 
             vacancy = self.__create_vacancy(element)
             vacancies.append(vacancy)
 
-            if i>10:
+            if i > 10:
                 break
 
         return vacancies
 
-    def __create_vacancy(self, data:dict) -> Vacancy:
+    def __create_vacancy(self, data: dict) -> Vacancy:
         """
         Method creates new vacancy model from given data
 

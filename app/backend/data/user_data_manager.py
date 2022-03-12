@@ -6,7 +6,7 @@ class User_data_manager():
 
     """
         Class provides methods for interactions with user data
-    """    
+    """
 
     def __init__(self, db: Postgres_db) -> None:
         self.db = db
@@ -44,13 +44,13 @@ class User_data_manager():
 
         Args:
             user (User): user model
-        """        
+        """
 
         if user.is_registered:
 
             params = (user.experience, user.language, user.city, user.salary, user.user_id)
 
-            query = '''UPDATE users 
+            query = '''UPDATE users
                         SET exp =%s,lang=%s, city=%s, salary=%s
                         WHERE id='%s'
                  '''
@@ -94,7 +94,7 @@ class User_data_manager():
                         salary=''
                         )
         else:
-            user_data=user_data[0]
+            user_data = user_data[0]
 
             user = User(
                         user_id=user_id,

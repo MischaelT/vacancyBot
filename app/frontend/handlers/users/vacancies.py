@@ -22,7 +22,6 @@ async def get_vacancies(message: Union[types.Message, types.CallbackQuery]):
     vacancies = backend_manager.vacancies_manager.get_data_by_filter(user)
 
     markup = await back_keyboard(level=1)
-    
 
     if isinstance(message, types.Message):
         for vacancy in vacancies:

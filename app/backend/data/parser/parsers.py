@@ -1,13 +1,13 @@
-from bs4 import BeautifulSoup
+import re
 
 from backend.data.vacancy_data_manager import Vacancies_manager
 
-import re
+from bs4 import BeautifulSoup
 
 # TODO Implement getting data of vacancy creation
 
 
-def parse_djinni_data(vacancy_manager: Vacancies_manager, content:str, basepoint:str, language:str, experience:str) -> None:
+def parse_djinni_data(vacancy_manager: Vacancies_manager, content: str, basepoint: str, language: str, experience: str) -> None:  # noqa
     """
         Method parses vacancies from djinni.ua content
 
@@ -31,7 +31,7 @@ def parse_djinni_data(vacancy_manager: Vacancies_manager, content:str, basepoint
 
         try:
             remote = vacancy.find('span', class_="icon icon-home_work").next_sibling.text.strip()
-        except AttributeError: 
+        except AttributeError:
             remote = ''
 
         try:
@@ -39,14 +39,22 @@ def parse_djinni_data(vacancy_manager: Vacancies_manager, content:str, basepoint
         except AttributeError:
             cities = remote
 
-        data = {'title': title, 'city': cities, 'info': info, 'link': link, 'language': language, 'experience': experience, 'salary': ''}
+        data = {
+                'title': title,
+                'city': cities,
+                'info': info,
+                'link': link,
+                'language': language,
+                'experience': experience,
+                'salary': ''
+            }
 
         vacancies_list.append(data)
 
     vacancy_manager.push_pure_data(vacancies_data=vacancies_list)
 
 
-def parse_dou_data(vacancy_manager: Vacancies_manager, content:str, language:str, experience:str) -> None:
+def parse_dou_data(vacancy_manager: Vacancies_manager, content: str, language: str, experience: str) -> None:
 
     """
         Method parses vacancies from dou.ua content
@@ -71,15 +79,22 @@ def parse_dou_data(vacancy_manager: Vacancies_manager, content:str, language:str
         city = vacancy.find('span', class_='cities').text.strip()
         link = vacancy.find('a', class_='vt')['href']
 
-        data = {'title': title, 'city': city, 'info': info, 'link': link,'language': language, 'experience': experience, 'salary': ''}
+        data = {
+                'title': title,
+                'city': city,
+                'info': info,
+                'link': link,
+                'language': language,
+                'experience': experience,
+                'salary': ''
+                }
 
         vacancies_list.append(data)
-
 
     vacancy_manager.push_pure_data(vacancies_data=vacancies_list)
 
 
-def delete_spaces(text):
+def delete_spaces(text: str):
     return re.sub(" +", " ", text)
 
 # def parse_workUa_data(content, basepoint) -> None:

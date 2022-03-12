@@ -1,7 +1,10 @@
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.callback_data import CallbackData
 
-from frontend.data.consts import CITIES_LIST, EXPERIENCES_LIST, LANGUAGE_LIST, MAIN_MENU, MY_SETTINGS, SALARIES_LIST, SAVE_BUTTON, SET_SETTINGS, SETTINGS_MENU, SETTINGS_MENU_LIST
+from frontend.data.consts import (CITIES_LIST, EXPERIENCES_LIST, LANGUAGE_LIST,
+                                  MAIN_MENU, MY_SETTINGS, SALARIES_LIST,
+                                  SAVE_BUTTON, SETTINGS_MENU,
+                                  SETTINGS_MENU_LIST, SET_SETTINGS)
 
 menu_cd = CallbackData("show_menu", "level", "category")
 

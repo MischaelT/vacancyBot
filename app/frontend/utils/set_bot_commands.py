@@ -1,7 +1,7 @@
 from aiogram import Dispatcher, types
 
 
-async def set_default_commands(dp:Dispatcher):
+async def set_default_commands(dp: Dispatcher):
 
     """
         Function sets default commands

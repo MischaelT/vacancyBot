@@ -8,7 +8,7 @@ from aiogram.utils.exceptions import Throttled  # noqa
 
 
 class ThrottlingMiddleware(BaseMiddleware):
-    
+
     """
     Simple throttling middleware
     """

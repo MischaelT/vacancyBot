@@ -1,4 +1,3 @@
-from turtle import back
 from aiogram import types
 
 from frontend.handlers.users.main_handler import experience_menu, main_menu
