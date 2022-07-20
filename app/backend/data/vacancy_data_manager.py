@@ -1,6 +1,11 @@
+import unicodedata
 from backend.data.db.postgres import Postgres_db
 from backend.models.user import User
 from backend.models.vacancy import Vacancy
+
+import re
+
+import logging
 
 
 class Vacancies_manager():
@@ -39,6 +44,9 @@ class Vacancies_manager():
         params = []
 
         for vacancy in vacancies_data:
+
+            self.__preprocess_vacancies_data(vacancies_data=vacancy)
+
             params = (
                 date,
                 vacancy['experience'],
@@ -78,7 +86,7 @@ class Vacancies_manager():
 
         responce = self.db.get_data(query, params=params)
 
-        # TODO Implement getting vacancies by data
+        # TODO Implement getting latest vacancies
 
         i = 0
 
@@ -113,3 +121,38 @@ class Vacancies_manager():
         )
 
         return vacancy
+
+
+    def __preprocess_vacancies_data(self, vacancies_data):
+        
+        vacancies_data['info'] = re.sub('/[\r\n]+/g', '\n', vacancies_data['info'])
+        vacancies_data['info'] = re.sub(" +", " ", vacancies_data['info'])
+
+        vacancies_data['title'] = re.sub('/[\r\n]+/g', '\n', vacancies_data['title'])
+        vacancies_data['title'] =re.sub(" +", " ", vacancies_data['title'])
+
+        title_text = vacancies_data['title'].lower().split()
+
+        vacancies_data['info'] = unicodedata.normalize("NFKD", vacancies_data['info'])
+        vacancies_data['title'] = unicodedata.normalize("NFKD", vacancies_data['title'])
+
+        if 'devops' in title_text:
+            vacancies_data['language'] = 'DevOps'
+
+        for word in ['kotlin', 'android']:
+            if word in title_text:
+                vacancies_data['language'] = 'Android'
+
+        for word in ['data', 'ml', 'deep', 'analyst', 'learning']:
+            if word in title_text:
+                vacancies_data['language'] = 'Data'
+
+        for word in ['qa', 'test', 'automation']:
+            if word in title_text:
+                vacancies_data['language'] = 'QA'
+
+        for word in ['blockchain', 'solidity']:
+            if word in title_text:
+                vacancies_data['language'] = 'blockchain'
+
+        

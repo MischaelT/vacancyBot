@@ -1,7 +1,9 @@
 import logging
 
-logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(asctime)s]  %(message)s',
-                    level=logging.INFO,
-                    # level=logging.DEBUG,
-                    filename='app.log'
+logging.basicConfig(
+                    format=u'%(asctime)s - %(levelname)s - %(module)s %(funcName)s - %(message)s',
+                    # level=logging.INFO,
+                    level=logging.DEBUG,
+                    filename='app.log',
+                    filemode='w'
                     )

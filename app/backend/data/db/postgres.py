@@ -38,6 +38,8 @@ class Postgres_db(Base_db):
             Method pushes data to database
         """
 
+        logging.debug(params)
+
         self._write(query, params)
 
     def __create_table_users(self) -> None:
@@ -53,7 +55,7 @@ class Postgres_db(Base_db):
 
             cursor = connection.cursor()
 
-            create_users_query = '''CREATE TABLE users
+            create_users_query = '''CREATE TABLE IF NOT EXISTS users
                                 (
                                 ID              INT       PRIMARY KEY       NOT NULL,
                                 IS_REGISTERED   BOOLEAN                     NOT NULL,
@@ -90,17 +92,21 @@ class Postgres_db(Base_db):
 
             cursor = connection.cursor()
 
-            create_vacancies_query = '''CREATE TABLE vacancies
+            create_vacancies_query = '''CREATE TABLE IF NOT EXISTS vacancies
                                 (
-                                ID             SMALLSERIAL                  NOT NULL,
+                                ID             SMALLSERIAL   PRIMARY KEY    NOT NULL,
+                                CREATION_DATE  DATE                         NOT NULL,
                                 DATE           DATE                         NOT NULL,
-                                EXP            TEXT                         NOT NULL,
-                                LANG           TEXT                         NOT NULL,
-                                CITY           TEXT                         NOT NULL,
                                 TITLE          TEXT                         NOT NULL,
-                                INFO           TEXT                         NOT NULL,
-                                LINK           TEXT                         NOT NULL,
-                                SALARY         SMALLINT                     NOT NULL
+                                INFO           TEXT                         NOT NULL,                                
+                                LANG           TEXT                                 ,
+                                AREA           TEXT                         NOT NULL,
+                                EXP            TEXT                         NOT NULL,
+                                COMPANY_NAME   TEXT                         NOT NULL,
+                                COUNTRY        TEXT                         NOT NULL,
+                                REMOTE         TEXT                                 ,
+                                SALARY         SMALLINT                             ,
+                                LINK           TEXT                         NOT NULL
                                 ); '''
 
             cursor.execute(create_vacancies_query)

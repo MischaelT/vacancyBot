@@ -10,7 +10,7 @@ workUa_languages = ['python', 'java', 'scala', 'c%2B%2B']
 
 DATA = {
     'dou': {
-            'basepoint': 'http://jobs.dou.ua',
+            'basepoint': 'https://jobs.dou.ua',
             'endpoint': '/vacancies/',
             'params': {
                         'category': '',

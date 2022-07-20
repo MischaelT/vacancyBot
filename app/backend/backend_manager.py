@@ -1,5 +1,5 @@
 from backend.data.db.postgres import Postgres_db
-from backend.data.parser.parse_manager import ParseManager
+from backend.data.parsers.parse_manager import ParseManager
 from backend.data.user_data_manager import User_data_manager
 from backend.data.vacancy_data_manager import Vacancies_manager
 
