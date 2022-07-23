@@ -1,17 +1,10 @@
 import asyncio
-import logging
 import random
 from asyncio.events import new_event_loop, set_event_loop
-from backend.data.parsers.sources.djinni_source import DjinniSource
-from backend.data.parsers.sources.dou_source import DouSource
+from backend.data.parser.sources.djinni_source import DjinniSource
+from backend.data.parser.sources.dou_source import DouSource
 
-from backend.data.parsers.consts import (DATA, djinni_exp_levels,
-                                        djinni_languages, dou_exp_levels,
-                                        dou_languages)
-
-
-import requests
-
+import logging
 
 class ParseManager:
 
@@ -19,14 +12,12 @@ class ParseManager:
         Class that provides methods for parsing data
     """
 
-    def __init__(self, vacancy_manager) -> None:
+    def __init__(self) -> None:
 
-        self.vacancy_manager = vacancy_manager
+        self.djinni = DjinniSource()
+        self.dou = DouSource()
 
-        self.djinni = DjinniSource(self.vacancy_manager)
-        self.dou = DouSource(self.vacancy_manager)
-
-    async def run_general_parsing(self) -> None:
+    async def run_general_parsing(self) -> list:
 
         """
             Method run parsing for every page
@@ -36,7 +27,7 @@ class ParseManager:
         set_event_loop(loop)
 
         page = 0
-
+        
         while True:
 
             page += 1
@@ -47,6 +38,14 @@ class ParseManager:
 
             if page == 1:
                 break
+
+        parsed_data = self.djinni.parsed_data + self.dou.parsed_data
+
+        logging.debug('Parsing')
+
+
+        return parsed_data
+
 
     def __add_tasks(self, page: int) -> list:
 

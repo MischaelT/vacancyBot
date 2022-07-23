@@ -1,6 +1,5 @@
 import logging
-
-from backend.data.db.base_db import Base_db
+from backend.models.vacancy import Vacancy
 
 import psycopg2
 
@@ -8,7 +7,7 @@ from settings.config import (POSTGRES_DB, POSTGRES_HOST, POSTGRES_PASSWORD,
                              POSTGRES_PORT, POSTGRES_USER)
 
 
-class Postgres_db(Base_db):
+class Postgres_db():
 
     """
         Class provides access to postgres database
@@ -21,7 +20,14 @@ class Postgres_db(Base_db):
         self.__create_table_users()
         self.__create_table_vacancies()
 
-    def get_data(self, request_text: str, params: tuple) -> list:
+    def get_data(self, query: str, params: tuple):
+        return self._read(query, params) 
+
+    def push_data(self, query: str, params: tuple):
+        self._write(query, params)
+
+
+    def get_vacancies_data(self, params: tuple) -> list:
 
         """
             Method returns data from database
@@ -29,17 +35,20 @@ class Postgres_db(Base_db):
         Returns:
             list(tuple): requested data
         """
+        query = '''SELECT * FROM vacancies
+                    WHERE exp=%s AND lang=%s;
+                    '''
+        return self._read(query, params)
 
-        return self._read(request_text, params)
-
-    def push_data(self, query: str, params: tuple) -> None:
+    def push_vacancy_data(self, params: tuple) -> None:
 
         """
             Method pushes data to database
         """
 
-        logging.debug(params)
-
+        query = '''INSERT INTO vacancies (title, info, lang, area, exp, company_name, country, city, remote, salary, link, is_actual)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+                '''
         self._write(query, params)
 
     def __create_table_users(self) -> None:
@@ -95,8 +104,6 @@ class Postgres_db(Base_db):
             create_vacancies_query = '''CREATE TABLE IF NOT EXISTS vacancies
                                 (
                                 ID             SMALLSERIAL   PRIMARY KEY    NOT NULL,
-                                CREATION_DATE  DATE                         NOT NULL,
-                                DATE           DATE                         NOT NULL,
                                 TITLE          TEXT                         NOT NULL,
                                 INFO           TEXT                         NOT NULL,                                
                                 LANG           TEXT                                 ,
@@ -104,9 +111,11 @@ class Postgres_db(Base_db):
                                 EXP            TEXT                         NOT NULL,
                                 COMPANY_NAME   TEXT                         NOT NULL,
                                 COUNTRY        TEXT                         NOT NULL,
+                                CITY           TEXT                         NOT NULL,
                                 REMOTE         TEXT                                 ,
                                 SALARY         SMALLINT                             ,
-                                LINK           TEXT                         NOT NULL
+                                LINK           TEXT                         NOT NULL,
+                                IS_ACTUAL      BOOL                         NOT NULL
                                 ); '''
 
             cursor.execute(create_vacancies_query)

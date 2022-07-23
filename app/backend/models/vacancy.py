@@ -4,13 +4,21 @@ class Vacancy:
     Class represents vacancy model
     """
 
-    def __init__(self, date, title, city, info, link) -> None:
+    def __init__(self, title, city, info, link, id_, language, area, experience, company_name, country, salary, remote, is_actual) -> None:
 
-        self.date = date
+        self.id_ = id_
         self.title = title
-        self.city = city
         self.info = info
+        self.language = language
+        self.area = area
+        self.experience = experience
+        self.company_name = company_name
+        self.country = country
+        self.city = city
+        self.salary = salary
+        self.remote = remote
         self.link = link
+        self.is_actual = is_actual
 
     def to_print(self):
 

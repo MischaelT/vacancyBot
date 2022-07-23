@@ -1,0 +1,69 @@
+version: '3.4'
+
+services:
+
+  mainvacancybot:
+    image: mainvacancybot
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+
+  celery:
+    build: .
+    container_name: celery
+    stdin_open: true
+    tty: true
+    volumes:
+      - "./:/code/build"
+    env_file:
+      - .env
+    environment:
+      - MODE=celery
+    depends_on:
+      - postgres
+      - rabbitmq
+      - memcached
+
+  celerybeat:
+    build: .
+    container_name: celerybeat
+    stdin_open: true
+    tty: true
+    volumes:
+      - "./:/code/build"
+    env_file:
+      - .env
+    environment:
+      - MODE=celerybeat
+    depends_on:
+      - rabbitmq
+
+    rabbitmq:
+      image: rabbitmq:3-management
+      container_name: rabbitmq
+      env_file:
+        - .env
+      ports:
+        - "15672:15672"
+        - "5672:5672"
+
+  postgres:
+    image: postgres:13.4-alpine
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  memcached:
+    image: memcached
+    container_name: memcached
+    env_file:
+      - .env
+    ports:
+      - "11211:11211"
+
+  volumes:
+  db_data: {}

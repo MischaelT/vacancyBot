@@ -1,10 +1,10 @@
 import requests
-from backend.data.vacancy_data_manager import Vacancies_manager
-from backend.data.parsers.sources.base_source import BaseSource
+from backend.data.vacancy_data_manager import VacanciesManager
+from backend.data.parser.sources.base_source import BaseSource
 
 from bs4 import BeautifulSoup
 
-from backend.data.parsers.consts import (DATA, djinni_exp_levels,
+from backend.data.parser.consts import (DATA, djinni_exp_levels,
                                         djinni_languages, dou_exp_levels,
                                         dou_languages)
 
@@ -14,9 +14,8 @@ import random
 
 class DjinniSource(BaseSource):
 
-    def __init__(self, manager:Vacancies_manager) -> None:
+    def __init__(self) -> None:
 
-        self.manager = manager
         super().__init__()
 
 
@@ -50,8 +49,6 @@ class DjinniSource(BaseSource):
 
         response = requests.get(basepoint+endpoint, headers=self.headers, params=params, proxies=self.proxy)
         response.raise_for_status()
-
-        logging.debug('here')
 
         self.parse_content(
                             response.text,
@@ -96,10 +93,6 @@ class DjinniSource(BaseSource):
         soup = BeautifulSoup(content, 'html.parser')
         vacancies = soup.find_all('li', class_='list-jobs__item')
 
-
-
-        vacancies_list = []
-
         for vacancy in vacancies:
 
             title = vacancy.find('div', class_="list-jobs__title").text.strip()
@@ -123,12 +116,9 @@ class DjinniSource(BaseSource):
                     'link': link,
                     'language': language,
                     'experience': experience,
-                    'salary': ''
                 }
 
-            vacancies_list.append(data)
-
-        self.manager.push_pure_data(vacancies_data=vacancies_list)
+            self.parsed_data.append(data)
 
 
 

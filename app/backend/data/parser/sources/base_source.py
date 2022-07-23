@@ -13,6 +13,8 @@ class BaseSource(ABC):
         with open('user-agents.txt', 'r') as f:
             self.user_agents_list = f.read().split('\n')
 
+        self.parsed_data = []
+
         super().__init__()
 
     @abstractmethod

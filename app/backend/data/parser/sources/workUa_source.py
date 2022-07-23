@@ -1,12 +1,12 @@
-from backend.data.vacancy_data_manager import Vacancies_manager
-from backend.data.parsers.sources.base_source import BaseSource
+from backend.data.vacancy_data_manager import VacanciesManager
+from backend.data.parser.sources.base_source import BaseSource
 
 from bs4 import BeautifulSoup
 
 
 class WorkUaSource(BaseSource):
 
-    def __init__(self, manager:Vacancies_manager) -> None:
+    def __init__(self, manager:VacanciesManager) -> None:
 
         self.manager = manager
         super().__init__()

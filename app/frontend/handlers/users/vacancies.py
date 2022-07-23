@@ -19,7 +19,7 @@ async def get_vacancies(message: Union[types.Message, types.CallbackQuery]):
 
     user = backend_manager.user_data_manager.get_user(message.from_user.id)
 
-    vacancies = backend_manager.vacancies_manager.get_data_by_filter(user)
+    vacancies = backend_manager.vacancies_manager.get_user_data(user)
 
     markup = await back_keyboard(level=1)
 
