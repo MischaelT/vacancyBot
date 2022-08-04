@@ -1,3 +1,6 @@
+from frontend.data.consts import AREAS_LIST
+from backend.data.db.choices import MANAGEMENT
+
 class User():
 
     """
@@ -17,22 +20,22 @@ class User():
 
     def to_print(self):
 
-        if self.area == 'management':
+        if self.area == MANAGEMENT:
 
             text = f"""
-                                Area: {self.area}\n
-                        Specialisation: {self.specialisation}\n
-                        Experience: {self.experience}\n
-                        Desired salary: {self.salary}\n
-                        Desired location: {self.location}
+            Area: {AREAS_LIST[self.area]}
+            \nSpecialisation: {self.specialisation}
+            \nExperience: {self.experience}
+            \nDesired salary: {self.salary}
+            \nDesired location: {self.location}
                     """
         else: 
             text = f"""
-                                Area: {self.area}\n
-                        Specialisation: {self.specialisation}\n
-                        Experience: {self.experience}\n
-                        Language: {self.language}\n
-                        Desired salary: {self.salary}\n
-                        Desired location: {self.location}
+            Area: {self.area}
+            \nSpecialisation: {self.specialisation}
+            \nExperience: {self.experience}
+            \nLanguage: {self.language}
+            \nDesired salary: {self.salary}
+            \nDesired location: {self.location}
                     """
         return text

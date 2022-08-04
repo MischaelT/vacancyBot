@@ -29,29 +29,29 @@ async def area_keyboard():
 
     categories = list(AREAS_LIST.keys())
 
-    button_text = f'{categories[0]}'
+    button_text = f'{AREAS_LIST[categories[0]]}'
     callback_data = make_callback_data(level=AREA_MANAGEMENT, category=categories[0])
 
     markup.insert(
         InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
     )
 
-    button_text = f'{categories[1]}'
+    button_text = f'{AREAS_LIST[categories[1]]}'
     callback_data = make_callback_data(level=AREA_DS, category=categories[1])
 
     markup.insert(
         InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
     )
 
-    button_text = f'{categories[2]}'
+    button_text = f'{AREAS_LIST[categories[2]]}'
     callback_data = make_callback_data(level=AREA_DEVELOPER, category=categories[2])
 
     markup.insert(
         InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
     )
 
-    button_text = f'{categories[3]}'
-    callback_data = make_callback_data(level=AREA_QA, category=categories[2])
+    button_text = f'{AREAS_LIST[categories[3]]}'
+    callback_data = make_callback_data(level=AREA_QA, category=categories[3])
 
     markup.insert(
         InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
@@ -68,11 +68,11 @@ async def experience_keyboard():
     """
 
     markup = InlineKeyboardMarkup()
-    categories = EXPERIENCES_LIST.keys()
+    categories = EXPERIENCES_LIST
 
     for sub_category in categories:
 
-        button_text = f'{sub_category}'
+        button_text = f'{categories[sub_category]}'
         callback_data = make_callback_data(category=sub_category)
 
         markup.insert(
@@ -162,11 +162,11 @@ async def language_keyboard():
     """
 
     markup = InlineKeyboardMarkup()
-    categories = LANGUAGE_LIST.keys()
+    categories = LANGUAGE_LIST
 
     for sub_category in categories:
 
-        button_text = f'{sub_category}'
+        button_text = f'{categories[sub_category]}'
         callback_data = make_callback_data(category=sub_category)
 
         markup.insert(

@@ -6,8 +6,8 @@ from aiogram.dispatcher import FSMContext
 from backend.data.db.choices import DATA, DEVELOPMENT, MANAGEMENT, QA
 from frontend.handlers.users.main_handler import settings_menu
 
-from frontend.data.consts import EXPERIENCES_LIST, LANGUAGE_LIST
-from frontend.data.dialogs import (AREA_DIALOGS, CITY_DIALOG, DATA_DIALOG, EXPERIENCE_DIALOGS,
+from frontend.data.consts import AREAS_LIST, EXPERIENCES_LIST, LANGUAGE_LIST
+from frontend.data.dialogs import (AREA_DIALOGS, LOCATION_DIALOG, DATA_DIALOG, DEVELOPER_DIALOG, EXPERIENCE_DIALOGS,
                                    LANGUAGE_DIALOG, MANAGEMENT_DIALOG, QA_DIALOG,SALARY_DIALOG)
 
 from frontend.keyboards.inline.settings_keyboards import (area_keyboard, city_keyboard, data_keyboard, developer_keyboard,
@@ -35,11 +35,11 @@ async def area_menu(message: Union[types.Message, types.CallbackQuery], **kwargs
     markup = await area_keyboard()
 
     if isinstance(message, types.Message):
-        await message.answer(EXPERIENCE_DIALOGS[0], reply_markup=markup)
+        await message.answer(AREA_DIALOGS[0], reply_markup=markup)
 
     elif isinstance(message, types.CallbackQuery):
         call = message
-        await call.message.edit_text(text=AREA_DIALOGS, reply_markup=markup)
+        await call.message.edit_text(text=AREA_DIALOGS[1], reply_markup=markup)
 
     await UserSettings.experience.set()
 
@@ -57,15 +57,15 @@ async def experience_menu(message: types.CallbackQuery, state: FSMContext, **kwa
     markup = await experience_keyboard()
 
     call = message
-    await call.message.edit_text(text=EXPERIENCE_DIALOGS[1], reply_markup=markup)
+    await call.message.edit_text(text=EXPERIENCE_DIALOGS, reply_markup=markup)
 
-    if area ==  'Management':
+    if area == MANAGEMENT:
         await UserSettings.management.set()
-    elif area ==  'Data Science':
+    elif area == DATA:
         await UserSettings.data.set()
-    elif area ==  'QA':
+    elif area == QA:
         await UserSettings.qa.set()
-    elif area ==  'Development':
+    elif area == DEVELOPMENT:
         await UserSettings.developer.set()
 
 """DEVELOPERS SETTINGS METHODS"""
@@ -89,7 +89,7 @@ async def developer_menu(message: types.CallbackQuery, state: FSMContext, **kwar
     markup = await developer_keyboard()
 
     call = message
-    await call.message.edit_text(text=LANGUAGE_DIALOG, reply_markup=markup)
+    await call.message.edit_text(text=DEVELOPER_DIALOG, reply_markup=markup)
     await UserSettings.language.set()
 
 """QA SETTINGS METHODS"""
@@ -201,7 +201,8 @@ async def salary_menu(message: types.CallbackQuery, state: FSMContext, **kwargs)
 
     logging.debug(area)
 
-    if area == 'management':
+    if area == MANAGEMENT:
+        
         specialisation = message.data.split(':')[2]
 
         async with state.proxy() as data:
@@ -240,7 +241,7 @@ async def location_menu(message: types.CallbackQuery, state: FSMContext, **kwarg
     markup = await city_keyboard()
 
     call = message
-    await call.message.edit_text(text=CITY_DIALOG, reply_markup=markup)
+    await call.message.edit_text(text=LOCATION_DIALOG, reply_markup=markup)
     await UserSettings.save.set()
 
 
@@ -268,19 +269,27 @@ async def save_menu(message: types.CallbackQuery, state: FSMContext, **kwargs):
         specialisation = data['specialisation']
 
 
-    if area == 'management':
+    if area == MANAGEMENT:
 
-        text = f"Your area: {area}, specialisation: {specialisation}\
-                    \nexperience: {experience}, location: {location}\
-                    \n salary: {salary}\
-                    \nSave?"
+        text = f"Your area: {AREAS_LIST[area]},\
+        \nSpecialisation: {specialisation}\
+        \nExperience: {experience}\
+        \nLocation: {location}\
+        \nSalary: {salary}\
+        \nSave?"
 
     else:
-        language = data["language"]
-        text = f"Your area: {area}, specialisation: {specialisation}\
-                    \nlanguage: {language}, experience: {experience}\
-                    \nlocation: {location}, salary: {salary}\
-                    \nSave?"
+        async with state.proxy() as data:
+            logging.debug(data)
+
+            language = LANGUAGE_LIST[data["language"]]
+            text = f"Your area: {AREAS_LIST[area]}\
+            \nSpecialisation: {specialisation}\
+            \nLanguage: {language}\
+            \nExperience: {experience}\
+            \nLocation: {location}\
+            \nSalary: {salary}\
+            \nSave?"
 
     markup = await save_keyboard()
 
@@ -311,7 +320,7 @@ async def save_process(message: types.CallbackQuery, state: FSMContext, **kwargs
     user = backend_manager.user_data_manager.get_user(message.from_user.id)  
 
 
-    if area != 'management':
+    if area != MANAGEMENT:
         language = data['language']  
         user.language = LANGUAGE_LIST[language]    
 
