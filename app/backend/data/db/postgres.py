@@ -68,6 +68,8 @@ class Postgres_db():
                                 (
                                 ID              INT       PRIMARY KEY       NOT NULL,
                                 IS_REGISTERED   BOOLEAN                     NOT NULL,
+                                AREA            TEXT                        NOT NULL,
+                                SPECIALISATION  TEXT                        NOT NULL,
                                 EXP             TEXT                        NOT NULL,
                                 LANG            TEXT                        NOT NULL,
                                 CITY            TEXT                        NOT NULL,

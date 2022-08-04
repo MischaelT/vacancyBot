@@ -1,32 +1,33 @@
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.callback_data import CallbackData
 
-from frontend.data.consts import BACK_BUTTON, CONTINUE_BUTTON
+from frontend.data.consts import GET_VACANCIES_MENU, SETTINGS_MENU
 
 menu_cd = CallbackData("show_menu", "level", "category")
-
 
 def make_callback_data(level=0, category='0'):
 
     return menu_cd.new(level=level, category=category)
 
 
-async def back_keyboard(level: int):
+async def admin_keyboard():
 
     """
-    Keyboard with back button
+    Function for generating main menu keyoard
 
-    Args:
-        level(int): level for going back
+    Returns:
+    markup(keyboard): main keyboard
+
     """
 
     markup = InlineKeyboardMarkup()
 
-    button_text = BACK_BUTTON
-    callback_data = make_callback_data(level=level)
+    categories = ['Run parsing']
+
+    button_text = f'{categories[0]}'
+    callback_data = make_callback_data(level=GET_VACANCIES_MENU, category=categories[0])
 
     markup.insert(
         InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
     )
-
     return markup

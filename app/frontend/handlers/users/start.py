@@ -1,6 +1,8 @@
 from aiogram import types
 
-from frontend.handlers.users.main_handler import experience_menu, main_menu
+from frontend.handlers.users.main_handler import main_menu
+
+from frontend.handlers.users.setUp_settings_handler import area_menu, experience_menu
 
 from settings.backend_setup import backend_manager
 
@@ -21,4 +23,4 @@ async def bot_start(message: types.Message):
     if user.is_registered:
         await main_menu(message=message)
     else:
-        await experience_menu(message, first_time=True)
+        await area_menu(message)

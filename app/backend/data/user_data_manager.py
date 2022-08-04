@@ -48,18 +48,18 @@ class User_data_manager():
 
         if user.is_registered:
 
-            params = (user.experience, user.language, user.city, user.salary, user.user_id)
+            params = (user.area, user.specialisation, user.experience, user.language, user.location, user.salary, user.user_id)
 
             query = '''UPDATE users
-                        SET exp =%s,lang=%s, city=%s, salary=%s
+                        SET area=%s, specialisation=%s, exp=%s,lang=%s, city=%s, salary=%s
                         WHERE id='%s'
                  '''
         else:
 
-            params = (user.user_id, user.is_registered, user.experience, user.language, user.city, user.salary)
+            params = (user.user_id, user.is_registered, user.area, user.specialisation, user.experience, user.language, user.location, user.salary)
 
-            query = '''INSERT INTO users (id, is_registered, exp, lang, city, salary)
-                        VALUES (%s, %s, %s, %s, %s, %s)
+            query = '''INSERT INTO users (id, is_registered, area, specialisation, exp, lang, city, salary)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                     '''
 
         self.db.push_data(query, params)
@@ -88,9 +88,11 @@ class User_data_manager():
             user = User(
                         user_id=user_id,
                         is_registered=False,
+                        area='',
+                        specialisation='',
                         experience='',
                         language='',
-                        city='',
+                        location='',
                         salary=''
                         )
         else:
@@ -99,10 +101,12 @@ class User_data_manager():
             user = User(
                         user_id=user_id,
                         is_registered=True,
-                        experience=user_data[2],
-                        language=user_data[3],
-                        city=user_data[4],
-                        salary=user_data[5]
+                        area=user_data[2],
+                        specialisation=user_data[3],
+                        experience=user_data[4],
+                        language=user_data[5],
+                        location=user_data[6],
+                        salary=user_data[7]
                         )
 
         return user

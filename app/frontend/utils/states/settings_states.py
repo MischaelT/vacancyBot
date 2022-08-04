@@ -1,7 +1,7 @@
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
-class User_settings(StatesGroup):
+class UserSettings(StatesGroup):
 
     """
     States for ask settings conversation
@@ -10,6 +10,13 @@ class User_settings(StatesGroup):
 
     experience = State()
     language = State()
-    city = State()
-    save = State()
+    location = State()
+    area = State()
+    developer = State()
+    qa = State()
+    management = State()
+    data = State()
+    specialisation = State()
     salary = State()
+    save = State()
+    save_process = State()

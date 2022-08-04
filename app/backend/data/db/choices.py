@@ -8,3 +8,10 @@ PYTHON = 'python'
 SCALA = 'scala'
 CPLUSPLUS = 'c++'
 JAVA = 'java'
+ENGLISH = 'eng'
+
+
+DEVELOPMENT = 'dev'
+MANAGEMENT = 'management'
+QA = 'qa'
+DATA = 'ds'

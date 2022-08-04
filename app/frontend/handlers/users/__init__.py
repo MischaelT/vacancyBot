@@ -1,28 +1,44 @@
 from aiogram import Dispatcher
 from aiogram.dispatcher.filters import CommandHelp, CommandStart
+from frontend.handlers.users.admin import show_admin_panel
 
 from frontend.handlers.users.vacancies import get_vacancies
 from frontend.keyboards.inline.settings_keyboards import menu_cd
-from frontend.utils.states.settings_states import User_settings
+from frontend.utils.states.settings_states import UserSettings
 
 from .help import bot_help
-from .main_handler import (city_menu, language_menu, salary_menu, save_menu,
-                           save_process, settings_menu, structure)
+from .main_handler import settings_menu
+
+from .setUp_settings_handler import (area_menu, data_menu, developer_menu, experience_menu, location_menu, language_menu, management_menu,
+                                     qa_menu, salary_menu, save_menu,
+                                    save_process, settings_menu)
 from .start import bot_start
 
+from frontend.handlers.users.dialog_structures import dialog_structure
 
 def setup(dp: Dispatcher):
 
     dp.register_message_handler(bot_start, CommandStart())
     dp.register_message_handler(bot_help, CommandHelp())
 
-    dp.register_message_handler(get_vacancies, commands=['vacancies'])
+    dp.register_message_handler(get_vacancies, commands=['vacancies'], state=None)
     dp.register_message_handler(settings_menu, commands=['settings'], state=None)
+    dp.register_message_handler(show_admin_panel, commands=['admin'], state=None)
 
-    dp.register_callback_query_handler(language_menu, state=User_settings.experience)
-    dp.register_callback_query_handler(city_menu, state=User_settings.language)
-    dp.register_callback_query_handler(salary_menu, state=User_settings.city)
-    dp.register_callback_query_handler(save_menu, state=User_settings.salary)
-    dp.register_callback_query_handler(save_process, state=User_settings.save)
+    dp.register_callback_query_handler(area_menu, state=UserSettings.area)
+    dp.register_callback_query_handler(experience_menu, state=UserSettings.experience)
 
-    dp.register_callback_query_handler(structure, menu_cd.filter())
+    dp.register_callback_query_handler(data_menu, state=UserSettings.data)
+    dp.register_callback_query_handler(qa_menu, state=UserSettings.qa)
+    dp.register_callback_query_handler(developer_menu, state=UserSettings.developer)
+    dp.register_callback_query_handler(management_menu, state=UserSettings.management)
+
+    dp.register_callback_query_handler(language_menu, state=UserSettings.language)
+    dp.register_callback_query_handler(location_menu, state=UserSettings.location)  
+    dp.register_callback_query_handler(salary_menu, state=UserSettings.salary)
+
+    dp.register_callback_query_handler(save_menu, state=UserSettings.save)
+    dp.register_callback_query_handler(save_process, state=UserSettings.save_process)
+
+    dp.register_callback_query_handler(dialog_structure, menu_cd.filter())
+
