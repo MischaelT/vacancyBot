@@ -20,12 +20,35 @@ class Postgres_db():
         self.__create_table_users()
         self.__create_table_vacancies()
 
-    def get_data(self, query: str, params: tuple):
-        return self._read(query, params) 
+    def get_user_by_id(self, params):
+        query = """SELECT * FROM users WHERE ID='%s' """
+        user_data = self._read(query, params)
 
-    def push_data(self, query: str, params: tuple):
-        self._write(query, params)
+        return user_data
 
+
+    def update_user(self, params):
+
+        query = '''UPDATE users
+            SET area=%s, position=%s, exp=%s, lang=%s, city=%s, salary=%s
+            WHERE id='%s'
+        '''
+
+        self._write(query=query, params=params)
+
+    def create_user(self, params):
+
+        query = '''INSERT INTO users (id, is_registered, area, position, exp, lang, city, salary)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                '''
+        
+        self._write(query=query, params=params)
+
+    def clear_vacancy_table(self):
+
+        query = '''TRUNCATE TABLE vacancies'''
+
+        self._write(query)
 
     def get_vacancies_data(self, params: tuple) -> list:
 
@@ -36,7 +59,7 @@ class Postgres_db():
             list(tuple): requested data
         """
         query = '''SELECT * FROM vacancies
-                    WHERE exp=%s AND lang=%s;
+                    WHERE exp=%s AND lang=%s AND area=%s AND position=%s;
                     '''
         return self._read(query, params)
 
@@ -46,8 +69,8 @@ class Postgres_db():
             Method pushes data to database
         """
 
-        query = '''INSERT INTO vacancies (title, info, lang, area, exp, company_name, country, city, remote, salary, link, is_actual)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+        query = '''INSERT INTO vacancies (title, info, lang, area, position, exp, company_name, country, city, remote, salary, link, is_actual)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
                 '''
         self._write(query, params)
 
@@ -69,7 +92,7 @@ class Postgres_db():
                                 ID              INT       PRIMARY KEY       NOT NULL,
                                 IS_REGISTERED   BOOLEAN                     NOT NULL,
                                 AREA            TEXT                        NOT NULL,
-                                SPECIALISATION  TEXT                        NOT NULL,
+                                POSITION        TEXT                        NOT NULL,
                                 EXP             TEXT                        NOT NULL,
                                 LANG            TEXT                        NOT NULL,
                                 CITY            TEXT                        NOT NULL,
@@ -110,9 +133,10 @@ class Postgres_db():
                                 INFO           TEXT                         NOT NULL,                                
                                 LANG           TEXT                                 ,
                                 AREA           TEXT                         NOT NULL,
+                                POSITION       TEXT                         NOT NULL,
                                 EXP            TEXT                         NOT NULL,
-                                COMPANY_NAME   TEXT                         NOT NULL,
-                                COUNTRY        TEXT                         NOT NULL,
+                                COMPANY_NAME   TEXT                                 ,
+                                COUNTRY        TEXT                         NOT NULL,                                
                                 CITY           TEXT                         NOT NULL,
                                 REMOTE         TEXT                                 ,
                                 SALARY         SMALLINT                             ,
@@ -157,7 +181,7 @@ class Postgres_db():
 
         return connection
 
-    def _write(self, query: str, params: tuple) -> None:
+    def _write(self, query: str, params: tuple = ()) -> None:
 
         """
         Method writes data to database.

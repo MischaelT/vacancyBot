@@ -69,16 +69,16 @@ class ParseManager:
                 task = asyncio.sleep(random.uniform(3, 6))
                 tasks.append(task)
 
-        # func_list = self.djinni.make_futures(page=page)
+        func_list = self.djinni.make_futures(page=page)
 
-        # for function in func_list:
+        for function in func_list:
 
-        #     task = asyncio.ensure_future(function)
-        #     tasks.append(task)
+            task = asyncio.ensure_future(function)
+            tasks.append(task)
 
-        #     if bool(random.getrandbits(1)):
-        #         task = asyncio.sleep(random.uniform(3, 6))
-        #         tasks.append(task)
+            if bool(random.getrandbits(1)):
+                task = asyncio.sleep(random.uniform(3, 6))
+                tasks.append(task)
 
         return tasks
 

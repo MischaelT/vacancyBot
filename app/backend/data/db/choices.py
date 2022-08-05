@@ -8,10 +8,24 @@ PYTHON = 'python'
 SCALA = 'scala'
 CPLUSPLUS = 'c++'
 JAVA = 'java'
-ENGLISH = 'eng'
-
 
 DEVELOPMENT = 'dev'
 MANAGEMENT = 'management'
 QA = 'qa'
 DATA = 'ds'
+
+PM = 'pm'
+HR = 'hr'
+
+AUTO = 'automation'
+MANUAL = 'manual'
+
+SCIENTIST = 'scientist'
+ANALYST = 'analyst'
+ENGINEER = 'engineer'
+BLOCKCHAIN = 'blockchain'
+DEVOPS = 'devops'
+ANDROID = 'android'
+
+BACKEND = 'backend' 
+FRONTEND = 'frontend' 

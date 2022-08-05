@@ -32,8 +32,6 @@ class VacancyBot:
         handlers.errors.setup(self.dp)
         handlers.users.setup(self.dp)
 
-        # await self.backend_manager.run_initial_parsing()
-
         await set_default_commands(self.dp)
         await on_startup_notify(self.dp)
 

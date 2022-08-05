@@ -1,5 +1,5 @@
-from backend.data.db.choices import (ARCHITECT, CPLUSPLUS, INTERN, JAVA,
-                                     JUNIOR, MIDDLE, PYTHON, SCALA, SENIOR, DEVELOPMENT, MANAGEMENT, DATA, QA)
+from backend.data.db.choices import (ANALYST, ARCHITECT, AUTO, BACKEND, CPLUSPLUS, ENGINEER, FRONTEND, HR, INTERN, JAVA,
+                                     JUNIOR, MANUAL, MIDDLE, PM, PYTHON, SCALA, SCIENTIST, SENIOR, DEVELOPMENT, MANAGEMENT, DATA, QA)
 
 MAIN_MENU = 1
 GET_VACANCIES_MENU = 2
@@ -20,10 +20,10 @@ LANGUAGE_LIST = {PYTHON: 'Python',JAVA: 'Java' , CPLUSPLUS:'C++', SCALA:'Scala'}
 CITIES_LIST = ['Odessa', 'Kyiv', 'Kharkiv', 'Lviv']
 SALARIES_LIST = ['0-1000', '1000-2000', '3000-4000', '4000+']
 
-QA_OPTIONS = ['Manual', 'Automation']
-MANAGEMENT_OPTIONS = ['HR', 'PR']
-DATA_OPTIONS = ['Analyst', 'Scientist', 'Engineer']
-DEVELOPER_OPTIONS = ['Backend', 'Frontend']
+QA_OPTIONS = {MANUAL:'Manual', AUTO: 'Automation'}
+MANAGEMENT_OPTIONS = {HR:'HR', PM: 'PR'}
+DATA_OPTIONS = {ANALYST:'Analyst', SCIENTIST:'Scientist', ENGINEER:'Engineer'}
+DEVELOPER_OPTIONS = {BACKEND:'Backend', FRONTEND:'Frontend'}
 
 SAVE_BUTTON = 'Save'
 BACK_BUTTON = 'Back'

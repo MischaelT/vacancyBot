@@ -143,7 +143,7 @@ async def developer_keyboard():
 
     for sub_category in categories:
 
-        button_text = f'{sub_category}'
+        button_text = f'{categories[sub_category]}'
         callback_data = make_callback_data(category=sub_category)
 
         markup.insert(
@@ -192,7 +192,7 @@ async def qa_keyboard():
 
     for sub_category in categories:
 
-        button_text = f'{sub_category}'
+        button_text = f'{categories[sub_category]}'
         callback_data = make_callback_data(category=sub_category)
 
         markup.insert(
@@ -217,7 +217,7 @@ async def management_keyboard():
 
     for sub_category in categories:
 
-        button_text = f'{sub_category}'
+        button_text = f'{categories[sub_category]}'
         callback_data = make_callback_data(category=sub_category)
 
         markup.insert(
@@ -242,7 +242,7 @@ async def data_keyboard():
 
     for sub_category in categories:
 
-        button_text = f'{sub_category}'
+        button_text = f'{categories[sub_category]}'
         callback_data = make_callback_data(category=sub_category)
 
         markup.insert(

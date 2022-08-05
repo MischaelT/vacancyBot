@@ -16,7 +16,6 @@ class UserSettings(StatesGroup):
     qa = State()
     management = State()
     data = State()
-    specialisation = State()
     salary = State()
     save = State()
     save_process = State()

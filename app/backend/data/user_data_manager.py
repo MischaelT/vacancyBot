@@ -48,21 +48,14 @@ class User_data_manager():
 
         if user.is_registered:
 
-            params = (user.area, user.specialisation, user.experience, user.language, user.location, user.salary, user.user_id)
+            params = (user.area, user.position, user.experience, user.language, user.location, user.salary, user.user_id)
+            self.db.update_user(params=params)
 
-            query = '''UPDATE users
-                        SET area=%s, specialisation=%s, exp=%s,lang=%s, city=%s, salary=%s
-                        WHERE id='%s'
-                 '''
         else:
 
-            params = (user.user_id, user.is_registered, user.area, user.specialisation, user.experience, user.language, user.location, user.salary)
-
-            query = '''INSERT INTO users (id, is_registered, area, specialisation, exp, lang, city, salary)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                    '''
-
-        self.db.push_data(query, params)
+            user.is_registered = True
+            params = (user.user_id, user.is_registered, user.area, user.position, user.experience, user.language, user.location, user.salary)
+            self.db.create_user(params)
 
     def __get_user_by_id(self, user_id: int) -> User:
 
@@ -79,9 +72,8 @@ class User_data_manager():
         """
 
         params = (user_id,)
-        query = """SELECT * FROM users WHERE ID='%s' """
 
-        user_data = self.db.get_data(query, params=params)
+        user_data = self.db.get_user_by_id(params=params)
 
         if len(user_data) == 0:
 
@@ -89,7 +81,7 @@ class User_data_manager():
                         user_id=user_id,
                         is_registered=False,
                         area='',
-                        specialisation='',
+                        position='',
                         experience='',
                         language='',
                         location='',
@@ -102,7 +94,7 @@ class User_data_manager():
                         user_id=user_id,
                         is_registered=True,
                         area=user_data[2],
-                        specialisation=user_data[3],
+                        position=user_data[3],
                         experience=user_data[4],
                         language=user_data[5],
                         location=user_data[6],

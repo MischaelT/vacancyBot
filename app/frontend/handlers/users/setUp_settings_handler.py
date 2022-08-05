@@ -6,7 +6,7 @@ from aiogram.dispatcher import FSMContext
 from backend.data.db.choices import DATA, DEVELOPMENT, MANAGEMENT, QA
 from frontend.handlers.users.main_handler import settings_menu
 
-from frontend.data.consts import AREAS_LIST, EXPERIENCES_LIST, LANGUAGE_LIST
+from frontend.data.consts import AREAS_LIST, DATA_OPTIONS, DEVELOPER_OPTIONS, EXPERIENCES_LIST, LANGUAGE_LIST, MANAGEMENT_OPTIONS, QA_OPTIONS
 from frontend.data.dialogs import (AREA_DIALOGS, LOCATION_DIALOG, DATA_DIALOG, DEVELOPER_DIALOG, EXPERIENCE_DIALOGS,
                                    LANGUAGE_DIALOG, MANAGEMENT_DIALOG, QA_DIALOG,SALARY_DIALOG)
 
@@ -175,10 +175,10 @@ async def language_menu(message: types.CallbackQuery, state: FSMContext, **kwarg
         state (FSMContext): FSMState for current handler
     """
 
-    specialisation = message.data.split(':')[2]
+    position = message.data.split(':')[2]
 
     async with state.proxy() as data:
-        data["specialisation"] = specialisation
+        data["position"] = position
 
     markup = await language_keyboard()
 
@@ -203,10 +203,10 @@ async def salary_menu(message: types.CallbackQuery, state: FSMContext, **kwargs)
 
     if area == MANAGEMENT:
         
-        specialisation = message.data.split(':')[2]
+        position = message.data.split(':')[2]
 
         async with state.proxy() as data:
-            data["specialisation"] = specialisation
+            data["position"] = position
 
     else:
 
@@ -266,13 +266,13 @@ async def save_menu(message: types.CallbackQuery, state: FSMContext, **kwargs):
         salary = data["salary"]
         experience = data['experience']
         area = data['area']
-        specialisation = data['specialisation']
+        position = data['position']
 
 
     if area == MANAGEMENT:
 
         text = f"Your area: {AREAS_LIST[area]},\
-        \nSpecialisation: {specialisation}\
+        \nSpecialisation: {position}\
         \nExperience: {experience}\
         \nLocation: {location}\
         \nSalary: {salary}\
@@ -284,7 +284,7 @@ async def save_menu(message: types.CallbackQuery, state: FSMContext, **kwargs):
 
             language = LANGUAGE_LIST[data["language"]]
             text = f"Your area: {AREAS_LIST[area]}\
-            \nSpecialisation: {specialisation}\
+            \nSpecialisation: {position}\
             \nLanguage: {language}\
             \nExperience: {experience}\
             \nLocation: {location}\
@@ -314,20 +314,32 @@ async def save_process(message: types.CallbackQuery, state: FSMContext, **kwargs
         salary = data["salary"]
         experience = data['experience']
         area = data['area']
-        specialisation = data['specialisation']
+        position = data['position']
 
         
     user = backend_manager.user_data_manager.get_user(message.from_user.id)  
 
-
-    if area != MANAGEMENT:
-        language = data['language']  
-        user.language = LANGUAGE_LIST[language]    
-
     user.area = area
-    user.specialisation = specialisation
-    user.location = location
+
+    if area == DEVELOPMENT:
+        language = data['language']  
+        user.language = language
+        user.position = position
+    elif area == QA:
+        language = data['language']  
+        user.language = language
+        user.position = position
+    elif area == DATA:
+        language = data['language']  
+        user.language = language
+        user.position = position
+    else:
+        user.language = 'language' 
+        user.position = position
+
     user.experience = EXPERIENCES_LIST[experience]
+
+    user.location = location
     user.salary = salary
 
     backend_manager.user_data_manager.set_user(user)

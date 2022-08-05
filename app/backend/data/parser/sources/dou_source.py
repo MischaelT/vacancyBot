@@ -1,12 +1,11 @@
 import requests
-from backend.data.vacancy_data_manager import VacanciesManager
+from backend.data.db.choices import BACKEND, DEVELOPMENT
+
 from backend.data.parser.sources.base_source import BaseSource
 
 from bs4 import BeautifulSoup
 
-from backend.data.parser.consts import (DATA, djinni_exp_levels,
-                                        djinni_languages, dou_exp_levels,
-                                        dou_languages)
+from backend.data.parser.sources.consts import DOU_DATA
 
 import asyncio
 import logging
@@ -16,8 +15,36 @@ class DouSource(BaseSource):
 
     def __init__(self) -> None:
 
+        self.settings: dict = DOU_DATA
+
+        self.languages = self.settings['dou_languages']
+        self.experiences = self.settings['dou_exp_levels']
+
+        self.root = self.settings['root']
+        self.basepoint = self.settings['basepoint']
+
+
         super().__init__()
 
+    def make_futures(self, page):
+
+        """
+            Method generates list of asyncio tasks.
+            Randomly adds asyncio.sleep() task to be polite to server
+
+        Returns:
+            list: task list
+        """
+
+        tasks = []
+
+        for language in self.languages:
+            for exp in self.experiences:
+
+                task = asyncio.ensure_future(self.get_content(page, language, exp))
+                tasks.append(task)
+
+        return tasks
 
     async def get_content(self, page: int, language: str, experience: str):
         """
@@ -32,49 +59,26 @@ class DouSource(BaseSource):
 
         logging.info(f'parse dou: page: {page}, language: {language}, experience: {experience}')
 
-        self.headers['User-Agent'] = random.choice(self.user_agents_list)
-        self.proxy['http'] += random.choice(self.proxies_list)
+        proxy = 'http//:'+random.choice(self.proxies_list)
+        header = random.choice(self.user_agents_list)
 
-        settings = DATA.get('dou')
+        headers = {'User-Agent': header}
+        proxies = {'http': proxy}
 
-        basepoint = settings.get('basepoint')
-        endpoint = settings.get('endpoint')
-        params = settings.get('params')
+        params = {}
 
         params['page'] = page
+        params['exp'] = experience
+        params['category'] = language
 
-        params['exp'] = list(experience.keys())[0]
-        params['category'] = list(language.keys())[0]
+        url = self.basepoint+self.basepoint
 
-
-        response = requests.get(basepoint+endpoint, headers=self.headers, params=params, proxies=self.proxy)
+        response = requests.get(url, headers=headers, params=params, proxies=proxies)
         response.raise_for_status()
 
         self.parse_content(content=response.text,
-                           language=list(language.values())[0],
-                           experience=list(experience.values())[0])
-
-
-
-    def make_futures(self, page):
-
-        """
-            Method generates list of asyncio tasks.
-            Randomly adds asyncio.sleep() task to be polite to server
-
-        Returns:
-            list: task list
-        """
-
-        tasks = []
-
-        for language in dou_languages:
-            for exp in dou_exp_levels:
-
-                task = asyncio.ensure_future(self.get_content(page, language, exp))
-                tasks.append(task)
-
-        return tasks
+                           language=language,
+                           experience=experience)
 
     def parse_content(self, content: str, language: str, experience: str) -> None:
     
@@ -106,11 +110,9 @@ class DouSource(BaseSource):
                     'link': link,
                     'language': language,
                     'experience': experience,
-                    'salary': ''
+                    'area': DEVELOPMENT,
+                    'remote': 'remote',
+                    'position': BACKEND
                     }
 
             self.parsed_data.append(data)
-
-
-
-

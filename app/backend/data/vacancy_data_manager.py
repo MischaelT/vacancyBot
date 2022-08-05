@@ -1,5 +1,6 @@
 from typing import List, Union
 import unicodedata
+from backend.data.db.choices import ANALYST, ANDROID, AUTO, BLOCKCHAIN, DATA, DEVOPS, ENGINEER, MANUAL, QA, SCIENTIST
 
 from backend.data.db.postgres import Postgres_db
 from backend.models.user import User
@@ -55,7 +56,9 @@ class VacanciesManager():
         return vacancies
 
     def preprocess_vacancy_data(self, parsed_data:List[dict]):
+
         for vacancy_data in parsed_data:
+
             vacancy_data['info'] = re.sub('/[\r\n]+/g', '\n', vacancy_data['info'])
             vacancy_data['info'] = re.sub(" +", " ", vacancy_data['info'])
 
@@ -68,44 +71,46 @@ class VacanciesManager():
             vacancy_data['title'] = unicodedata.normalize("NFKD", vacancy_data['title'])
 
             if 'devops' in title_text:
-                vacancy_data['language'] = 'DevOps'
+                vacancy_data['area'] = DEVOPS
+                vacancy_data['position'] = DEVOPS
 
             for word in ['kotlin', 'android']:
                 if word in title_text:
-                    vacancy_data['language'] = 'Android'
+                    vacancy_data['language'] = ANDROID
+                    vacancy_data['position'] = ANDROID
 
-            for word in ['data', 'ml', 'deep', 'analyst', 'learning']:
-                if word in title_text:
-                    vacancy_data['language'] = 'Data'
+            for word in ['data', 'ml', 'deep', 'analyst', 'learning', 'engineer']:
 
-            for word in ['qa', 'test', 'automation']:
                 if word in title_text:
-                    vacancy_data['language'] = 'QA'
+
+                    vacancy_data['area'] = DATA
+
+                    if word == 'analyst':
+                        vacancy_data['position'] = ANALYST
+                    elif word == 'engineer':
+                        vacancy_data['position'] = ENGINEER  
+                    else:
+                        vacancy_data['position'] = SCIENTIST                         
+
+            for word in ['qa', 'test', 'automation', 'manual']:
+
+                if word in title_text:
+
+                    vacancy_data['area'] = QA
+
+                    if word == 'automation':
+                        vacancy_data['position'] = AUTO
+                    if word == 'manual':
+                        vacancy_data['position'] = MANUAL
 
             for word in ['blockchain', 'solidity']:
                 if word in title_text:
-                    vacancy_data['language'] = 'blockchain'
+                    vacancy_data['area'] = BLOCKCHAIN
 
-            vacancy_data['id'] = '0'
-            vacancy_data['area'] = 'developer'
             vacancy_data['company_name'] = 'COMPANY_NAME'
-            vacancy_data['remote'] = 'remote'
             vacancy_data['salary'] = 1000
             vacancy_data['country'] = 'ukraine'
             vacancy_data['is_actual'] = True
-
-
-    def refresh_db(self, new_data: List[Vacancy]):
-
-        query = '''SELECT *
-                   FROM vacancies
-                   WHERE IS_ACTUAL=TRUE
-                    '''
-        params = ()
-
-        old_data = self.db.get_data(query=query,params=params)
-        logging.debug(old_data)
-        old_vacancies = self.data_to_vacancies(old_data)
 
 
     def push_to_db(self, vacancies: List[Vacancy]):
@@ -116,6 +121,7 @@ class VacanciesManager():
                 vacancy.info,
                 vacancy.language,
                 vacancy.area,
+                vacancy.position,
                 vacancy.experience,
                 vacancy.company_name,
                 vacancy.country,
@@ -140,12 +146,13 @@ class VacanciesManager():
             list: list of vacancy models
         """
 
+        logging.debug('HERE')
+
         vacancies = []
 
-        params = (user.experience, user.language)
+        params = (user.experience, user.language, user.area, user.position)
 
         vacancies_data = self.db.get_vacancies_data(params=params)
-        logging.debug(vacancies_data)
 
         for vacancy_data in vacancies_data:
 
@@ -165,32 +172,35 @@ class VacanciesManager():
             Vacancy: vacancy model
         """
 
+        logging.debug(data)
+
         if isinstance(data, tuple):
 
             vacancy = Vacancy(
-                id=data[0],
+                id_=data[0],
                 title=data[1],
                 info=data[2],
                 language=data[3],                
                 area=data[4],
-                experience=data[5],
-                company_name=data[6],
-                country=data[7],
-                city=data[8],
-                remote=data[9],
-                salary=data[10],
-                link=data[11],
-                is_actual= data[11],
+                position=data[5],
+                experience=data[6],
+                company_name=data[7],
+                country=data[8],
+                city=data[9],
+                remote=data[10],
+                salary=data[11],
+                link=data[12],
+                is_actual= data[13],
             )
 
         elif isinstance(data, dict):
 
             vacancy = Vacancy(
-                id_ = data['id'],
                 title = data['title'],
                 info = data['info'],
                 language = data['language'] ,
                 area = data['area'],
+                position = data['position'],
                 experience = data['experience'],
                 company_name = data['company_name'],
                 country = data['country'],

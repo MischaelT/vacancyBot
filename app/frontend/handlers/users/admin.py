@@ -5,6 +5,7 @@ from frontend.handlers.users.start import bot_start
 
 from settings.config import ADMINS
 
+from settings.backend_setup import backend_manager
 
 async def show_admin_panel(message: types.Message):
 
@@ -15,6 +16,7 @@ async def show_admin_panel(message: types.Message):
     if user_id in ADMINS:
         markup = await admin_keyboard()
         text = 'Hello, admin'
+        await backend_manager.run_general_parsing()
         await message.answer(text=text, reply_markup=markup)
     else: 
         await bot_start(message=message)
