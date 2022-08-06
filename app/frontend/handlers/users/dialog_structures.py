@@ -1,9 +1,15 @@
 from aiogram import types
-from frontend.handlers.users.setUp_settings_handler import data_menu, developer_menu, experience_menu, management_menu, qa_menu, area_menu, save_menu
 
-from frontend.handlers.users.main_handler import give_vacancies, main_menu, settings_menu, show_my_settings
+from frontend.handlers.users.main_handler import (give_vacancies, main_menu,
+                                                  settings_menu,
+                                                  show_my_settings)
+from frontend.handlers.users.setUp_settings_handler import (area_menu,
+                                                            data_menu,
+                                                            developer_menu,
+                                                            management_menu,
+                                                            qa_menu, save_menu)
 
- 
+
 async def dialog_structure(call: types.CallbackQuery, callback_data: dict):
 
     """

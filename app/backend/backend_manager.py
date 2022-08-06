@@ -1,4 +1,3 @@
-import asyncio
 import logging
 
 from backend.data.db.postgres import Postgres_db

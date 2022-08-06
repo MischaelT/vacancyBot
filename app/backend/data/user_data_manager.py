@@ -48,13 +48,32 @@ class User_data_manager():
 
         if user.is_registered:
 
-            params = (user.area, user.position, user.experience, user.language, user.location, user.salary, user.user_id)
+            params = (
+                        user.area,
+                        user.position,
+                        user.experience,
+                        user.language,
+                        user.location,
+                        user.salary,
+                        user.user_id
+                    )
+
             self.db.update_user(params=params)
 
         else:
 
             user.is_registered = True
-            params = (user.user_id, user.is_registered, user.area, user.position, user.experience, user.language, user.location, user.salary)
+            params = (
+                        user.user_id,
+                        user.is_registered,
+                        user.area,
+                        user.position,
+                        user.experience,
+                        user.language,
+                        user.location,
+                        user.salary
+                    )
+
             self.db.create_user(params)
 
     def __get_user_by_id(self, user_id: int) -> User:

@@ -1,5 +1,7 @@
-from frontend.data.consts import AREAS_LIST
 from backend.data.db.choices import MANAGEMENT
+
+from frontend.data.consts import AREAS_LIST
+
 
 class User():
 
@@ -29,7 +31,7 @@ class User():
             \nDesired salary: {self.salary}
             \nDesired location: {self.location}
                     """
-        else: 
+        else:
             text = f"""
             Area: {self.area}
             \nSpecialisation: {self.position}

@@ -1,15 +1,15 @@
-import requests
-from backend.data.db.choices import BACKEND, DEVELOPMENT
-
-from backend.data.parser.sources.base_source import BaseSource
-
-from bs4 import BeautifulSoup
-
-from backend.data.parser.sources.consts import DOU_DATA
-
 import asyncio
 import logging
 import random
+
+from backend.data.db.choices import BACKEND, DEVELOPMENT
+from backend.data.parser.sources.base_source import BaseSource
+from backend.data.parser.sources.consts import DOU_DATA
+
+from bs4 import BeautifulSoup
+
+import requests
+
 
 class DouSource(BaseSource):
 
@@ -22,7 +22,6 @@ class DouSource(BaseSource):
 
         self.root = self.settings['root']
         self.basepoint = self.settings['basepoint']
-
 
         super().__init__()
 
@@ -81,7 +80,7 @@ class DouSource(BaseSource):
                            experience=experience)
 
     def parse_content(self, content: str, language: str, experience: str) -> None:
-    
+
         """
             Method parses vacancies from dou.ua content
 

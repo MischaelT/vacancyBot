@@ -1,63 +1,60 @@
-from backend.data.vacancy_data_manager import VacanciesManager
 from backend.data.parser.sources.base_source import BaseSource
+from backend.data.vacancy_data_manager import VacanciesManager
 
 from bs4 import BeautifulSoup
+
+import requests
 
 
 class WorkUaSource(BaseSource):
 
-    def __init__(self, manager:VacanciesManager) -> None:
+    def __init__(self, manager: VacanciesManager) -> None:
 
         self.manager = manager
         super().__init__()
 
+    def parse_workUa_data(content, basepoint) -> None:
 
-    def parse_content(self, content: str, basepoint: str, language: str, experience: str) -> None:  # noqa
+        soup = BeautifulSoup(content, 'html.parser')
+        vacancies = soup.find_all('div', class_='card card-hover card-visited wordwrap job-link')
 
-        pass
-        
-# def parse_workUa_data(content, basepoint) -> None:
+        for vacancy in vacancies:
 
-#     soup = BeautifulSoup(content, 'html.parser')
-#     vacancies = soup.find_all('div', class_='card card-hover card-visited wordwrap job-link')
+            title = vacancy.find('h2').text.strip()
+            info = vacancy.find('p', class_='overflow text-muted add-top-sm cut-bottom').text.strip()
+            link = basepoint + vacancy.find('a', class_='no-decoration')['href']
+            # remote = vacancy.find('span', class_ = "icon icon-home_work").next_sibling.text.strip()
+            # parsed_info_salary = self.__parse_workUa_vacancy(link)
 
-#     for vacancy in vacancies:
+            # info = parsed_info_salary['info']
+            # salary = parsed_info_salary['salary']
+            salary = ''
+            data = {'title': title, 'city': '', 'info': info, 'link': link, 'salary': salary}
 
-#         title = vacancy.find('h2').text.strip()
-#         info = vacancy.find('p', class_='overflow text-muted add-top-sm cut-bottom').text.strip()
-#         link = basepoint + vacancy.find('a', class_='no-decoration')['href']
-#         # remote = vacancy.find('span', class_ = "icon icon-home_work").next_sibling.text.strip()
-#         # parsed_info_salary = self.__parse_workUa_vacancy(link)
+        return data
 
-#         # info = parsed_info_salary['info']
-#         # salary = parsed_info_salary['salary']
-#         salary = ''
-#         data = {'title': title, 'city': '', 'info': info, 'link': link, 'salary': salary}
+    async def parse_workUa_vacancy(self, link) -> dict:
 
-#     return data
+        response = requests.get(link, headers=self.headers)
 
-# async def parse_workUa_vacancy(self, link) -> dict:
+        response.raise_for_status()
 
-#     response = requests.get(link, headers=self.headers)
+        soup = BeautifulSoup(response.text, 'html.parser')
 
-#     response.raise_for_status()
+        result = {}
 
-#     soup = BeautifulSoup(response.text, 'html.parser')
+        try:
+            info = soup.find('div', id='job-description').text
+        except AttributeError:
+            info = ''
 
-#     result = {}
+        result['info'] = info
 
-#     try:
-#         info = soup.find('div', id='job-description').text
-#     except AttributeError:
-#         info = ''
+        try:
+            salary = soup.find('b', class_='text-black').text
+        except AttributeError:
+            salary = ''
 
-#     result['info'] = info
+        result['salary'] = salary
 
-#     try:
-#         salary = soup.find('b', class_='text-black').text
-#     except AttributeError:
-#         salary = ''
-
-#     result['salary'] = salary
-
-#     return result
+        return result

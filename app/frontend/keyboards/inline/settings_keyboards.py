@@ -1,10 +1,12 @@
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.callback_data import CallbackData
 
-from frontend.data.consts import (AREA_DEVELOPER, AREA_DS, AREA_MANAGEMENT, AREA_QA, AREAS_LIST, CITIES_LIST, DATA_OPTIONS,
-                                  DEVELOPER_OPTIONS, EXPERIENCES_LIST, LANGUAGE_LIST,
-                                  MANAGEMENT_OPTIONS, QA_OPTIONS, SALARIES_LIST,
-                                  SAVE_BUTTON, SETTINGS_MENU)
+from frontend.data.consts import (AREA_DEVELOPER, AREA_DS, AREA_MANAGEMENT,
+                                  AREA_QA, AREAS_LIST, CITIES_LIST,
+                                  DATA_OPTIONS, DEVELOPER_OPTIONS,
+                                  EXPERIENCES_LIST, LANGUAGE_LIST,
+                                  MANAGEMENT_OPTIONS, QA_OPTIONS,
+                                  SALARIES_LIST, SAVE_BUTTON, SETTINGS_MENU)
 
 menu_cd = CallbackData("show_menu", "level", "category")
 
@@ -15,6 +17,7 @@ def make_callback_data(level=0, category='0'):
 
 
 """General settings keyboards"""
+
 
 async def area_keyboard():
 
@@ -58,6 +61,7 @@ async def area_keyboard():
     )
     return markup
 
+
 async def experience_keyboard():
 
     """
@@ -81,6 +85,7 @@ async def experience_keyboard():
 
     return markup
 
+
 async def city_keyboard():
 
     """
@@ -103,6 +108,7 @@ async def city_keyboard():
         )
 
     return markup
+
 
 async def salary_keyboard():
 
@@ -129,6 +135,7 @@ async def salary_keyboard():
 
 """DEVELOPERS SETTINGS KEYBOARDS"""
 
+
 async def developer_keyboard():
 
     """
@@ -151,6 +158,7 @@ async def developer_keyboard():
         )
 
     return markup
+
 
 async def language_keyboard():
 
@@ -178,6 +186,7 @@ async def language_keyboard():
 
 """QA SETTINGS KEYBOARDS"""
 
+
 async def qa_keyboard():
 
     """
@@ -202,6 +211,7 @@ async def qa_keyboard():
     return markup
 
 """MANAGEMENT SETTINGS KEYBOARDS"""
+
 
 async def management_keyboard():
 
@@ -228,6 +238,7 @@ async def management_keyboard():
 
 """MANAGEMENT SETTINGS KEYBOARDS"""
 
+
 async def data_keyboard():
 
     """
@@ -253,6 +264,7 @@ async def data_keyboard():
 
 
 """Service Keyboards"""
+
 
 async def save_keyboard():
 

@@ -27,5 +27,5 @@ BLOCKCHAIN = 'blockchain'
 DEVOPS = 'devops'
 ANDROID = 'android'
 
-BACKEND = 'backend' 
-FRONTEND = 'frontend' 
+BACKEND = 'backend'
+FRONTEND = 'frontend'

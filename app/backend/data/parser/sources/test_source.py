@@ -1,15 +1,13 @@
-from asyncio import futures
-import requests
+import logging
+import random
+
 from backend.data.db.choices import DEVELOPMENT
 from backend.data.parser.sources.base_source import BaseSource
+from backend.data.parser.sources.consts import DJINNI_DATA
 
 from bs4 import BeautifulSoup
 
-from backend.data.parser.sources.consts import DJINNI_DATA
-
-import asyncio
-import logging
-import random
+import requests
 
 
 class TestSource(BaseSource):
@@ -29,7 +27,6 @@ class TestSource(BaseSource):
 
     def make_futures(self):
         pass
-
 
     def get_dev_vacancies(self, page: int, language: dict, experience: dict):
 
@@ -69,7 +66,7 @@ class TestSource(BaseSource):
                             )
 
     def parse_dev_content(self, content: str, language: str, experience: str) -> None:  # noqa
-        
+
         """
             Method parses vacancies from djinni.ua content
 
@@ -108,7 +105,7 @@ class TestSource(BaseSource):
                     'language': language,
                     'experience': experience,
                     'remote': remote,
-                    'area': DEVELOPMENT,   
+                    'area': DEVELOPMENT,
                 }
 
             self.parsed_data.append(data)

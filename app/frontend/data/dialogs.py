@@ -2,8 +2,8 @@ MAIN_MENU_DIALOGS = ['Welcome, ', "Let's find a job for you"]
 
 SETTINGS_DIALOGS = ['Lets change your settings', 'Settings']
 
-AREA_DIALOGS = [ 'Seems you are new to our system\nLets set up your settings\nPlease choose the area of your interests',
-                'What is the area of your interests?', ]
+AREA_DIALOGS = ['Seems you are new to our system\nLets set up your settings\nPlease choose the area of your interests',
+                'What is the area of your interests?']
 
 EXPERIENCE_DIALOGS = 'Please, choose your experience'
 

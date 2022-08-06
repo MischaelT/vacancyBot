@@ -1,15 +1,13 @@
-import logging
 from aiogram import types
-from frontend.keyboards.inline.admin_keyboard import admin_keyboard
-from frontend.handlers.users.start import bot_start
 
-from settings.config import ADMINS
+from frontend.handlers.users.start import bot_start
+from frontend.keyboards.inline.admin_keyboard import admin_keyboard
 
 from settings.backend_setup import backend_manager
+from settings.config import ADMINS
+
 
 async def show_admin_panel(message: types.Message):
-
-
 
     user_id = str(message.from_user.id)
 
@@ -18,7 +16,5 @@ async def show_admin_panel(message: types.Message):
         text = 'Hello, admin'
         await backend_manager.run_general_parsing()
         await message.answer(text=text, reply_markup=markup)
-    else: 
+    else:
         await bot_start(message=message)
-
-

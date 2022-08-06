@@ -1,14 +1,15 @@
-import requests
-from backend.data.db.choices import BACKEND, DEVELOPMENT, MANAGEMENT
-from backend.data.parser.sources.base_source import BaseSource
-
-from bs4 import BeautifulSoup
-
-from backend.data.parser.sources.consts import DJINNI_DATA
-
 import asyncio
 import logging
 import random
+
+from backend.data.db.choices import BACKEND, DEVELOPMENT, MANAGEMENT
+from backend.data.parser.sources.base_source import BaseSource
+from backend.data.parser.sources.consts import DJINNI_DATA
+
+from bs4 import BeautifulSoup
+
+import requests
+
 
 class DjinniSource(BaseSource):
 
@@ -40,11 +41,11 @@ class DjinniSource(BaseSource):
         for experience in self.experiences:
 
             for position in self.nonDev_positions:
-                task = asyncio.ensure_future(self.get_nonDev_vacancies(page=page, position=position, experience=experience))
+                task = asyncio.ensure_future(self.get_nonDev_vacancies(page=page, position=position, experience=experience))  # noqa
                 tasks.append(task)
 
             for language in self.languages:
-                task = asyncio.ensure_future(self.get_dev_vacancies(page=page, language=language, experience=experience))
+                task = asyncio.ensure_future(self.get_dev_vacancies(page=page, language=language, experience=experience))  # noqa
                 tasks.append(task)
 
         return tasks
@@ -87,7 +88,7 @@ class DjinniSource(BaseSource):
                             )
 
     def parse_dev_content(self, content: str, language: str, experience: str) -> None:  # noqa
-        
+
         """
             Method parses vacancies from djinni.ua content
 
@@ -132,7 +133,7 @@ class DjinniSource(BaseSource):
 
             self.parsed_data.append(data)
 
-    async def get_nonDev_vacancies(self, page: int, position:str, experience: dict):
+    async def get_nonDev_vacancies(self, page: int, position: str, experience: dict):
 
         logging.info(f'parse {position}: page: {page}, experience: {experience}')
 
@@ -156,12 +157,12 @@ class DjinniSource(BaseSource):
         self.parse_nonDev_content(
                             response.text,
                             experience=self.experiences[experience],
-                            position = self.nonDev_positions[position]
+                            position=self.nonDev_positions[position]
                             )
 
 
     def parse_nonDev_content(self, content: str, experience: str, position) -> None:  # noqa
-        
+
         """
             Method parses vacancies from djinni.ua content
 

@@ -1,14 +1,16 @@
 import logging
+
 from aiogram import Bot, Dispatcher, executor, types
 # from aiogram.contrib.fsm_storage.redis import RedisStorage2
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
+
 from backend.backend_manager import Backend_manager
 
 from frontend.utils.notify_admins import on_startup_notify
 from frontend.utils.set_bot_commands import set_default_commands
+# from frontend.data.config import REDIS_HOST, REDIS_PASSWORD, REDIS_PORT
 
 from settings import config
-# from frontend.data.config import REDIS_HOST, REDIS_PASSWORD, REDIS_PORT
 
 
 class VacancyBot:

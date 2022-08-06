@@ -1,14 +1,13 @@
 from typing import Union
 
 from aiogram import types
-from frontend.utils.states.settings_states import UserSettings
 
 from frontend.data.consts import SETTINGS_MENU
-from frontend.data.dialogs import (MAIN_MENU_DIALOGS, SETTINGS_DIALOGS)
+from frontend.data.dialogs import MAIN_MENU_DIALOGS, SETTINGS_DIALOGS
 from frontend.handlers.users.vacancies import get_vacancies
 from frontend.keyboards.inline.back_keyboard import back_keyboard
-from frontend.keyboards.inline.main_keyboard import main_keyboard,settings_keyboard
-
+from frontend.keyboards.inline.main_keyboard import (main_keyboard,
+                                                     settings_keyboard)
 
 from settings.backend_setup import backend_manager
 
@@ -65,6 +64,7 @@ async def settings_menu(message: Union[types.Message, types.CallbackQuery], **kw
     elif isinstance(message, types.CallbackQuery):
         call = message
         await call.message.edit_text(text=SETTINGS_DIALOGS[1], reply_markup=markup)
+
 
 async def show_my_settings(message: types.CallbackQuery, **kwargs):
 

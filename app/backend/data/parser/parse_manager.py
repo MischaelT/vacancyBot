@@ -1,10 +1,11 @@
 import asyncio
+import logging
 import random
 from asyncio.events import new_event_loop, set_event_loop
+
 from backend.data.parser.sources.djinni_source import DjinniSource
 from backend.data.parser.sources.dou_source import DouSource
 
-import logging
 
 class ParseManager:
 
@@ -27,7 +28,7 @@ class ParseManager:
         set_event_loop(loop)
 
         page = 0
-        
+
         while True:
 
             page += 1
@@ -43,9 +44,7 @@ class ParseManager:
 
         logging.debug('Parsing')
 
-
         return parsed_data
-
 
     def __add_tasks(self, page: int) -> list:
 
@@ -81,5 +80,3 @@ class ParseManager:
                 tasks.append(task)
 
         return tasks
-
-
