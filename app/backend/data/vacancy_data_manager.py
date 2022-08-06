@@ -4,7 +4,8 @@ import unicodedata
 from typing import List, Union
 
 from backend.data.db.choices import (ANALYST, ANDROID, AUTO, BLOCKCHAIN, DATA,
-                                     DEVOPS, ENGINEER, MANUAL, QA, SCIENTIST)
+                                     DEVOPS, ENGINEER, FRONTEND, MANUAL,
+                                     SCIENTIST, TEST)
 from backend.data.db.postgres import Postgres_db
 from backend.models.user import User
 from backend.models.vacancy import Vacancy
@@ -77,6 +78,10 @@ class VacanciesManager():
                     vacancy_data['language'] = ANDROID
                     vacancy_data['position'] = ANDROID
 
+            for word in ['front', 'frrontend', 'front-end']:
+                if word in title_text:
+                    vacancy_data['area'] = FRONTEND
+
             for word in ['data', 'ml', 'deep', 'analyst', 'learning', 'engineer']:
 
                 if word in title_text:
@@ -94,7 +99,7 @@ class VacanciesManager():
 
                 if word in title_text:
 
-                    vacancy_data['area'] = QA
+                    vacancy_data['area'] = TEST
 
                     if word == 'automation':
                         vacancy_data['position'] = AUTO

@@ -1,6 +1,8 @@
-from backend.data.db.choices import MANAGEMENT
+from backend.data.db.choices import DEVELOPMENT, MANAGEMENT, TEST
 
-from frontend.data.consts import AREAS_LIST
+from frontend.data.consts import (AREAS_LIST, DEVELOPER_OPTIONS,
+                                  EXPERIENCES_LIST, LANGUAGE_LIST,
+                                  MANAGEMENT_OPTIONS, QA_OPTIONS)
 
 
 class User():
@@ -23,21 +25,30 @@ class User():
     def to_print(self):
 
         if self.area == MANAGEMENT:
+            specialisation = MANAGEMENT_OPTIONS[self.position]
+        elif self.area == DEVELOPMENT:
+            specialisation = DEVELOPER_OPTIONS[self.position]
+        elif self.area == TEST:
+            specialisation = QA_OPTIONS[self.position]
+        elif self.area == MANAGEMENT:
+            specialisation = QA_OPTIONS[self.position]
 
+        if self.area == MANAGEMENT:
             text = f"""
             Area: {AREAS_LIST[self.area]}
-            \nSpecialisation: {self.position}
-            \nExperience: {self.experience}
+            \nSpecialisation: {specialisation}
+            \nExperience: {EXPERIENCES_LIST[self.experience]}
             \nDesired salary: {self.salary}
             \nDesired location: {self.location}
                     """
         else:
             text = f"""
-            Area: {self.area}
-            \nSpecialisation: {self.position}
-            \nExperience: {self.experience}
-            \nLanguage: {self.language}
+            Area: {AREAS_LIST[self.area]}
+            \nSpecialisation: {specialisation}
+            \nExperience: {EXPERIENCES_LIST[self.experience]}
+            \nLanguage: {LANGUAGE_LIST[self.language]}
             \nDesired salary: {self.salary}
             \nDesired location: {self.location}
                     """
+
         return text

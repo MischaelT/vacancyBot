@@ -2,7 +2,7 @@ from backend.data.db.choices import (ANALYST, ARCHITECT, AUTO, BACKEND,
                                      CPLUSPLUS, DATA, DEVELOPMENT, ENGINEER,
                                      FRONTEND, HR, INTERN, JAVA, JUNIOR,
                                      MANAGEMENT, MANUAL, MIDDLE, PM, PYTHON,
-                                     QA, SCALA, SCIENTIST, SENIOR)
+                                     TEST, SCALA, SCIENTIST, SENIOR)
 
 MAIN_MENU = 1
 GET_VACANCIES_MENU = 2
@@ -17,7 +17,7 @@ AREA_QA = 13
 
 SETTINGS_MENU_LIST = ['My settings', 'Change settings']
 
-AREAS_LIST = {MANAGEMENT: 'Management', DEVELOPMENT: 'Development', DATA: 'Data Science', QA: 'QA'}
+AREAS_LIST = {MANAGEMENT: 'Management', DEVELOPMENT: 'Development', DATA: 'Data Science', TEST: 'QA'}
 EXPERIENCES_LIST = {INTERN: '0-1', JUNIOR: '1-2', MIDDLE: '2-4', SENIOR: '4-6', ARCHITECT: '6+'}
 LANGUAGE_LIST = {PYTHON: 'Python', JAVA: 'Java', CPLUSPLUS: 'C++', SCALA: 'Scala'}
 CITIES_LIST = ['Odessa', 'Kyiv', 'Kharkiv', 'Lviv']

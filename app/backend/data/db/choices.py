@@ -11,7 +11,7 @@ JAVA = 'java'
 
 DEVELOPMENT = 'dev'
 MANAGEMENT = 'management'
-QA = 'qa'
+TEST = 'qa'
 DATA = 'ds'
 
 PM = 'pm'

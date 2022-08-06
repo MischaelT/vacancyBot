@@ -4,7 +4,7 @@ from typing import Union
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
-from backend.data.db.choices import DATA, DEVELOPMENT, MANAGEMENT, QA
+from backend.data.db.choices import DATA, DEVELOPMENT, MANAGEMENT, TEST
 
 from frontend.data.consts import AREAS_LIST, EXPERIENCES_LIST, LANGUAGE_LIST
 from frontend.data.dialogs import (AREA_DIALOGS, DATA_DIALOG, DEVELOPER_DIALOG,
@@ -72,7 +72,7 @@ async def experience_menu(message: types.CallbackQuery, state: FSMContext, **kwa
         await UserSettings.management.set()
     elif area == DATA:
         await UserSettings.data.set()
-    elif area == QA:
+    elif area == TEST:
         await UserSettings.qa.set()
     elif area == DEVELOPMENT:
         await UserSettings.developer.set()
@@ -119,7 +119,7 @@ async def qa_menu(message: types.CallbackQuery, state: FSMContext, **kwargs):
 
     async with state.proxy() as data:
         data["experience"] = experience
-        data["area"] = QA
+        data["area"] = TEST
 
     markup = await qa_keyboard()
 
@@ -334,7 +334,7 @@ async def save_process(message: types.CallbackQuery, state: FSMContext, **kwargs
         language = data['language']
         user.language = language
         user.position = position
-    elif area == QA:
+    elif area == TEST:
         language = data['language']
         user.language = language
         user.position = position
