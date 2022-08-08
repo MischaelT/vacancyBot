@@ -3,7 +3,7 @@ version: '3.4'
 services:
 
   mainvacancybot:
-    image: mainvacancybot
+    image: mainvacancybot:tagged
     build:
       context: .
       dockerfile: ./Dockerfile
