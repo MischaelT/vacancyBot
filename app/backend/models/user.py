@@ -1,6 +1,6 @@
-from backend.data.db.choices import DEVELOPMENT, MANAGEMENT, TEST
+from backend.data.db.choices import DATA, DEVELOPMENT, MANAGEMENT, TEST
 
-from frontend.data.consts import (AREAS_LIST, DEVELOPER_OPTIONS,
+from frontend.data.consts import (AREAS_LIST, DATA_OPTIONS, DEVELOPER_OPTIONS,
                                   EXPERIENCES_LIST, LANGUAGE_LIST,
                                   MANAGEMENT_OPTIONS, QA_OPTIONS)
 
@@ -30,8 +30,8 @@ class User():
             specialisation = DEVELOPER_OPTIONS[self.position]
         elif self.area == TEST:
             specialisation = QA_OPTIONS[self.position]
-        elif self.area == MANAGEMENT:
-            specialisation = QA_OPTIONS[self.position]
+        elif self.area == DATA:
+            specialisation = DATA_OPTIONS[self.position]
 
         if self.area == MANAGEMENT:
             text = f"""

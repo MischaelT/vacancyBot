@@ -36,7 +36,7 @@ class Postgres_db():
 
     def create_user(self, params):
 
-        query = '''INSERT INTO users (id, is_registered, area, position, exp, lang, city, salary)  # noqa
+        query = '''INSERT INTO users (id, is_registered, area, position, exp, lang, city, salary)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                 '''
 
@@ -67,7 +67,7 @@ class Postgres_db():
             Method pushes data to database
         """
 
-        query = '''INSERT INTO vacancies (title, info, lang, area, position, exp, company_name, country, city, remote, salary, link, is_actual)  # noqa
+        query = '''INSERT INTO vacancies (title, info, lang, area, position, exp, company_name, country, city, remote, salary, link, is_actual)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
                 '''
         self._write(query, params)
@@ -177,6 +177,14 @@ class Postgres_db():
         except (Exception) as exception:
             logging.exception(f'There was a problem during creating connection: {str(exception)}')
 
+            connection = psycopg2.connect(
+                                        user=POSTGRES_USER,
+                                        password=POSTGRES_PASSWORD,
+                                        host=POSTGRES_HOST,
+                                        port=POSTGRES_PORT,
+                                        database=POSTGRES_DB
+                                        )
+                                        
         return connection
 
     def _write(self, query: str, params: tuple = ()) -> None:

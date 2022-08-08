@@ -2,7 +2,7 @@ from backend.data.db.choices import (ANALYST, ARCHITECT, AUTO, BACKEND,
                                      CPLUSPLUS, DATA, DEVELOPMENT, ENGINEER,
                                      FRONTEND, HR, INTERN, JAVA, JUNIOR,
                                      MANAGEMENT, MANUAL, MIDDLE, PM, PYTHON,
-                                     TEST, SCALA, SCIENTIST, SENIOR)
+                                     SCALA, SCIENTIST, SENIOR, TEST)
 
 MAIN_MENU = 1
 GET_VACANCIES_MENU = 2
