@@ -21,7 +21,7 @@ class Backend_manager():
         self.user_data_manager = User_data_manager(self.db)
         self.vacancies_manager = VacanciesManager(self.db)
 
-    async def run_general_parsing(self):
+    async def run_general_parsing(self) -> None:
 
         """
         Method runs parsing for all sources, for all languages and experiences from parser/consts.py
@@ -33,11 +33,9 @@ class Backend_manager():
 
         self.db.clear_vacancy_table()
 
-        parsed_data = await parse_manager.run_general_parsing()
+        vacancies = await parse_manager.run_general_parsing()
 
-        self.vacancies_manager.preprocess_vacancy_data(parsed_data=parsed_data)
-
-        vacancies = self.vacancies_manager.data_to_vacancies(parsed_data)
+        self.vacancies_manager.preprocess_vacancy_data(vacancies=vacancies)
 
         self.vacancies_manager.push_to_db(vacancies=vacancies)
 

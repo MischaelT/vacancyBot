@@ -36,86 +36,80 @@ class VacanciesManager():
 
         return self.__get_data(user)
 
-    def data_to_vacancies(self, vacancies_data: List[dict]) -> List[Vacancy]:
+    # def data_to_vacancies(self, vacancies_data: List[dict]) -> List[Vacancy]:
 
-        """
-        Method pushes pure data after parsing to db
+    #     """
+    #     Method pushes pure data after parsing to db
 
-        Args:
-            vacancies_data (list): list os dicts with vacancy data
-        """
-        vacancies: List[Vacancy] = []
+    #     Args:
+    #         vacancies_data (list): list os dicts with vacancy data
+    #     """
+    #     vacancies: List[Vacancy] = []
 
-        for vacancy_data in vacancies_data:
+    #     for vacancy_data in vacancies_data:
 
-            vacancy = self.__create_vacancy(data=vacancy_data)
+    #         vacancy = self.__create_vacancy(data=vacancy_data)
 
-            vacancies.append(vacancy)
+    #         vacancies.append(vacancy)
 
-        return vacancies
+    #     return vacancies
 
-    def preprocess_vacancy_data(self, parsed_data: List[dict]):
+    def preprocess_vacancy_data(self, vacancies: List[Vacancy]) -> None:
 
-        for vacancy_data in parsed_data:
+        for vacancy in vacancies:
 
-            vacancy_data['info'] = re.sub('/[\r\n]+/g', '\n', vacancy_data['info'])
-            vacancy_data['info'] = re.sub(" +", " ", vacancy_data['info'])
+            vacancy.info = re.sub('/[\r\n]+/g', '\n', vacancy.info)
+            vacancy.info = re.sub(" +", " ", vacancy.info)
 
-            vacancy_data['title'] = re.sub('/[\r\n]+/g', '\n', vacancy_data['title'])
-            vacancy_data['title'] = re.sub(" +", " ", vacancy_data['title'])
+            vacancy.title = re.sub('/[\r\n]+/g', '\n', vacancy.title)
+            vacancy.title = re.sub(" +", " ", vacancy.title)
 
-            title_text = vacancy_data['title'].lower().split()
+            title_text = vacancy.title.lower().split()
 
-            vacancy_data['info'] = unicodedata.normalize("NFKD", vacancy_data['info'])
-            vacancy_data['title'] = unicodedata.normalize("NFKD", vacancy_data['title'])
+            vacancy.info = unicodedata.normalize("NFKD", vacancy.info)
+            vacancy.title = unicodedata.normalize("NFKD", vacancy.title)
 
             if 'devops' in title_text:
-                vacancy_data['area'] = DEVOPS
-                vacancy_data['position'] = DEVOPS
+                vacancy.area = DEVOPS
+                vacancy.position = DEVOPS
 
             for word in ['kotlin', 'android']:
                 if word in title_text:
-                    vacancy_data['language'] = ANDROID
-                    vacancy_data['position'] = ANDROID
+                    vacancy.language = ANDROID
+                    vacancy.position = ANDROID
 
-            for word in ['front', 'frrontend', 'front-end']:
+            for word in ['front', 'frontend', 'front-end']:
                 if word in title_text:
-                    vacancy_data['area'] = FRONTEND
+                    vacancy.area = FRONTEND
 
             for word in ['data', 'ml', 'deep', 'analyst', 'learning', 'engineer']:
-
                 if word in title_text:
-
-                    vacancy_data['area'] = DATA
-
+                    vacancy.area = DATA
                     if word == 'analyst':
-                        vacancy_data['position'] = ANALYST
+                        vacancy.position = ANALYST
                     elif word == 'engineer':
-                        vacancy_data['position'] = ENGINEER
+                        vacancy.position = ENGINEER
                     else:
-                        vacancy_data['position'] = SCIENTIST
+                        vacancy.position = SCIENTIST
 
             for word in ['qa', 'test', 'automation', 'manual']:
-
                 if word in title_text:
-
-                    vacancy_data['area'] = TEST
-
+                    vacancy.area = TEST
                     if word == 'automation':
-                        vacancy_data['position'] = AUTO
+                        vacancy.position = AUTO
                     if word == 'manual':
-                        vacancy_data['position'] = MANUAL
+                        vacancy.position = MANUAL
 
             for word in ['blockchain', 'solidity']:
                 if word in title_text:
-                    vacancy_data['area'] = BLOCKCHAIN
+                    vacancy.area = BLOCKCHAIN
 
-            vacancy_data['company_name'] = 'COMPANY_NAME'
-            vacancy_data['salary'] = 1000
-            vacancy_data['country'] = 'ukraine'
-            vacancy_data['is_actual'] = True
+            vacancy.company_name = 'COMPANY_NAME'
+            vacancy.salary = 1000
+            vacancy.country = 'ukraine'
+            vacancy.is_actual = True
 
-    def push_to_db(self, vacancies: List[Vacancy]):
+    def push_to_db(self, vacancies: List[Vacancy]) -> None:
 
         for vacancy in vacancies:
             params = (
@@ -148,8 +142,6 @@ class VacanciesManager():
             list: list of vacancy models
         """
 
-        logging.debug('HERE')
-
         vacancies = []
 
         params = (user.experience, user.language, user.area, user.position)
@@ -164,6 +156,7 @@ class VacanciesManager():
         return vacancies
 
     def __create_vacancy(self, data: Union[tuple, dict]) -> Vacancy:
+
         """
         Method creates new vacancy model from given data
 
@@ -174,43 +167,21 @@ class VacanciesManager():
             Vacancy: vacancy model
         """
 
-        logging.debug(data)
-
-        if isinstance(data, tuple):
-
-            vacancy = Vacancy(
-                id_=data[0],
-                title=data[1],
-                info=data[2],
-                language=data[3],
-                area=data[4],
-                position=data[5],
-                experience=data[6],
-                company_name=data[7],
-                country=data[8],
-                city=data[9],
-                remote=data[10],
-                salary=data[11],
-                link=data[12],
-                is_actual=data[13],
-            )
-
-        elif isinstance(data, dict):
-
-            vacancy = Vacancy(
-                title=data['title'],
-                info=data['info'],
-                language=data['language'],
-                area=data['area'],
-                position=data['position'],
-                experience=data['experience'],
-                company_name=data['company_name'],
-                country=data['country'],
-                city=data['city'],
-                salary=data['salary'],
-                remote=data['remote'],
-                link=data['link'],
-                is_actual=data['is_actual'],
-            )
+        vacancy = Vacancy(
+            id_=data[0],
+            title=data[1],
+            info=data[2],
+            language=data[3],
+            area=data[4],
+            position=data[5],
+            experience=data[6],
+            company_name=data[7],
+            country=data[8],
+            city=data[9],
+            remote=data[10],
+            salary=data[11],
+            link=data[12],
+            is_actual=data[13],
+        )
 
         return vacancy

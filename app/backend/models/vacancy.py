@@ -1,3 +1,5 @@
+import uuid
+
 class Vacancy:
 
     """
@@ -5,9 +7,9 @@ class Vacancy:
     """
 
     def __init__(self, title, city, info, link, language, area, position,
-                 experience, company_name, country, salary, remote, is_actual, id_=0) -> None:
+                 experience, company_name, country, salary, remote, is_actual) -> None:
 
-        self.id_ = id_
+        self.id_ = uuid.uuid4()
         self.title = title
         self.info = info
         self.language = language

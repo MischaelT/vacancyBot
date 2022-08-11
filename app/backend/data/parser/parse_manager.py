@@ -32,17 +32,15 @@ class ParseManager:
         while True:
 
             page += 1
-
             tasks = self.__add_tasks(page)
 
             await asyncio.gather(*tasks, return_exceptions=True)
-
+            
+            # Invalid stick
             if page == 1:
                 break
 
         parsed_data = self.djinni.parsed_data + self.dou.parsed_data
-
-        logging.debug('Parsing')
 
         return parsed_data
 

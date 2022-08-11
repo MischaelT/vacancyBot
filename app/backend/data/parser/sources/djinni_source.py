@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import random
+from app.backend.models.vacancy import Vacancy
 
 from backend.data.db.choices import BACKEND, DEVELOPMENT, MANAGEMENT
 from backend.data.parser.sources.base_source import BaseSource
@@ -20,13 +21,12 @@ class DjinniSource(BaseSource):
         self.nonDev_positions = self.settings['non_dev_positions']
         self.languages = self.settings['djinni_languages']
         self.experiences = self.settings['djinni_exp_levels']
-
         self.root = self.settings['root']
         self.basepoint = self.settings['basepoint']
 
         super().__init__()
 
-    def make_futures(self, page):
+    def make_futures(self, page: int) -> list:
 
         """
             Method generates list of asyncio tasks.
@@ -50,7 +50,7 @@ class DjinniSource(BaseSource):
 
         return tasks
 
-    async def get_dev_vacancies(self, page: int, language: dict, experience: dict):
+    async def get_dev_vacancies(self, page: int, language: dict, experience: dict) -> None:
 
         """
         Method connects to djinni.ua and get information.
@@ -101,39 +101,44 @@ class DjinniSource(BaseSource):
         """
 
         soup = BeautifulSoup(content, 'html.parser')
-        vacancies = soup.find_all('li', class_='list-jobs__item')
+        vacancies_data = soup.find_all('li', class_='list-jobs__item')
 
-        for vacancy in vacancies:
+        for vacancy_data in vacancies_data:
 
-            title = vacancy.find('div', class_="list-jobs__title").text.strip()
-            info = vacancy.find('div', class_='list-jobs__description').text.strip()
-            link = self.root + vacancy.find('a', class_="profile")['href']
+            title = vacancy_data.find('div', class_="list-jobs__title").text.strip()
+            info = vacancy_data.find('div', class_='list-jobs__description').text.strip()
+            link = self.root + vacancy_data.find('a', class_="profile")['href']
 
             try:
-                remote = vacancy.find('span', class_="icon icon-home_work").next_sibling.text.strip()
+                remote = vacancy_data.find('span', class_="icon icon-home_work").next_sibling.text.strip()
             except AttributeError:
                 remote = ''
 
             try:
-                city = vacancy.find('nobr', class_="location-text").text.strip()
+                location = vacancy_data.find('nobr', class_="location-text").text.strip()
             except AttributeError:
-                city = remote
+                location = remote
 
-            data = {
-                    'title': title,
-                    'city': city,
-                    'info': info,
-                    'link': link,
-                    'language': language,
-                    'experience': experience,
-                    'remote': remote,
-                    'area': DEVELOPMENT,
-                    'position': BACKEND
-                }
 
-            self.parsed_data.append(data)
+            vacancy = Vacancy(
+                title=title,
+                info=info,
+                language=language,
+                area=DEVELOPMENT,
+                position =BACKEND,
+                experience=experience,
+                company_name='company_name',
+                country='Ukraine',
+                city=location,
+                salary='salary',
+                remote=remote,
+                link=link,
+                is_actual=True
+            )
 
-    async def get_nonDev_vacancies(self, page: int, position: str, experience: dict):
+            self.parsed_data.append(vacancy)
+
+    async def get_nonDev_vacancies(self, page: int, position: str, experience: dict) -> None:
 
         logging.info(f'parse {position}: page: {page}, experience: {experience}')
 
@@ -161,7 +166,7 @@ class DjinniSource(BaseSource):
                             )
 
 
-    def parse_nonDev_content(self, content: str, experience: str, position) -> None:  # noqa
+    def parse_nonDev_content(self, content: str, experience: str, position: str) -> None:  # noqa
 
         """
             Method parses vacancies from djinni.ua content
@@ -174,34 +179,38 @@ class DjinniSource(BaseSource):
         """
 
         soup = BeautifulSoup(content, 'html.parser')
-        vacancies = soup.find_all('li', class_='list-jobs__item')
+        vacancies_data = soup.find_all('li', class_='list-jobs__item')
 
-        for vacancy in vacancies:
+        for vacancy_data in vacancies_data:
 
-            title = vacancy.find('div', class_="list-jobs__title").text.strip()
-            info = vacancy.find('div', class_='list-jobs__description').text.strip()
-            link = self.root + vacancy.find('a', class_="profile")['href']
+            title = vacancy_data.find('div', class_="list-jobs__title").text.strip()
+            info = vacancy_data.find('div', class_='list-jobs__description').text.strip()
+            link = self.root + vacancy_data.find('a', class_="profile")['href']
 
             try:
-                remote = vacancy.find('span', class_="icon icon-home_work").next_sibling.text.strip()
+                remote = vacancy_data.find('span', class_="icon icon-home_work").next_sibling.text.strip()
             except AttributeError:
                 remote = ''
 
             try:
-                location = vacancy.find('nobr', class_="location-text").text.strip()
+                location = vacancy_data.find('nobr', class_="location-text").text.strip()
             except AttributeError:
                 location = remote
 
-            data = {
-                    'title': title,
-                    'city': location,
-                    'info': info,
-                    'link': link,
-                    'area': MANAGEMENT,
-                    'experience': experience,
-                    'position': position,
-                    'remote': remote,
-                    'language': 'language'
-                }
+            vacancy = Vacancy(
+                title=title,
+                info=info,
+                language='language',
+                area=MANAGEMENT,
+                position =position,
+                experience=experience,
+                company_name='company_name',
+                country='Ukraine',
+                city=location,
+                salary='salary',
+                remote=remote,
+                link=link,
+                is_actual=True
+            )
 
-            self.parsed_data.append(data)
+            self.parsed_data.append(vacancy)

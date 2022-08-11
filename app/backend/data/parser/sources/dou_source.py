@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import random
+from app.backend.models.vacancy import Vacancy
 
 from backend.data.db.choices import BACKEND, DEVELOPMENT
 from backend.data.parser.sources.base_source import BaseSource
@@ -19,13 +20,12 @@ class DouSource(BaseSource):
 
         self.languages = self.settings['dou_languages']
         self.experiences = self.settings['dou_exp_levels']
-
         self.root = self.settings['root']
         self.basepoint = self.settings['basepoint']
 
         super().__init__()
 
-    def make_futures(self, page):
+    def make_futures(self, page: int) -> list:
 
         """
             Method generates list of asyncio tasks.
@@ -45,7 +45,7 @@ class DouSource(BaseSource):
 
         return tasks
 
-    async def get_content(self, page: int, language: str, experience: str):
+    async def get_content(self, page: int, language: str, experience: str) -> None:
         """
             Method connects to djinni.ua and get information.
             Then call function parse_djinni_data()
@@ -93,25 +93,29 @@ class DouSource(BaseSource):
         """
 
         soup = BeautifulSoup(content, 'html.parser')
-        vacancies = soup.find_all('li', class_='l-vacancy')
+        vacancies_data = soup.find_all('li', class_='l-vacancy')
 
-        for vacancy in vacancies:
+        for vacancy_data in vacancies_data:
 
-            title = vacancy.find('a', class_='vt').text.strip()
-            info = vacancy.find('div', class_='sh-info').text.strip()
-            city = vacancy.find('span', class_='cities').text.strip()
-            link = vacancy.find('a', class_='vt')['href']
+            title = vacancy_data.find('a', class_='vt').text.strip()
+            info = vacancy_data.find('div', class_='sh-info').text.strip()
+            city = vacancy_data.find('span', class_='cities').text.strip()
+            link = vacancy_data.find('a', class_='vt')['href']
 
-            data = {
-                    'title': title,
-                    'city': city,
-                    'info': info,
-                    'link': link,
-                    'language': language,
-                    'experience': experience,
-                    'area': DEVELOPMENT,
-                    'remote': 'remote',
-                    'position': BACKEND
-                    }
+            vacancy = Vacancy(
+                title=title,
+                info=info,
+                language=language,
+                area=DEVELOPMENT,
+                position =BACKEND,
+                experience=experience,
+                company_name='company_name',
+                country='Ukraine',
+                city=city,
+                salary='salary',
+                remote='remote',
+                link=link,
+                is_actual=True
+            )
 
-            self.parsed_data.append(data)
+            self.parsed_data.append(vacancy)

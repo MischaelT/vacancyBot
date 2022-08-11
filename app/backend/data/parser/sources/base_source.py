@@ -1,5 +1,8 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
+from typing import List
+
+from app.backend.models.vacancy import Vacancy
 
 
 class BaseSource(ABC):
@@ -16,7 +19,7 @@ class BaseSource(ABC):
         with agents_path.open() as f:
             self.user_agents_list = f.read().split('\n')
 
-        self.parsed_data = []
+        self.parsed_data: List[Vacancy] = []
 
         super().__init__()
 
