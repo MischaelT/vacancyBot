@@ -1,7 +1,7 @@
 from aiogram import types
 
-from frontend.handlers.users.main_handler import main_menu
-from frontend.handlers.users.setUp_settings_handler import area_menu
+from frontend.handlers.dialogs.main_handler import main_menu
+from frontend.handlers.dialogs.setUp_settings_handler import area_menu
 
 from settings.backend_setup import backend_manager
 

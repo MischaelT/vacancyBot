@@ -4,7 +4,7 @@ from aiogram import types
 
 from frontend.data.consts import SETTINGS_MENU
 from frontend.data.dialogs import MAIN_MENU_DIALOGS, SETTINGS_DIALOGS
-from frontend.handlers.users.vacancies import get_vacancies
+from frontend.handlers.users.get_vacancies import get_vacancies
 from frontend.keyboards.inline.back_keyboard import back_keyboard
 from frontend.keyboards.inline.main_keyboard import (main_keyboard,
                                                      settings_keyboard)

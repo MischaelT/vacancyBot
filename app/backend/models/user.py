@@ -11,9 +11,9 @@ class User():
     Class represents user model
     """
 
-    def __init__(self, user_id, is_registered, experience, location, salary, area, position, language) -> None:
+    def __init__(self, _id, is_registered, experience, location, salary, area, position, language) -> None:
 
-        self.user_id = user_id
+        self._id = _id
         self.is_registered = is_registered
         self.area = area
         self.position = position

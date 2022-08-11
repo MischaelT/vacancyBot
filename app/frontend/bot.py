@@ -3,7 +3,7 @@ import logging
 from aiogram import Bot, Dispatcher, executor, types
 # from aiogram.contrib.fsm_storage.redis import RedisStorage2
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from app.backend.tasks import initialise_sceduler
+from backend.tasks import initialise_sceduler
 
 from backend.backend_manager import BackendManager
 
@@ -35,7 +35,7 @@ class VacancyBot:
         handlers.errors.setup(self.dp)
         handlers.users.setup(self.dp)
 
-        initialise_sceduler()
+        # initialise_sceduler()
 
         await set_default_commands(self.dp)
         await on_startup_notify(self.dp)

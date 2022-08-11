@@ -32,7 +32,7 @@ class VacanciesManager():
             list: list of vacancies
         """
 
-        logging.info(f'Manage user with id: {user.user_id}')
+        logging.info(f'Manage user with id: {user._id}')
 
         return self.__get_data(user)
 
@@ -168,7 +168,6 @@ class VacanciesManager():
         """
 
         vacancy = Vacancy(
-            id_=data[0],
             title=data[1],
             info=data[2],
             language=data[3],

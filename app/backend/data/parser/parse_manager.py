@@ -1,5 +1,4 @@
 import asyncio
-import logging
 import random
 from asyncio.events import new_event_loop, set_event_loop
 

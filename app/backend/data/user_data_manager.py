@@ -1,8 +1,10 @@
+import logging
+from typing import Union
 from backend.data.db.postgres import Postgres_db
 from backend.models.user import User
 
 
-class User_data_manager():
+class UserDataManager():
 
     """
         Class provides methods for interactions with user data
@@ -36,6 +38,31 @@ class User_data_manager():
 
         return self.__set_user(user=user)
 
+    def get_users(self) -> User:
+
+        """
+            Method returms user from database
+
+        Args:
+            user_id (int): user telegram id
+
+        Returns:
+            User: user model
+        """
+
+        users_data = self.db.get_all_users()
+
+        logging.debug(users_data)
+
+        users = []
+
+        for user_data in users_data:
+            logging.debug(user_data)
+            user = self.__create_user(user_data)
+            users.append(user)
+
+        return users
+
     def __set_user(self, user: User) -> None:
 
         """
@@ -55,7 +82,7 @@ class User_data_manager():
                         user.language,
                         user.location,
                         user.salary,
-                        user.user_id
+                        user._id
                     )
 
             self.db.update_user(params=params)
@@ -64,7 +91,7 @@ class User_data_manager():
 
             user.is_registered = True
             params = (
-                        user.user_id,
+                        user._id,
                         user.is_registered,
                         user.area,
                         user.position,
@@ -75,6 +102,20 @@ class User_data_manager():
                     )
 
             self.db.create_user(params)
+
+    def __create_user(self, data: list):
+
+        user = User(
+            _id=data[0],
+            is_registered=data[1],
+            area=data[2],
+            position=data[3],
+            experience=data[4],
+            language=data[5],
+            location=data[6],
+            salary=data[7]
+            )
+        return user
 
     def __get_user_by_id(self, user_id: int) -> User:
 
@@ -96,28 +137,15 @@ class User_data_manager():
 
         if len(user_data) == 0:
 
-            user = User(
-                        user_id=user_id,
-                        is_registered=False,
-                        area='',
-                        position='',
-                        experience='',
-                        language='',
-                        location='',
-                        salary=''
-                        )
-        else:
-            user_data = user_data[0]
+            user_data = [user_id, False,'','','','','','']
 
-            user = User(
-                        user_id=user_id,
-                        is_registered=True,
-                        area=user_data[2],
-                        position=user_data[3],
-                        experience=user_data[4],
-                        language=user_data[5],
-                        location=user_data[6],
-                        salary=user_data[7]
-                        )
+            user = self.__create_user(data=user_data)
+
+        else:
+            user_data = list(user_data[0])
+            user_data[0] = user_id
+            user_data[1] = True
+
+            user = self.__create_user(data=user_data)
 
         return user

@@ -15,3 +15,5 @@ DEVELOPER_DIALOG = 'Please choose your developer specialisation'
 QA_DIALOG = 'Please choose your qa specialisation'
 DATA_DIALOG = 'Please choose your data science specialisation'
 MANAGEMENT_DIALOG = 'Please choose your management specialisation'
+
+ADMIN = 'Hello admin!'

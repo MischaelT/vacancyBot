@@ -1,7 +1,7 @@
 import asyncio
 import logging
 import random
-from app.backend.models.vacancy import Vacancy
+from backend.models.vacancy import Vacancy
 
 from backend.data.db.choices import BACKEND, DEVELOPMENT, MANAGEMENT
 from backend.data.parser.sources.base_source import BaseSource

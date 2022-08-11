@@ -3,7 +3,7 @@ import logging
 
 from backend.data.db.postgres import Postgres_db
 from backend.data.parser.parse_manager import ParseManager
-from backend.data.user_data_manager import User_data_manager
+from backend.data.user_data_manager import UserDataManager
 from backend.data.vacancy_data_manager import VacanciesManager
 
 
@@ -19,7 +19,7 @@ class BackendManager():
 
         self.db = Postgres_db()
 
-        self.user_data_manager = User_data_manager(self.db)
+        self.user_data_manager = UserDataManager(self.db)
         self.vacancies_manager = VacanciesManager(self.db)
 
     async def run_async_general_parsing(self) -> None:

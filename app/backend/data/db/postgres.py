@@ -25,6 +25,12 @@ class Postgres_db():
 
         return user_data
 
+    def get_all_users(self, params=()):
+
+        query = '''SELECT * FROM users'''
+
+        return self._read(query=query, params=params)
+
     def update_user(self, params):
 
         query = '''UPDATE users

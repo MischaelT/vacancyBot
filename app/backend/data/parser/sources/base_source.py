@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import List
 
-from app.backend.models.vacancy import Vacancy
+from backend.models.vacancy import Vacancy
 
 
 class BaseSource(ABC):

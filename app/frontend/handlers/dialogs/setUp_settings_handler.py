@@ -11,7 +11,7 @@ from frontend.data.dialogs import (AREA_DIALOGS, DATA_DIALOG, DEVELOPER_DIALOG,
                                    EXPERIENCE_DIALOGS, LANGUAGE_DIALOG,
                                    LOCATION_DIALOG, MANAGEMENT_DIALOG,
                                    QA_DIALOG, SALARY_DIALOG)
-from frontend.handlers.users.main_handler import settings_menu
+from frontend.handlers.dialogs.main_handler import settings_menu
 from frontend.keyboards.inline.settings_keyboards import (area_keyboard,
                                                           city_keyboard,
                                                           data_keyboard,
