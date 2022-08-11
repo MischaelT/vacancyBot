@@ -3,8 +3,9 @@ import logging
 from aiogram import Bot, Dispatcher, executor, types
 # from aiogram.contrib.fsm_storage.redis import RedisStorage2
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from app.backend.tasks import initialise_sceduler
 
-from backend.backend_manager import Backend_manager
+from backend.backend_manager import BackendManager
 
 from frontend.utils.notify_admins import on_startup_notify
 from frontend.utils.set_bot_commands import set_default_commands
@@ -15,7 +16,7 @@ from settings import config
 
 class VacancyBot:
 
-    def __init__(self, backend_manager: Backend_manager) -> None:
+    def __init__(self, backend_manager: BackendManager) -> None:
 
         self.backend_manager = backend_manager
         self.bot = Bot(token=config.BOT_TOKEN, parse_mode=types.ParseMode.HTML)
@@ -33,6 +34,8 @@ class VacancyBot:
         middlewares.setup(self.dp)
         handlers.errors.setup(self.dp)
         handlers.users.setup(self.dp)
+
+        initialise_sceduler()
 
         await set_default_commands(self.dp)
         await on_startup_notify(self.dp)

@@ -1,8 +1,8 @@
-from backend.backend_manager import Backend_manager
+from backend.backend_manager import BackendManager
 # from celery import Celery
 
 # TODO implement celery tasks
 
-backend_manager = Backend_manager()
+backend_manager = BackendManager()
 
 # app = Celery('hello', broker='amqp://guest@localhost//')

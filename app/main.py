@@ -1,8 +1,8 @@
-from backend.backend_manager import Backend_manager
+from backend.backend_manager import BackendManager
 
 from frontend.bot import VacancyBot
 
-backend_manager = Backend_manager()
+backend_manager = BackendManager()
 bot = VacancyBot(backend_manager)
 
 if __name__ == '__main__':

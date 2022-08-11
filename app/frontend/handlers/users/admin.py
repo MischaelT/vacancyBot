@@ -14,7 +14,6 @@ async def show_admin_panel(message: types.Message):
     if user_id in ADMINS:
         markup = await admin_keyboard()
         text = 'Hello, admin'
-        await backend_manager.run_general_parsing()
         await message.answer(text=text, reply_markup=markup)
     else:
         await bot_start(message=message)
