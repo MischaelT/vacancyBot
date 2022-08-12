@@ -27,7 +27,7 @@ async def dialog_structure(call: types.CallbackQuery, callback_data: dict):
         '4': show_my_settings,
 
         '5': show_admin_panel,
-        '6': backend_manager.run_async_general_parsing,
+        '6': backend_manager.run_async_parsing,
         '7': get_users,   
 
         '10': area_menu,

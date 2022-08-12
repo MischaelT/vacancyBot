@@ -22,7 +22,7 @@ class BackendManager():
         self.user_data_manager = UserDataManager(self.db)
         self.vacancies_manager = VacanciesManager(self.db)
 
-    async def run_async_general_parsing(self, message) -> None:
+    async def run_async_parsing(self, message) -> None:
 
         """
         Method runs parsing for all sources, for all languages and experiences from parser/consts.py
@@ -34,7 +34,7 @@ class BackendManager():
 
         self.db.clear_vacancy_table()
 
-        vacancies = await parse_manager.run_general_parsing()
+        vacancies = await parse_manager.run_parsing()
 
         self.vacancies_manager.preprocess_vacancy_data(vacancies=vacancies)
 
@@ -42,7 +42,7 @@ class BackendManager():
 
         logging.info('End general parsing')
 
-    def run_general_parsing(self) -> None:
+    def run_parsing(self) -> None:
 
         """
         Method runs parsing for all sources, for all languages and experiences from parser/consts.py
@@ -54,7 +54,7 @@ class BackendManager():
 
         self.db.clear_vacancy_table()
 
-        vacancies = asyncio.run(parse_manager.run_general_parsing())
+        vacancies = asyncio.run(parse_manager.run_parsing())
 
         self.vacancies_manager.preprocess_vacancy_data(vacancies=vacancies)
 

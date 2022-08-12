@@ -17,7 +17,7 @@ class ParseManager:
         self.djinni = DjinniSource()
         self.dou = DouSource()
 
-    async def run_general_parsing(self) -> list:
+    async def run_parsing(self) -> list:
 
         """
             Method run parsing for every page
