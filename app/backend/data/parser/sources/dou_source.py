@@ -70,7 +70,7 @@ class DouSource(BaseSource):
         params['exp'] = experience
         params['category'] = language
 
-        url = self.basepoint+self.basepoint
+        url = self.root+self.basepoint
 
         response = requests.get(url, headers=headers, params=params, proxies=proxies)
         response.raise_for_status()

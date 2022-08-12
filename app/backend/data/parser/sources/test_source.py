@@ -1,9 +1,10 @@
 import logging
 import random
 
-from backend.data.db.choices import DEVELOPMENT
+from backend.models.vacancy import Vacancy
+from backend.data.db.choices import BACKEND, DEVELOPMENT
 from backend.data.parser.sources.base_source import BaseSource
-from backend.data.parser.sources.consts import DJINNI_DATA
+from backend.data.parser.sources.consts import DJINNI_DATA, DOU_DATA
 
 from bs4 import BeautifulSoup
 
@@ -14,12 +15,10 @@ class TestSource(BaseSource):
 
     def __init__(self) -> None:
 
-        self.settings: dict = DJINNI_DATA
+        self.settings: dict = DOU_DATA
 
-        self.nonDev_positions = self.settings['non_dev_positions']
-        self.languages = self.settings['djinni_languages']
-        self.experiences = self.settings['djinni_exp_levels']
-
+        self.languages = self.settings['dou_languages']
+        self.experiences = self.settings['dou_exp_levels']
         self.root = self.settings['root']
         self.basepoint = self.settings['basepoint']
 
@@ -28,25 +27,18 @@ class TestSource(BaseSource):
     def make_futures(self):
         pass
 
-    def get_dev_vacancies(self, page: int, language: dict, experience: dict):
-
+    def get_content(self, page: int, language: str, experience: str) -> None:
         """
-        Method connects to djinni.ua and get information.
-        Then call function parse_djinni_data()
+            Method connects to djinni.ua and get information.
+            Then call function parse_djinni_data()
 
         Args:
             page (int): page for parsing
-            language (dict): language for params
-            experience (dict): experience for params
+            language (str): language for params
+            experience (str): eperience for params
         """
 
-        logging.info(f'parse djinni: page: {page}, language: {language}, experience: {experience}')
-
-        params = {}
-
-        params['page'] = page
-        params['exp_level'] = experience
-        params['keywords'] = language
+        logging.info(f'parse dou: page: {page}, language: {language}, experience: {experience}')
 
         proxy = 'http//:'+random.choice(self.proxies_list)
         header = random.choice(self.user_agents_list)
@@ -54,21 +46,25 @@ class TestSource(BaseSource):
         headers = {'User-Agent': header}
         proxies = {'http': proxy}
 
+        params = {}
+
+        params['page'] = page
+        params['exp'] = experience
+        params['category'] = language
+
         url = self.root+self.basepoint
 
         response = requests.get(url, headers=headers, params=params, proxies=proxies)
         response.raise_for_status()
 
-        self.parse_dev_content(
-                            response.text,
-                            language=self.languages[language],
-                            experience=self.experiences[experience]
-                            )
+        self.parse_content(content=response.text,
+                           language=language,
+                           experience=experience)
 
-    def parse_dev_content(self, content: str, language: str, experience: str) -> None:  # noqa
+    def parse_content(self, content: str, language: str, experience: str) -> None:
 
         """
-            Method parses vacancies from djinni.ua content
+            Method parses vacancies from dou.ua content
 
         Args:
             vacancy_manager (Vacancies_manager)
@@ -79,33 +75,29 @@ class TestSource(BaseSource):
         """
 
         soup = BeautifulSoup(content, 'html.parser')
-        vacancies = soup.find_all('li', class_='list-jobs__item')
+        vacancies_data = soup.find_all('li', class_='l-vacancy')
 
-        for vacancy in vacancies:
+        for vacancy_data in vacancies_data:
 
-            title = vacancy.find('div', class_="list-jobs__title").text.strip()
-            info = vacancy.find('div', class_='list-jobs__description').text.strip()
-            link = self.root + vacancy.find('a', class_="profile")['href']
+            title = vacancy_data.find('a', class_='vt').text.strip()
+            info = vacancy_data.find('div', class_='sh-info').text.strip()
+            city = vacancy_data.find('span', class_='cities').text.strip()
+            link = vacancy_data.find('a', class_='vt')['href']
 
-            try:
-                remote = vacancy.find('span', class_="icon icon-home_work").next_sibling.text.strip()
-            except AttributeError:
-                remote = ''
+            vacancy = Vacancy(
+                title=title,
+                info=info,
+                language=language,
+                area=DEVELOPMENT,
+                position =BACKEND,
+                experience=experience,
+                company_name='company_name',
+                country='Ukraine',
+                city=city,
+                salary='salary',
+                remote='remote',
+                link=link,
+                is_actual=True
+            )
 
-            try:
-                city = vacancy.find('nobr', class_="location-text").text.strip()
-            except AttributeError:
-                city = remote
-
-            data = {
-                    'title': title,
-                    'city': city,
-                    'info': info,
-                    'link': link,
-                    'language': language,
-                    'experience': experience,
-                    'remote': remote,
-                    'area': DEVELOPMENT,
-                }
-
-            self.parsed_data.append(data)
+            self.parsed_data.append(vacancy)

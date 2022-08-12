@@ -1,6 +1,6 @@
 import logging
 from typing import Union
-from backend.data.db.postgres import Postgres_db
+from backend.data.db.postgres import PostgresDB
 from backend.models.user import User
 
 
@@ -10,7 +10,7 @@ class UserDataManager():
         Class provides methods for interactions with user data
     """
 
-    def __init__(self, db: Postgres_db) -> None:
+    def __init__(self, db: PostgresDB) -> None:
         self.db = db
 
     def get_user(self, user_id: int) -> User:

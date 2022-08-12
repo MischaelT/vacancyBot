@@ -1,7 +1,7 @@
 import asyncio
 import logging
 
-from backend.data.db.postgres import Postgres_db
+from backend.data.db.postgres import PostgresDB
 from backend.data.parser.parse_manager import ParseManager
 from backend.data.user_data_manager import UserDataManager
 from backend.data.vacancy_data_manager import VacanciesManager
@@ -17,12 +17,12 @@ class BackendManager():
 
         logging.info('BackendManager created')
 
-        self.db = Postgres_db()
+        self.db = PostgresDB()
 
         self.user_data_manager = UserDataManager(self.db)
         self.vacancies_manager = VacanciesManager(self.db)
 
-    async def run_async_general_parsing(self) -> None:
+    async def run_async_general_parsing(self, message) -> None:
 
         """
         Method runs parsing for all sources, for all languages and experiences from parser/consts.py

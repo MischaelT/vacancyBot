@@ -6,7 +6,7 @@ from typing import List, Union
 from backend.data.db.choices import (ANALYST, ANDROID, AUTO, BLOCKCHAIN, DATA,
                                      DEVOPS, ENGINEER, FRONTEND, MANUAL,
                                      SCIENTIST, TEST)
-from backend.data.db.postgres import Postgres_db
+from backend.data.db.postgres import PostgresDB
 from backend.models.user import User
 from backend.models.vacancy import Vacancy
 
@@ -17,7 +17,7 @@ class VacanciesManager():
     Class provides methods for interaction with vacancies data
     """
 
-    def __init__(self, manager: Postgres_db) -> None:
+    def __init__(self, manager: PostgresDB) -> None:
         self.db = manager
 
     def get_user_data(self, user: User) -> List[Vacancy]:

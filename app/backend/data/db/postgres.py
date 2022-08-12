@@ -1,3 +1,4 @@
+from asyncio.log import logger
 import logging
 
 import psycopg2
@@ -6,7 +7,7 @@ from settings.config import (POSTGRES_DB, POSTGRES_HOST, POSTGRES_PASSWORD,
                              POSTGRES_PORT, POSTGRES_USER)
 
 
-class Postgres_db():
+class PostgresDB():
 
     """
         Class provides access to postgres database
@@ -51,6 +52,8 @@ class Postgres_db():
     def clear_vacancy_table(self):
 
         query = '''TRUNCATE TABLE vacancies'''
+
+        logging.info('Cleared vacancy table')
 
         self._write(query)
 
