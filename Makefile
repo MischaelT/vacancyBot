@@ -23,3 +23,10 @@ rabbit_restart:
 
 rabbit_status:
 	service rabbitmq-server status
+
+redis_restart:
+	sudo systemctl restart redis.service
+
+redis_status:
+	sudo systemctl status redis
+

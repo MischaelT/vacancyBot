@@ -1,7 +1,7 @@
 import logging
 
 from aiogram import Bot, Dispatcher, executor, types
-# from aiogram.contrib.fsm_storage.redis import RedisStorage2
+from aiogram.contrib.fsm_storage.redis import RedisStorage2
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from backend.tasks import initialise_sceduler
 
@@ -9,20 +9,20 @@ from backend.backend_manager import BackendManager
 
 from frontend.utils.notify_admins import on_startup_notify
 from frontend.utils.set_bot_commands import set_default_commands
-# from frontend.data.config import REDIS_HOST, REDIS_PASSWORD, REDIS_PORT
+from settings.config import REDIS_HOST, REDIS_PASSWORD, REDIS_PORT
 
 from settings import config
 
 
 class VacancyBot:
 
-    def __init__(self, backend_manager: BackendManager) -> None:
+    def __init__(self) -> None:
 
-        self.backend_manager = backend_manager
         self.bot = Bot(token=config.BOT_TOKEN, parse_mode=types.ParseMode.HTML)
-        # storage = RedisStorage2(host=REDIS_HOST, port=REDIS_PORT, password=None)
 
-        storage = MemoryStorage()
+        storage = RedisStorage2(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD)
+        # storage = MemoryStorage()
+
         self.dp = Dispatcher(self.bot, storage=storage)
 
     async def on_startup(self, dispatcher: Dispatcher):
@@ -46,4 +46,6 @@ class VacancyBot:
 
     async def on_shutdown(self, dispatcher: Dispatcher):
 
+        await self.dp.storage.close()
+        await self.dp.storage.wait_closed()
         await self.bot.close()
