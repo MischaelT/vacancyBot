@@ -1,5 +1,6 @@
 import uuid
 
+
 class Vacancy:
 
     """
@@ -26,4 +27,4 @@ class Vacancy:
 
     def to_print(self):
 
-        return self.title+'\n'+self.info+'\n'+self.link
+        return self.title + '\n' + self.info + '\n' + self.link

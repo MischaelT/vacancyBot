@@ -1,11 +1,11 @@
 import asyncio
 import logging
 import random
-from backend.models.vacancy import Vacancy
 
 from backend.data.db.choices import BACKEND, DEVELOPMENT, MANAGEMENT
 from backend.data.parser.sources.base_source import BaseSource
 from backend.data.parser.sources.consts import DJINNI_DATA
+from backend.models.vacancy import Vacancy
 
 from bs4 import BeautifulSoup
 
@@ -70,22 +70,20 @@ class DjinniSource(BaseSource):
         params['exp_level'] = experience
         params['keywords'] = language
 
-        proxy = 'http//:'+random.choice(self.proxies_list)
+        proxy = 'http//:' + random.choice(self.proxies_list)
         header = random.choice(self.user_agents_list)
 
         headers = {'User-Agent': header}
         proxies = {'http': proxy}
 
-        url = self.root+self.basepoint
+        url = self.root + self.basepoint
 
         response = requests.get(url, headers=headers, params=params, proxies=proxies)
         response.raise_for_status()
 
-        self._parse_dev_content(
-                            response.text,
-                            language=self.languages[language],
-                            experience=self.experiences[experience]
-                            )
+        self._parse_dev_content(response.text,
+                                language=self.languages[language],
+                                experience=self.experiences[experience])
 
     def _parse_dev_content(self, content: str, language: str, experience: str) -> None:  # noqa
 
@@ -119,13 +117,12 @@ class DjinniSource(BaseSource):
             except AttributeError:
                 location = remote
 
-
             vacancy = Vacancy(
                 title=title,
                 info=info,
                 language=language,
                 area=DEVELOPMENT,
-                position =BACKEND,
+                position=BACKEND,
                 experience=experience,
                 company_name='company_name',
                 country='Ukraine',
@@ -142,7 +139,7 @@ class DjinniSource(BaseSource):
 
         logging.info(f'parse {position}: page: {page}, experience: {experience}')
 
-        proxy = 'http//:'+random.choice(self.proxies_list)
+        proxy = 'http//:' + random.choice(self.proxies_list)
         header = random.choice(self.user_agents_list)
 
         headers = {'User-Agent': header}
@@ -154,16 +151,14 @@ class DjinniSource(BaseSource):
         params['page'] = page
         params['exp_level'] = experience
 
-        url = self.root+self.basepoint+endpoint+position
+        url = self.root + self.basepoint + endpoint + position
 
         response = requests.get(url, headers=headers, params=params, proxies=proxies)
         response.raise_for_status()
 
-        self._parse_nonDev_content(
-                            response.text,
-                            experience=self.experiences[experience],
-                            position=self.nonDev_positions[position]
-                            )
+        self._parse_nonDev_content(response.text,
+                                   experience=self.experiences[experience],
+                                   position=self.nonDev_positions[position])
 
 
     def _parse_nonDev_content(self, content: str, experience: str, position: str) -> None:  # noqa
@@ -202,7 +197,7 @@ class DjinniSource(BaseSource):
                 info=info,
                 language='language',
                 area=MANAGEMENT,
-                position =position,
+                position=position,
                 experience=experience,
                 company_name='company_name',
                 country='Ukraine',

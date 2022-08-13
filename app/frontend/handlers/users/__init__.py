@@ -1,18 +1,25 @@
 from aiogram import Dispatcher
 from aiogram.dispatcher.filters import CommandHelp, CommandStart
 
-from frontend.handlers.users.admin import show_admin_panel
 from frontend.handlers.dialogs.dialog_structure import dialog_structure
+from frontend.handlers.dialogs.main_handler import settings_menu
+from frontend.handlers.dialogs.setUp_settings_handler import (area_menu,
+                                                              data_menu,
+                                                              developer_menu,
+                                                              experience_menu,
+                                                              language_menu,
+                                                              location_menu,
+                                                              management_menu,
+                                                              qa_menu,
+                                                              salary_menu,
+                                                              save_menu,
+                                                              save_process)
+from frontend.handlers.users.admin import show_admin_panel
 from frontend.handlers.users.get_vacancies import get_vacancies
 from frontend.keyboards.inline.settings_keyboards import menu_cd
 from frontend.utils.states.settings_states import UserSettings
 
 from .help import bot_help
-from ..dialogs.main_handler import settings_menu
-from ..dialogs.setUp_settings_handler import (area_menu, data_menu, developer_menu,
-                                     experience_menu, language_menu,
-                                     location_menu, management_menu, qa_menu,
-                                     salary_menu, save_menu, save_process)
 from .start import bot_start
 
 

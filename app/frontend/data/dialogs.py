@@ -17,3 +17,11 @@ DATA_DIALOG = 'Please choose your data science specialisation'
 MANAGEMENT_DIALOG = 'Please choose your management specialisation'
 
 ADMIN = 'Hello admin!'
+
+MANY_REQUESTS = 'Too many requests!'
+
+BOT_RUN = 'Bot was run'
+
+BOT_STARTED = 'Start bot'
+
+HELP = 'Help'

@@ -1,12 +1,9 @@
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.callback_data import CallbackData
 
-from frontend.data.consts import (AREA_DEVELOPER, AREA_DS, AREA_MANAGEMENT,
-                                  AREA_QA, AREAS_LIST, CITIES_LIST,
-                                  DATA_OPTIONS, DEVELOPER_OPTIONS,
-                                  EXPERIENCES_LIST, LANGUAGE_LIST,
-                                  MANAGEMENT_OPTIONS, QA_OPTIONS,
-                                  SALARIES_LIST, SAVE_BUTTON, SETTINGS_MENU)
+from frontend.data.buttons import SAVE_BUTTON
+from frontend.data.consts import AREAS_LIST
+from frontend.data.consts import Callbacks
 
 menu_cd = CallbackData("show_menu", "level", "category")
 
@@ -30,53 +27,36 @@ async def area_keyboard():
 
     markup = InlineKeyboardMarkup(row_width=3)
 
-    categories = list(AREAS_LIST.keys())
+    categories = AREAS_LIST
 
-    button_text = f'{AREAS_LIST[categories[0]]}'
-    callback_data = make_callback_data(level=AREA_MANAGEMENT, category=categories[0])
+    levels = [Callbacks.area_management.value,
+              Callbacks.area_dev.value,
+              Callbacks.area_ds.value,
+              Callbacks.area_qa.value]
 
-    markup.insert(
-        InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
-    )
+    for category, level in zip(categories, levels):
 
-    button_text = f'{AREAS_LIST[categories[1]]}'
-    callback_data = make_callback_data(level=AREA_DS, category=categories[1])
+        button_text = f'{AREAS_LIST[category]}'
+        callback_data = make_callback_data(level=level, category=category)
 
-    markup.insert(
-        InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
-    )
+        markup.insert(
+            InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
+        )
 
-    button_text = f'{AREAS_LIST[categories[2]]}'
-    callback_data = make_callback_data(level=AREA_DEVELOPER, category=categories[2])
-
-    markup.insert(
-        InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
-    )
-
-    button_text = f'{AREAS_LIST[categories[3]]}'
-    callback_data = make_callback_data(level=AREA_QA, category=categories[3])
-
-    markup.insert(
-        InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
-    )
     return markup
 
 
-async def experience_keyboard():
-
-    """
-    Function for generating experience keyoard
-
-    Returns:
-        markup: keyboard
-    """
+async def show_concrete_keyboard(keyboard_categories):
 
     markup = InlineKeyboardMarkup()
-    categories = EXPERIENCES_LIST
 
-    for sub_category in categories:
+    for sub_category in keyboard_categories:
 
-        button_text = f'{categories[sub_category]}'
+        if isinstance(keyboard_categories, dict):
+            button_text = f'{keyboard_categories[sub_category]}'
+        else:
+            button_text = sub_category
+
         callback_data = make_callback_data(category=sub_category)
 
         markup.insert(
@@ -84,186 +64,6 @@ async def experience_keyboard():
         )
 
     return markup
-
-
-async def city_keyboard():
-
-    """
-    Function for generating city keyoard
-
-    Returns:
-        markup: keyboard
-    """
-
-    markup = InlineKeyboardMarkup()
-    sub_categories = CITIES_LIST
-
-    for category in sub_categories:
-
-        button_text = f'{category}'
-        callback_data = make_callback_data(category=category)
-
-        markup.insert(
-            InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
-        )
-
-    return markup
-
-
-async def salary_keyboard():
-
-    """
-    Function for generating salary keyoard
-
-    Returns:
-        markup: keyboard
-    """
-
-    markup = InlineKeyboardMarkup()
-    categories = SALARIES_LIST
-
-    for sub_category in categories:
-
-        button_text = f'{sub_category}'
-        callback_data = make_callback_data(category=sub_category)
-
-        markup.insert(
-            InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
-        )
-
-    return markup
-
-"""DEVELOPERS SETTINGS KEYBOARDS"""
-
-
-async def developer_keyboard():
-
-    """
-    Function for generating language keyoard
-
-    Returns:
-        markup: keyboard
-    """
-
-    markup = InlineKeyboardMarkup()
-    categories = DEVELOPER_OPTIONS
-
-    for sub_category in categories:
-
-        button_text = f'{categories[sub_category]}'
-        callback_data = make_callback_data(category=sub_category)
-
-        markup.insert(
-            InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
-        )
-
-    return markup
-
-
-async def language_keyboard():
-
-    """
-    Function for generating language keyoard
-
-    Returns:
-        markup: keyboard
-    """
-
-    markup = InlineKeyboardMarkup()
-    categories = LANGUAGE_LIST
-
-    for sub_category in categories:
-
-        button_text = f'{categories[sub_category]}'
-        callback_data = make_callback_data(category=sub_category)
-
-        markup.insert(
-            InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
-        )
-
-    return markup
-
-
-"""QA SETTINGS KEYBOARDS"""
-
-
-async def qa_keyboard():
-
-    """
-    Function for generating language keyoard
-
-    Returns:
-        markup: keyboard
-    """
-
-    markup = InlineKeyboardMarkup()
-    categories = QA_OPTIONS
-
-    for sub_category in categories:
-
-        button_text = f'{categories[sub_category]}'
-        callback_data = make_callback_data(category=sub_category)
-
-        markup.insert(
-            InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
-        )
-
-    return markup
-
-"""MANAGEMENT SETTINGS KEYBOARDS"""
-
-
-async def management_keyboard():
-
-    """
-    Function for generating language keyoard
-
-    Returns:
-        markup: keyboard
-    """
-
-    markup = InlineKeyboardMarkup()
-    categories = MANAGEMENT_OPTIONS
-
-    for sub_category in categories:
-
-        button_text = f'{categories[sub_category]}'
-        callback_data = make_callback_data(category=sub_category)
-
-        markup.insert(
-            InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
-        )
-
-    return markup
-
-"""MANAGEMENT SETTINGS KEYBOARDS"""
-
-
-async def data_keyboard():
-
-    """
-    Function for generating language keyoard
-
-    Returns:
-        markup: keyboard
-    """
-
-    markup = InlineKeyboardMarkup()
-    categories = DATA_OPTIONS
-
-    for sub_category in categories:
-
-        button_text = f'{categories[sub_category]}'
-        callback_data = make_callback_data(category=sub_category)
-
-        markup.insert(
-            InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
-        )
-
-    return markup
-
-
-"""Service Keyboards"""
 
 
 async def save_keyboard():
@@ -277,7 +77,7 @@ async def save_keyboard():
     markup = InlineKeyboardMarkup()
 
     button_text = SAVE_BUTTON
-    callback_data = make_callback_data(level=SETTINGS_MENU)
+    callback_data = make_callback_data(level=Callbacks.settings.value)
 
     markup.insert(
         InlineKeyboardMarkup(text=button_text, callback_data=callback_data)

@@ -1,4 +1,4 @@
-from backend.data.db.choices import DATA, DEVELOPMENT, MANAGEMENT, TEST
+from backend.data.db.choices import DATA, DEVELOPMENT, MANAGEMENT, QA
 
 from frontend.data.consts import (AREAS_LIST, DATA_OPTIONS, DEVELOPER_OPTIONS,
                                   EXPERIENCES_LIST, LANGUAGE_LIST,
@@ -28,7 +28,7 @@ class User():
             specialisation = MANAGEMENT_OPTIONS[self.position]
         elif self.area == DEVELOPMENT:
             specialisation = DEVELOPER_OPTIONS[self.position]
-        elif self.area == TEST:
+        elif self.area == QA:
             specialisation = QA_OPTIONS[self.position]
         elif self.area == DATA:
             specialisation = DATA_OPTIONS[self.position]

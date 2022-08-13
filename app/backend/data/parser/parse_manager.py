@@ -34,7 +34,7 @@ class ParseManager:
             tasks = self.__add_tasks(page)
 
             await asyncio.gather(*tasks, return_exceptions=True)
-            
+
             # Invalid stick
             if page == 1:
                 break

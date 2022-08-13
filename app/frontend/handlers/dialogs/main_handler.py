@@ -2,7 +2,7 @@ from typing import Union
 
 from aiogram import types
 
-from frontend.data.consts import SETTINGS_MENU
+from frontend.data.consts import Callbacks
 from frontend.data.dialogs import MAIN_MENU_DIALOGS, SETTINGS_DIALOGS
 from frontend.handlers.users.get_vacancies import get_vacancies
 from frontend.keyboards.inline.back_keyboard import back_keyboard
@@ -77,7 +77,7 @@ async def show_my_settings(message: types.CallbackQuery, **kwargs):
 
     user_id = message.from_user.id
     user = backend_manager.user_data_manager.get_user(user_id=user_id)
-    markup = await back_keyboard(level=SETTINGS_MENU)
+    markup = await back_keyboard(level=Callbacks.settings.value)
 
     call = message
     await call.message.edit_text(text=f'{user.to_print()}', reply_markup=markup)

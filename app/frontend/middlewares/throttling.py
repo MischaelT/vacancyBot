@@ -1,10 +1,10 @@
-import asyncio  # noqa
-
 from aiogram import types, Dispatcher  # noqa
 from aiogram.dispatcher import DEFAULT_RATE_LIMIT  # noqa
 from aiogram.dispatcher.handler import CancelHandler, current_handler  # noqa
 from aiogram.dispatcher.middlewares import BaseMiddleware  # noqa
-from aiogram.utils.exceptions import Throttled  # noqa
+from aiogram.utils.exceptions import Throttled
+
+from frontend.data.dialogs import MANY_REQUESTS  # noqa
 
 
 class ThrottlingMiddleware(BaseMiddleware):
@@ -43,4 +43,4 @@ class ThrottlingMiddleware(BaseMiddleware):
     async def message_throttled(self, message: types.Message, throttled: Throttled):
 
         if throttled.exceeded_count <= 2:
-            await message.reply("Too many requests!")
+            await message.reply(MANY_REQUESTS)

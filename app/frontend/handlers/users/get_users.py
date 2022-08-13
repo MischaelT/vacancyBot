@@ -1,8 +1,6 @@
-from typing import Union
-
 from aiogram import types
-from frontend.data.consts import ADMIN_PANEL
 
+from frontend.data.consts import Callbacks
 from frontend.keyboards.inline.back_keyboard import back_keyboard
 
 from settings.backend_setup import backend_manager
@@ -20,10 +18,9 @@ async def get_users(message: types.CallbackQuery):
 
     users = backend_manager.user_data_manager.get_users()
 
-    markup = await back_keyboard(level=ADMIN_PANEL)
+    markup = await back_keyboard(level=Callbacks.admin.value)
 
     call = message
-    reply_text = ''
 
     if len(users) == 0:
         reply_text = 'There is no users for you in database'

@@ -1,8 +1,10 @@
 import logging
-from celery import Celery
-from kombu import Queue, Exchange
 
-from .backend.backend_manager import BackendManager
+from celery import Celery
+
+from kombu import Exchange, Queue
+
+# from .backend.backend_manager import BackendManager
 
 
 class Config(object):
@@ -14,7 +16,8 @@ class Config(object):
         ),
     )
 
-celery_app = Celery('tasks',broker='pyamqp://guest@localhost//')
+
+celery_app = Celery('tasks', broker='pyamqp://guest@localhost//')
 
 celery_app.config_from_object(Config)
 

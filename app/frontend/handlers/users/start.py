@@ -1,3 +1,5 @@
+import logging
+
 from aiogram import types
 
 from frontend.handlers.dialogs.main_handler import main_menu
@@ -15,7 +17,7 @@ async def bot_start(message: types.Message):
         message (types.Message):  Message from user
 
     """
-
+    logging.debug('HERE')
     user_id = message.from_user.id
     user = backend_manager.user_data_manager.get_user(user_id)
 

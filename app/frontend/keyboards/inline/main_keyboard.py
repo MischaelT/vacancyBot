@@ -1,9 +1,9 @@
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.callback_data import CallbackData
 
-from frontend.data.consts import (BACK_BUTTON, CHOOSE_AREA, GET_VACANCIES_MENU,
-                                  MAIN_MENU, MY_SETTINGS, SETTINGS_MENU,
-                                  SETTINGS_MENU_LIST)
+from frontend.data.consts import (MAIN_MENU_LIST, SETTINGS_MENU_LIST)
+from frontend.data.buttons import BACK_BUTTON
+from frontend.data.consts import Callbacks
 
 menu_cd = CallbackData("show_menu", "level", "category")
 
@@ -25,21 +25,19 @@ async def main_keyboard():
 
     markup = InlineKeyboardMarkup()
 
-    categories = ['Get vacancies', 'Settings']
+    categories = MAIN_MENU_LIST
 
-    button_text = f'{categories[0]}'
-    callback_data = make_callback_data(level=GET_VACANCIES_MENU, category=categories[0])
+    levels = [Callbacks.get_vacancies.value,
+              Callbacks.settings.value]
 
-    markup.insert(
-        InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
-    )
+    for category, level in zip(categories, levels):
 
-    button_text = f'{categories[1]}'
-    callback_data = make_callback_data(level=SETTINGS_MENU, category=categories[1])
+        button_text = f'{category}'
+        callback_data = make_callback_data(level=level, category=category)
 
-    markup.insert(
-        InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
-    )
+        markup.insert(
+            InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
+        )
 
     return markup
 
@@ -56,26 +54,19 @@ async def settings_keyboard():
     markup = InlineKeyboardMarkup(row_width=2)
 
     categories = SETTINGS_MENU_LIST
+    categories.append(BACK_BUTTON)
 
-    button_text = f'{categories[0]}'
-    callback_data = make_callback_data(level=MY_SETTINGS, category=categories[0])
+    levels = [Callbacks.my_settings.value,
+              Callbacks.choose_area.value,
+              Callbacks.main.value]
 
-    markup.insert(
-        InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
-    )
+    for category, level in zip(categories, levels):
 
-    button_text = f'{categories[1]}'
-    callback_data = make_callback_data(level=CHOOSE_AREA, category=categories[1])
+        button_text = f'{category}'
+        callback_data = make_callback_data(level=level, category=category)
 
-    markup.insert(
-        InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
-    )
-
-    button_text = BACK_BUTTON
-    callback_data = make_callback_data(level=MAIN_MENU)
-
-    markup.insert(
-        InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
-    )
+        markup.insert(
+            InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
+        )
 
     return markup

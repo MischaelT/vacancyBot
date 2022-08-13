@@ -1,10 +1,10 @@
 import logging
 import random
 
-from backend.models.vacancy import Vacancy
 from backend.data.db.choices import BACKEND, DEVELOPMENT
 from backend.data.parser.sources.base_source import BaseSource
-from backend.data.parser.sources.consts import DJINNI_DATA, DOU_DATA
+from backend.data.parser.sources.consts import DOU_DATA
+from backend.models.vacancy import Vacancy
 
 from bs4 import BeautifulSoup
 
@@ -40,7 +40,7 @@ class TestSource(BaseSource):
 
         logging.info(f'parse dou: page: {page}, language: {language}, experience: {experience}')
 
-        proxy = 'http//:'+random.choice(self.proxies_list)
+        proxy = 'http//:' + random.choice(self.proxies_list)
         header = random.choice(self.user_agents_list)
 
         headers = {'User-Agent': header}
@@ -52,7 +52,7 @@ class TestSource(BaseSource):
         params['exp'] = experience
         params['category'] = language
 
-        url = self.root+self.basepoint
+        url = self.root + self.basepoint
 
         response = requests.get(url, headers=headers, params=params, proxies=proxies)
         response.raise_for_status()
@@ -89,7 +89,7 @@ class TestSource(BaseSource):
                 info=info,
                 language=language,
                 area=DEVELOPMENT,
-                position =BACKEND,
+                position=BACKEND,
                 experience=experience,
                 company_name='company_name',
                 country='Ukraine',

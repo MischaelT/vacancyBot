@@ -1,5 +1,7 @@
-from asyncio.log import logger
 import logging
+
+from backend.data.db.db_consts import (CREATE_USERS_QUEUE,
+                                       CREATE_VACANCIES_QUEUE)
 
 import psycopg2
 
@@ -20,7 +22,7 @@ class PostgresDB():
         self.__create_table_users()
         self.__create_table_vacancies()
 
-    def get_user_by_id(self, params):
+    def get_user_by_id(self, params: tuple):
         query = """SELECT * FROM users WHERE ID='%s' """
         user_data = self._read(query, params)
 
@@ -32,7 +34,7 @@ class PostgresDB():
 
         return self._read(query=query, params=params)
 
-    def update_user(self, params):
+    def update_user(self, params: tuple):
 
         query = '''UPDATE users
             SET area=%s, position=%s, exp=%s, lang=%s, city=%s, salary=%s
@@ -41,7 +43,7 @@ class PostgresDB():
 
         self._write(query=query, params=params)
 
-    def create_user(self, params):
+    def create_user(self, params: tuple):
 
         query = '''INSERT INTO users (id, is_registered, area, position, exp, lang, city, salary)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
@@ -94,17 +96,7 @@ class PostgresDB():
 
             cursor = connection.cursor()
 
-            create_users_query = '''CREATE TABLE IF NOT EXISTS users
-                                (
-                                ID              INT       PRIMARY KEY       NOT NULL,
-                                IS_REGISTERED   BOOLEAN                     NOT NULL,
-                                AREA            TEXT                        NOT NULL,
-                                POSITION        TEXT                        NOT NULL,
-                                EXP             TEXT                        NOT NULL,
-                                LANG            TEXT                        NOT NULL,
-                                CITY            TEXT                        NOT NULL,
-                                SALARY          TEXT                        NOT NULL
-                                ); '''
+            create_users_query = CREATE_USERS_QUEUE
 
             cursor.execute(create_users_query)
 
@@ -133,23 +125,7 @@ class PostgresDB():
 
             cursor = connection.cursor()
 
-            create_vacancies_query = '''CREATE TABLE IF NOT EXISTS vacancies
-                                (
-                                ID             SMALLSERIAL   PRIMARY KEY    NOT NULL,
-                                TITLE          TEXT                         NOT NULL,
-                                INFO           TEXT                         NOT NULL,
-                                LANG           TEXT                                 ,
-                                AREA           TEXT                         NOT NULL,
-                                POSITION       TEXT                         NOT NULL,
-                                EXP            TEXT                         NOT NULL,
-                                COMPANY_NAME   TEXT                                 ,
-                                COUNTRY        TEXT                         NOT NULL,
-                                CITY           TEXT                         NOT NULL,
-                                REMOTE         TEXT                                 ,
-                                SALARY         SMALLINT                             ,
-                                LINK           TEXT                         NOT NULL,
-                                IS_ACTUAL      BOOL                         NOT NULL
-                                ); '''
+            create_vacancies_query = CREATE_VACANCIES_QUEUE
 
             cursor.execute(create_vacancies_query)
 
@@ -175,25 +151,21 @@ class PostgresDB():
         """
 
         try:
-            connection = psycopg2.connect(
-                                        user=POSTGRES_USER,
-                                        password=POSTGRES_PASSWORD,
-                                        host=POSTGRES_HOST,
-                                        port=POSTGRES_PORT,
-                                        database=POSTGRES_DB
-                                        )
+            connection = psycopg2.connect(user=POSTGRES_USER,
+                                          password=POSTGRES_PASSWORD,
+                                          host=POSTGRES_HOST,
+                                          port=POSTGRES_PORT,
+                                          database=POSTGRES_DB)
 
         except (Exception) as exception:
             logging.exception(f'There was a problem during creating connection: {str(exception)}')
 
-            connection = psycopg2.connect(
-                                        user=POSTGRES_USER,
-                                        password=POSTGRES_PASSWORD,
-                                        host=POSTGRES_HOST,
-                                        port=POSTGRES_PORT,
-                                        database=POSTGRES_DB
-                                        )
-                                        
+            connection = psycopg2.connect(user=POSTGRES_USER,
+                                          password=POSTGRES_PASSWORD,
+                                          host=POSTGRES_HOST,
+                                          port=POSTGRES_PORT,
+                                          database=POSTGRES_DB)
+
         return connection
 
     def _write(self, query: str, params: tuple = ()) -> None:

@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.callback_data import CallbackData
 
-from frontend.data.consts import GET_USERS, RUN_PARSING
+from frontend.data.consts import ADMIN_MENU_LIST, Callbacks
 
 menu_cd = CallbackData("show_menu", "level", "category")
 
@@ -23,19 +23,18 @@ async def admin_keyboard():
 
     markup = InlineKeyboardMarkup()
 
-    categories = ['Run parsing', 'Get users']
+    categories = ADMIN_MENU_LIST
 
-    button_text = f'{categories[0]}'
-    callback_data = make_callback_data(level=RUN_PARSING, category=categories[0])
+    levels = [Callbacks.run_parsing.value,
+              Callbacks.get_users.value]
 
-    markup.insert(
-        InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
-    )
+    for category, level in zip(categories, levels):
 
-    button_text = f'{categories[1]}'
-    callback_data = make_callback_data(level=GET_USERS, category=categories[1])
+        button_text = f'{category}'
+        callback_data = make_callback_data(level=level, category=category)
 
-    markup.insert(
-        InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
-    )
+        markup.insert(
+            InlineKeyboardMarkup(text=button_text, callback_data=callback_data)
+        )
+
     return markup

@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.callback_data import CallbackData
 
-from frontend.data.consts import BACK_BUTTON
+from frontend.data.buttons import BACK_BUTTON
 
 menu_cd = CallbackData("show_menu", "level", "category")
 

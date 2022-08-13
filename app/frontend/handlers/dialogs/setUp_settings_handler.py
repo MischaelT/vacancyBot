@@ -4,24 +4,18 @@ from typing import Union
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
-from backend.data.db.choices import DATA, DEVELOPMENT, MANAGEMENT, TEST
+from backend.data.db.choices import DATA, DEVELOPMENT, MANAGEMENT, QA
 
-from frontend.data.consts import AREAS_LIST, EXPERIENCES_LIST, LANGUAGE_LIST
+from frontend.data.consts import (AREAS_LIST, CITIES_LIST, DATA_OPTIONS,
+                                  DEVELOPER_OPTIONS, EXPERIENCES_LIST,
+                                  LANGUAGE_LIST, MANAGEMENT_OPTIONS,
+                                  QA_OPTIONS, SALARIES_LIST)
 from frontend.data.dialogs import (AREA_DIALOGS, DATA_DIALOG, DEVELOPER_DIALOG,
                                    EXPERIENCE_DIALOGS, LANGUAGE_DIALOG,
                                    LOCATION_DIALOG, MANAGEMENT_DIALOG,
                                    QA_DIALOG, SALARY_DIALOG)
 from frontend.handlers.dialogs.main_handler import settings_menu
-from frontend.keyboards.inline.settings_keyboards import (area_keyboard,
-                                                          city_keyboard,
-                                                          data_keyboard,
-                                                          developer_keyboard,
-                                                          experience_keyboard,
-                                                          language_keyboard,
-                                                          management_keyboard,
-                                                          qa_keyboard,
-                                                          salary_keyboard,
-                                                          save_keyboard)
+from frontend.keyboards.inline.settings_keyboards import (area_keyboard, save_keyboard, show_concrete_keyboard)
 from frontend.utils.states.settings_states import UserSettings
 
 from settings.backend_setup import backend_manager
@@ -63,7 +57,7 @@ async def experience_menu(message: types.CallbackQuery, state: FSMContext, **kwa
 
     area = message.data.split(':')[2]
 
-    markup = await experience_keyboard()
+    markup = await show_concrete_keyboard(keyboard_categories=EXPERIENCES_LIST)
 
     call = message
     await call.message.edit_text(text=EXPERIENCE_DIALOGS, reply_markup=markup)
@@ -72,7 +66,7 @@ async def experience_menu(message: types.CallbackQuery, state: FSMContext, **kwa
         await UserSettings.management.set()
     elif area == DATA:
         await UserSettings.data.set()
-    elif area == TEST:
+    elif area == QA:
         await UserSettings.qa.set()
     elif area == DEVELOPMENT:
         await UserSettings.developer.set()
@@ -96,7 +90,7 @@ async def developer_menu(message: types.CallbackQuery, state: FSMContext, **kwar
         data["area"] = DEVELOPMENT
         data["experience"] = experience
 
-    markup = await developer_keyboard()
+    markup = await show_concrete_keyboard(keyboard_categories=DEVELOPER_OPTIONS)
 
     call = message
     await call.message.edit_text(text=DEVELOPER_DIALOG, reply_markup=markup)
@@ -119,9 +113,9 @@ async def qa_menu(message: types.CallbackQuery, state: FSMContext, **kwargs):
 
     async with state.proxy() as data:
         data["experience"] = experience
-        data["area"] = TEST
+        data["area"] = QA
 
-    markup = await qa_keyboard()
+    markup = await show_concrete_keyboard(keyboard_categories=QA_OPTIONS)
 
     call = message
     await call.message.edit_text(text=QA_DIALOG, reply_markup=markup)
@@ -145,7 +139,7 @@ async def data_menu(message: types.CallbackQuery, state: FSMContext, **kwargs):
         data["experience"] = experience
         data["area"] = DATA
 
-    markup = await data_keyboard()
+    markup = await show_concrete_keyboard(keyboard_categories=DATA_OPTIONS)
 
     call = message
     await call.message.edit_text(text=DATA_DIALOG, reply_markup=markup)
@@ -171,7 +165,7 @@ async def management_menu(message: types.CallbackQuery, state: FSMContext, **kwa
         data["experience"] = experience
         data["area"] = MANAGEMENT
 
-    markup = await management_keyboard()
+    markup = await show_concrete_keyboard(keyboard_categories=MANAGEMENT_OPTIONS)
 
     call = message
     await call.message.edit_text(text=MANAGEMENT_DIALOG, reply_markup=markup)
@@ -193,7 +187,7 @@ async def language_menu(message: types.CallbackQuery, state: FSMContext, **kwarg
     async with state.proxy() as data:
         data["position"] = position
 
-    markup = await language_keyboard()
+    markup = await show_concrete_keyboard(keyboard_categories=LANGUAGE_LIST)
 
     call = message
     await call.message.edit_text(text=LANGUAGE_DIALOG, reply_markup=markup)
@@ -227,7 +221,7 @@ async def salary_menu(message: types.CallbackQuery, state: FSMContext, **kwargs)
         async with state.proxy() as data:
             data["language"] = language
 
-    markup = await salary_keyboard()
+    markup = await show_concrete_keyboard(keyboard_categories=SALARIES_LIST)
 
     call = message
     await call.message.edit_text(text=SALARY_DIALOG, reply_markup=markup)
@@ -249,7 +243,7 @@ async def location_menu(message: types.CallbackQuery, state: FSMContext, **kwarg
     async with state.proxy() as data:
         data["salary"] = salary
 
-    markup = await city_keyboard()
+    markup = await show_concrete_keyboard(keyboard_categories=CITIES_LIST)
 
     call = message
     await call.message.edit_text(text=LOCATION_DIALOG, reply_markup=markup)
@@ -334,7 +328,7 @@ async def save_process(message: types.CallbackQuery, state: FSMContext, **kwargs
         language = data['language']
         user.language = language
         user.position = position
-    elif area == TEST:
+    elif area == QA:
         language = data['language']
         user.language = language
         user.position = position
