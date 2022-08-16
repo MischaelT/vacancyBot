@@ -3,10 +3,12 @@ version: '3.4'
 services:
 
   mainvacancybot:
-    image: mainvacancybot:tagged
+    image: vacancybot:v4
     build:
       context: .
       dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
     env_file:
       - .env
     depends_on:
