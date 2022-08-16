@@ -3,7 +3,7 @@ from typing import Union
 from aiogram import types
 
 from frontend.data.consts import Callbacks
-from frontend.data.dialogs import MAIN_MENU_DIALOGS, SETTINGS_DIALOGS
+from frontend.data.dialogs import LETS_FIND_JOB, MAIN_MENU_DIALOGS, SETTINGS_DIALOGS
 from frontend.handlers.users.get_vacancies import get_vacancies
 from frontend.keyboards.inline.back_keyboard import back_keyboard
 from frontend.keyboards.inline.main_keyboard import (main_keyboard,
@@ -26,7 +26,7 @@ async def main_menu(message: Union[types.Message, types.CallbackQuery], **kwargs
     if isinstance(message, types.Message):
 
         text = f"{MAIN_MENU_DIALOGS[0]} {message.from_user.full_name}\
-                \nLet's find a job for you"
+                \n{LETS_FIND_JOB}"
 
         await message.answer(text, reply_markup=markup)
 

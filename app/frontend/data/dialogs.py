@@ -25,3 +25,13 @@ BOT_RUN = 'Bot was run'
 BOT_STARTED = 'Start bot'
 
 HELP = 'Help'
+
+LETS_FIND_JOB = "Let's find a job for you"
+
+NOT_MODIFIED_ERROR = 'Message is not modified'
+NO_VACANCIES = 'There is no vacancies by that request'
+NO_USERS = 'There is no users for you in database'
+NO_VACANCIES_2 = 'There is no vacancies for you in database'
+
+RUN_BOT = 'run bot'
+GET_HELP = 'get help'

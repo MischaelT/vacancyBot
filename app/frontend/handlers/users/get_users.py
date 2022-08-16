@@ -1,5 +1,6 @@
 from aiogram import types
 
+from frontend.data.dialogs import NO_USERS
 from frontend.data.consts import Callbacks
 from frontend.keyboards.inline.back_keyboard import back_keyboard
 
@@ -22,8 +23,10 @@ async def get_users(message: types.CallbackQuery):
 
     call = message
 
-    if len(users) == 0:
-        reply_text = 'There is no users for you in database'
+    reply_text = ''
+
+    if not users:
+        reply_text = NO_USERS
     else:
         for user in users:
             reply_text += '\n' + f'{user._id}' + '\n'

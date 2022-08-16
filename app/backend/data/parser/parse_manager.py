@@ -35,7 +35,7 @@ class ParseManager:
 
             await asyncio.gather(*tasks, return_exceptions=True)
 
-            # Invalid stick
+            # TODO Implement figuring out the number of pages and iterate over them
             if page == 1:
                 break
 

@@ -31,28 +31,19 @@ class VacanciesManager():
         Returns:
             list: list of vacancies
         """
-
         logging.info(f'Manage user with id: {user._id}')
+        vacancies = []
 
-        return self.__get_data(user)
+        params = (user.experience, user.language, user.area, user.position)
 
-    # def data_to_vacancies(self, vacancies_data: List[dict]) -> List[Vacancy]:
+        vacancies_data = self.db.get_vacancies_data(params=params)
 
-    #     """
-    #     Method pushes pure data after parsing to db
+        for vacancy_data in vacancies_data:
 
-    #     Args:
-    #         vacancies_data (list): list os dicts with vacancy data
-    #     """
-    #     vacancies: List[Vacancy] = []
+            vacancy = self.__create_vacancy(vacancy_data)
+            vacancies.append(vacancy)
 
-    #     for vacancy_data in vacancies_data:
-
-    #         vacancy = self.__create_vacancy(data=vacancy_data)
-
-    #         vacancies.append(vacancy)
-
-    #     return vacancies
+        return vacancies
 
     def preprocess_vacancy_data(self, vacancies: List[Vacancy]) -> None:
 
@@ -129,31 +120,6 @@ class VacanciesManager():
             )
 
             self.db.push_vacancy_data(params=params)
-
-    def __get_data(self, user: User) -> list:
-
-        """
-        Method gets 10 latest vacancies from db with given filter
-
-        Args:
-            user (User): user model
-
-        Returns:
-            list: list of vacancy models
-        """
-
-        vacancies = []
-
-        params = (user.experience, user.language, user.area, user.position)
-
-        vacancies_data = self.db.get_vacancies_data(params=params)
-
-        for vacancy_data in vacancies_data:
-
-            vacancy = self.__create_vacancy(vacancy_data)
-            vacancies.append(vacancy)
-
-        return vacancies
 
     def __create_vacancy(self, data: Union[tuple, dict]) -> Vacancy:
 

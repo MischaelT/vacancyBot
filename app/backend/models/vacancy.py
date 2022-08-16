@@ -26,5 +26,4 @@ class Vacancy:
         self.is_actual = is_actual
 
     def to_print(self):
-
         return self.title + '\n' + self.info + '\n' + self.link

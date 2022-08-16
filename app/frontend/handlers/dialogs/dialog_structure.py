@@ -1,12 +1,10 @@
-import logging
-
 from aiogram import types
 
 from frontend.data.consts import Callbacks
 from frontend.handlers.dialogs.main_handler import (give_vacancies, main_menu,
                                                     settings_menu,
                                                     show_my_settings)
-from frontend.handlers.dialogs.setUp_settings_handler import area_menu
+from frontend.handlers.dialogs.set_up_settings_handler import area_menu
 from frontend.handlers.users.admin import show_admin_panel
 from frontend.handlers.users.get_users import get_users
 
@@ -21,7 +19,6 @@ async def dialog_structure(call: types.CallbackQuery, callback_data: dict):
     Args:
         message (types.Callback):  Callback
     """
-    logging.debug('HERE')
 
     current_level = int(callback_data.get('level'))
 

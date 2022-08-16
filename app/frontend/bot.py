@@ -23,7 +23,7 @@ class VacancyBot:
 
         self.dp = Dispatcher(self.bot, storage=storage)
 
-    # aiogram requires dispatcer to be here, even if it is not used directly
+    # aiogram requires dispatcher to be here, even if it is not used directly
     async def on_startup(self, dispatcher: Dispatcher):
 
         logging.debug('On startup')
@@ -35,7 +35,7 @@ class VacancyBot:
         await set_default_commands(self.dp)
         await on_startup_notify(self.dp)
 
-    # same_here
+    # aiogram requires dispatcher to be here, even if it is not used directly
     async def on_shutdown(self, dispatcher: Dispatcher):
 
         await self.dp.storage.close()

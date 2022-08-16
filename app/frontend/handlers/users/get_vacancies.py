@@ -2,6 +2,7 @@ from typing import Union
 
 from aiogram import types
 
+from frontend.data.dialogs import NO_VACANCIES_2
 from frontend.keyboards.inline.back_keyboard import back_keyboard
 
 from settings.backend_setup import backend_manager
@@ -32,8 +33,8 @@ async def get_vacancies(message: Union[types.Message, types.CallbackQuery]):
         call = message
         reply_text = ''
 
-        if len(vacancies) == 0:
-            reply_text = 'There is no vacancies for you in database'
+        if not vacancies:
+            reply_text = NO_VACANCIES_2
         else:
             for vacancy in vacancies:
                 reply_text += '\n' + f'{vacancy.to_print()}' + '\n'

@@ -3,6 +3,8 @@ import logging
 from aiogram.utils.exceptions import (CantParseEntities, MessageNotModified,
                                       MessageTextIsEmpty, TelegramAPIError)
 
+from frontend.data.dialogs import NO_VACANCIES, NOT_MODIFIED_ERROR
+
 
 async def errors_handler(update, exception):
     """
@@ -15,11 +17,11 @@ async def errors_handler(update, exception):
     """
 
     if isinstance(exception, MessageNotModified):
-        logging.exception('Message is not modified')
+        logging.exception(NOT_MODIFIED_ERROR)
         return True
 
     if isinstance(exception, MessageTextIsEmpty):
-        logging.exception('There is no vacancies by that request')
+        logging.exception(NO_VACANCIES)
         return True
 
     if isinstance(exception, CantParseEntities):

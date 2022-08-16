@@ -1,9 +1,7 @@
-import logging
-
 from aiogram import types
 
 from frontend.handlers.dialogs.main_handler import main_menu
-from frontend.handlers.dialogs.setUp_settings_handler import area_menu
+from frontend.handlers.dialogs.set_up_settings_handler import area_menu
 
 from settings.backend_setup import backend_manager
 
@@ -17,7 +15,7 @@ async def bot_start(message: types.Message):
         message (types.Message):  Message from user
 
     """
-    logging.debug('HERE')
+
     user_id = message.from_user.id
     user = backend_manager.user_data_manager.get_user(user_id)
 

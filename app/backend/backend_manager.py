@@ -22,6 +22,7 @@ class BackendManager():
         self.user_data_manager = UserDataManager(self.db)
         self.vacancies_manager = VacanciesManager(self.db)
 
+    #  message need because aiogram requires this variable to be in method signature
     async def run_async_parsing(self, message) -> None:
 
         """
