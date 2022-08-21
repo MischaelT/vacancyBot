@@ -160,12 +160,6 @@ class PostgresDB():
         except (Exception) as exception:
             logging.exception(f'There was a problem during creating connection: {str(exception)}')
 
-            connection = psycopg2.connect(user=POSTGRES_USER,
-                                          password=POSTGRES_PASSWORD,
-                                          host=POSTGRES_HOST,
-                                          port=POSTGRES_PORT,
-                                          database=POSTGRES_DB)
-
         return connection
 
     def _write(self, query: str, params: tuple = ()) -> None:
