@@ -1,8 +1,8 @@
-aiogram==2.19
-beautifulsoup4==4.11.1
-environs==9.5.0
-psycopg2_binary==2.9.3
-requests==2.22.0
-schedule==1.1.0
-celery==5.2.7
+aiogram==3.22.0
+beautifulsoup4==4.14.0
+environs==14.5.0
+psycopg2-binary==2.9.11
+requests==2.32.5
+schedule==1.2.2
+celery==5.5.3
 aioredis==2.0.1
